@@ -1,497 +1,108 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>TRADE WINNER PRO · Boleta inteligente MT5</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    :root{--bg:#09090d;--bg2:#0f0f15;--surface:#13131a;--border:#1f1f2a;--border2:#2a2a38;--gold:#c9a84c;--gold2:#e8c96a;--text:#e8e8f0;--text2:#8888a8;--green:#3ecf8e;--red:#e05260;--radius:12px}
-    *{margin:0;padding:0;box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{background-color:#09090d;background-image:url('gettyimages.png');background-size:cover;background-position:center 20%;background-repeat:no-repeat;background-attachment:fixed;color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden;position:relative}
-    body::before{content:'';position:fixed;inset:0;background:rgba(9,9,13,0.82);backdrop-filter:blur(2px);z-index:0;pointer-events:none}
-    body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:0.04;pointer-events:none;z-index:0}
-    .grid-overlay{position:fixed;inset:0;background-image:linear-gradient(rgba(201,168,76,0.05)1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,0.05)1px,transparent 1px);background-size:80px 80px;pointer-events:none;z-index:0}
-    section,nav,.hero,.features,.boleta-sec,.markets,.signup,.ticker-wrap{position:relative;z-index:2}
-    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,2vw,2rem);height:60px;background:rgba(9,9,13,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);gap:0.8rem}
-    .nav-logo{font-family:'DM Mono',monospace;font-size:1.1rem;font-weight:900;color:var(--gold2);letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:7px;white-space:nowrap;flex-shrink:0}
-    .nav-logo-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold);animation:blink 2s ease infinite}
-    @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
-    .nav-links{display:flex;align-items:center;gap:1.2rem;list-style:none;flex-shrink:0}
-    .nav-links a{font-size:.75rem;font-weight:500;color:var(--text2);text-decoration:none;letter-spacing:.5px;transition:color .2s;white-space:nowrap}
-    .nav-links a:hover{color:var(--gold2)}
-    .planos-row{display:flex;align-items:center;gap:5px;flex-shrink:1;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-    .planos-row::-webkit-scrollbar{display:none}
-    .btn-plano{display:inline-flex;align-items:center;justify-content:center;width:90px;height:32px;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:.65rem;font-weight:700;text-decoration:none;letter-spacing:.5px;white-space:nowrap;transition:all .2s;border:none;flex-shrink:0;cursor:pointer;text-align:center}
-    .btn-latao{background:#CD7F32;color:#FFF5E0}.btn-latao:hover{background:#DE9043;box-shadow:0 0 10px rgba(205,127,50,0.4)}
-    .btn-bronze{background:#8B6914;color:#FFF5E0}.btn-bronze:hover{background:#A07818}
-    .btn-prata{background:#7D8794;color:#FFF}.btn-prata:hover{background:#949FAC}
-    .btn-ouro{background:#DAA520;color:#1a1a1a}.btn-ouro:hover{background:#E8B830}
-    .btn-diamante{background:#6A5ACD;color:#FFF}.btn-diamante:hover{background:#7B6ED8}
-    .btn-elite{background:#C0392B;color:#FFF}.btn-elite:hover{background:#D44637}
-    @media(max-width:1050px){nav{flex-wrap:wrap;height:auto;padding:0.4rem 1rem;gap:0.3rem}.planos-row{order:3;width:100%;justify-content:flex-start;padding-bottom:0.3rem}.btn-plano{width:80px;height:28px;font-size:.6rem}}
-    @media(max-width:600px){nav{padding:0.3rem 0.5rem;gap:0.2rem}.nav-logo{font-size:.65rem;letter-spacing:1px}.nav-links{gap:0.5rem}.nav-links a{font-size:.6rem}.btn-plano{width:52px;height:22px;font-size:.5rem;letter-spacing:0;border-radius:3px}.planos-row{gap:3px;padding:2px 0}}
-    .hero{min-height:92vh;display:flex;align-items:center;padding:0 clamp(1.5rem,6vw,5rem)}
-    .hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;width:100%;max-width:1280px;margin:0 auto}
-    @media(max-width:900px){.hero-inner{grid-template-columns:1fr;gap:2.5rem;padding-top:3rem}}
-    .hero-left{display:flex;flex-direction:column;gap:1.4rem}
-    .hero-tag{display:inline-flex;align-items:center;gap:.5rem;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.25);border-radius:4px;padding:.35rem .9rem;font-family:'DM Mono',monospace;font-size:.7rem;font-weight:500;color:var(--gold2);letter-spacing:2px;width:fit-content}
-    .hero-title{font-size:clamp(2.2rem,4.5vw,3.8rem);font-weight:700;line-height:1.08;letter-spacing:-1px}
-    .hero-title em{font-style:normal;color:var(--gold2)}
-    .hero-sub{font-size:1.05rem;color:var(--text2);max-width:480px;line-height:1.7;font-weight:300}
-    .hero-stats{display:flex;gap:2rem;padding-top:.5rem;flex-wrap:wrap}
-    .hero-stat{display:flex;flex-direction:column;gap:.15rem}
-    .hero-stat-n{font-family:'DM Mono',monospace;font-size:1.5rem;font-weight:500;color:var(--gold2)}
-    .hero-stat-l{font-size:.72rem;color:var(--text2);letter-spacing:.5px}
-    .btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--gold);color:#09090d;font-weight:700;font-size:.9rem;padding:.75rem 1.8rem;border-radius:6px;text-decoration:none;letter-spacing:.3px;transition:all .2s;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
-    .btn-primary:hover{background:var(--gold2);transform:translateY(-2px)}
-    .btn-ghost{display:inline-flex;align-items:center;gap:.5rem;background:transparent;border:1px solid var(--border2);color:var(--text2);font-size:.88rem;font-weight:500;padding:.75rem 1.5rem;border-radius:6px;text-decoration:none;transition:all .2s;cursor:pointer;font-family:'DM Sans',sans-serif}
-    .btn-ghost:hover{border-color:var(--gold);color:var(--gold2)}
-    .hero-right{display:flex;justify-content:center;align-items:center}
-    .boleta-frame{max-width:340px;width:100%;display:flex;justify-content:center;align-items:center}
-    .boleta-frame img{width:80%;display:block;margin:0 auto;border-radius:16px}
-    .sec-pad{padding:6rem clamp(1.5rem,6vw,5rem)}
-    .sec-center{text-align:center;max-width:600px;margin:0 auto 3.5rem}
-    .sec-label{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:.8rem;display:block}
-    .sec-title{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700;letter-spacing:-.5px;line-height:1.2}
-    .sec-desc{color:var(--text2);margin-top:.8rem;font-weight:300}
-    .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:1000px;margin:0 auto}
-    @media(max-width:768px){.features-grid{grid-template-columns:repeat(2,1fr)}}
-    @media(max-width:480px){.features-grid{grid-template-columns:1fr}}
-    .feat-card{background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:1.8rem 1.5rem;text-align:center;transition:all 0.3s;cursor:default}
-    .feat-card:hover{transform:translateY(-4px);border-color:var(--gold);box-shadow:0 8px 24px rgba(201,168,76,0.08)}
-    .feat-icon{font-size:2rem;margin-bottom:.8rem}
-    .feat-title{font-weight:600;font-size:.95rem;color:var(--text);margin-bottom:.4rem}
-    .feat-desc{font-size:.78rem;color:var(--text2);line-height:1.5}
-    .markets-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;max-width:1000px;margin:0 auto}
-    @media(max-width:768px){.markets-grid{grid-template-columns:repeat(2,1fr)}}
-    @media(max-width:480px){.markets-grid{grid-template-columns:1fr}}
-    .market-card{background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:1.5rem;transition:all 0.3s;cursor:default}
-    .market-card:hover{transform:translateY(-2px);border-color:var(--gold)}
-    .mc-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.8rem}
-    .mc-sym{font-family:'DM Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--text)}
-    .mc-name{font-size:.7rem;color:var(--text2);margin-top:2px}
-    .mc-badge{display:inline-block;padding:3px 8px;border-radius:20px;font-size:.55rem;font-weight:700;letter-spacing:1px;background:rgba(201,168,76,0.15);color:var(--gold)}
-    .mc-badge.blue{background:rgba(59,158,255,0.15);color:#3b9eff}
-    .mc-badge.red{background:rgba(224,82,96,0.15);color:var(--red)}
-    .mc-trend{font-size:.75rem;font-weight:500;margin-top:.5rem}
-    .signup{background:rgba(15,15,21,0.8)}
-    .signup-box{max-width:580px;margin:0 auto;background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:2.5rem 2rem}
-    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
-    @media(max-width:560px){.form-row{grid-template-columns:1fr}}
-    .fg{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.9rem}
-    .fg label{font-size:.78rem;font-weight:500;color:var(--text2)}
-    .fg input,.fg select{background:var(--bg);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:.65rem .9rem;font-family:'DM Sans',sans-serif;font-size:.9rem;width:100%}
-    .fg input:focus,.fg select:focus{outline:none;border-color:var(--gold)}
-    .notice-green{font-size:.75rem;color:var(--green);background:rgba(62,207,142,.05);border:1px solid rgba(62,207,142,.15);border-radius:6px;padding:.7rem .9rem;margin-top:.5rem;text-align:center}
-    .ticker-wrap{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(15,15,21,0.9);overflow:hidden;padding:.4rem 0}
-    .whatsapp-fallback{display:none;background:rgba(37,211,102,0.1);border:2px solid #25d366;border-radius:12px;padding:1rem;text-align:center;margin-top:1rem}
-    .whatsapp-fallback.show{display:block}
-    .whatsapp-fallback a{color:#25d366;font-weight:700;text-decoration:none;font-size:.9rem}
-  </style>
-</head>
-<body>
-<div class="grid-overlay"></div>
-
-<nav>
-  <div class="nav-logo"><span class="nav-logo-dot"></span>TRADE WINNER PRO</div>
-  <ul class="nav-links">
-    <li><a href="#funcoes">Funções</a></li>
-    <li><a href="#boleta">Boleta</a></li>
-    <li><a href="#mercados">Mercados</a></li>
-    <li><a href="#cadastro-teste">Teste Grátis</a></li>
-    <li><a href="#cadastro-comprovante" style="color:var(--gold);font-weight:600">📩 Comprovante</a></li>
-  </ul>
-  <div style="display:flex;align-items:center;gap:8px">
-    <div style="display:flex;align-items:center;gap:4px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);border-radius:20px;padding:3px 12px;flex-shrink:0">
-      <span style="font-size:.75rem">🔰</span>
-      <span style="font-size:.58rem;font-weight:700;color:var(--gold2);letter-spacing:1px;white-space:nowrap">ESCOLHA SEU PLANO</span>
-    </div>
-    <div class="planos-row">
-      <a href="#cadastro-teste" class="btn-plano btn-latao">🔰 LATÃO</a>
-      <a href="https://pag.ae/81Jw7qy2N" target="_blank" class="btn-plano btn-bronze">BRONZE</a>
-      <a href="https://pag.ae/81Jw7ZCg6" target="_blank" class="btn-plano btn-prata">PRATA</a>
-      <a href="https://pag.ae/81Jw8oyYM" target="_blank" class="btn-plano btn-ouro">OURO</a>
-      <a href="https://pag.ae/81Jw8RJ16" target="_blank" class="btn-plano btn-diamante">DIAMANTE</a>
-      <a href="https://pag.ae/81Jw9ggEr" target="_blank" class="btn-plano btn-elite">ELITE</a>
-    </div>
-  </div>
-</nav>
-
-<section class="hero">
-  <div class="hero-inner">
-    <div class="hero-left">
-      <div class="hero-tag"><span class="nav-logo-dot"></span>METATRADER 5 · EA PROFISSIONAL</div>
-      <h1 class="hero-title">Execute com<br><em>precisão cirúrgica</em><br>no mercado.</h1>
-      <p class="hero-sub">Boleta inteligente com múltiplos Take Profits, Break-even automático e controle de risco integrado.</p>
-      <div class="hero-stats">
-        <div class="hero-stat"><span class="hero-stat-n">3×</span><span class="hero-stat-l">Take Profits</span></div>
-        <div class="hero-stat"><span class="hero-stat-n">7</span><span class="hero-stat-l">Dias grátis</span></div>
-        <div class="hero-stat"><span class="hero-stat-n">MT5</span><span class="hero-stat-l">Plataforma</span></div>
-        <div class="hero-stat"><span class="hero-stat-n">XAUUSD</span><span class="hero-stat-l">Ativo principal</span></div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:.8rem">
-        <div style="display:flex;gap:.8rem;flex-wrap:wrap">
-          <a href="#cadastro-teste" class="btn-primary" style="flex:1;min-width:200px;justify-content:center;text-align:center">🎯 QUERO TESTAR 7 DIAS GRÁTIS</a>
-          <a href="#cadastro-comprovante" class="btn-ghost" style="flex:1;min-width:200px;justify-content:center;text-align:center;border-color:var(--gold);color:var(--gold)">📩 JÁ ASSINEI</a>
-        </div>
-        <a href="Manual_TRADE_WINNER.pdf" download class="btn-ghost" style="justify-content:center;text-align:center;width:100%;padding:.75rem 1.5rem">📘 MANUAL EM PDF</a>
-      </div>
-    </div>
-    <div class="hero-right"><div class="boleta-frame"><img src="boleta2.png" alt="Painel Trade Winner Pro"></div></div>
-  </div>
-</section>
-
-<div class="ticker-wrap">
-  <div class="tradingview-widget-container" style="width:100%">
-    <div class="tradingview-widget-container__widget"></div>
-    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-    {"symbols":[{"proName":"OANDA:XAUUSD","title":"OURO/XAUUSD"},{"proName":"OANDA:SPX500USD","title":"S&P 500"},{"proName":"OANDA:NAS100USD","title":"NASDAQ 100"},{"proName":"OANDA:US30USD","title":"DOW JONES"}],"showSymbolLogo":false,"colorTheme":"dark","isTransparent":true,"displayMode":"adaptive","locale":"br"}
-    </script>
-  </div>
-</div>
-
-<section class="sec-pad" id="funcoes">
-  <div class="sec-center"><span class="sec-label">Funcionalidades</span><h2 class="sec-title">Tudo que você precisa numa só boleta</h2></div>
-  <div class="features-grid">
-    <div class="feat-card"><div class="feat-icon">📍</div><div class="feat-title">Múltiplos Take Profits</div><div class="feat-desc">Até 3 TPs independentes com parciais de 25%, 50% ou 75% do lote.</div></div>
-    <div class="feat-card"><div class="feat-icon">🛡</div><div class="feat-title">Break-even Automático</div><div class="feat-desc">Stop Loss movido para entrada com um clique. Risco zero.</div></div>
-    <div class="feat-card"><div class="feat-icon">⏳</div><div class="feat-title">Ordens Pendentes</div><div class="feat-desc">STOP/LIMIT arrastando linhas no gráfico.</div></div>
-    <div class="feat-card"><div class="feat-icon">📊</div><div class="feat-title">Controle de Risco Diário</div><div class="feat-desc">Limite de perda e operações por dia.</div></div>
-    <div class="feat-card"><div class="feat-icon">📁</div><div class="feat-title">Relatórios Automáticos</div><div class="feat-desc">TXT, CSV e LOG ao fim do pregão.</div></div>
-    <div class="feat-card"><div class="feat-icon">🔐</div><div class="feat-title">Licença por Terminal ID</div><div class="feat-desc">7 dias grátis. Suporte WhatsApp.</div></div>
-  </div>
-</section>
-
-<section class="sec-pad" id="mercados" style="background:rgba(15,15,21,0.6)">
-  <div class="sec-center"><span class="sec-label">Mercados</span><h2 class="sec-title">Opere os maiores mercados do mundo</h2></div>
-  <div class="markets-grid">
-    <div class="market-card"><div class="mc-header"><div><div class="mc-sym">XAU/USD</div><div class="mc-name">Ouro · GOLD</div></div><div class="mc-badge">⭐ TOP</div></div><div class="mc-trend" style="color:var(--green)">▲ Alta consistente</div></div>
-    <div class="market-card"><div class="mc-header"><div><div class="mc-sym">SPX</div><div class="mc-name">S&P 500</div></div><div class="mc-badge blue">ÍNDICE</div></div><div class="mc-trend" style="color:var(--green)">▲ Recuperação</div></div>
-    <div class="market-card"><div class="mc-header"><div><div class="mc-sym">NAS100</div><div class="mc-name">NASDAQ</div></div><div class="mc-badge red">VOLÁTIL</div></div><div class="mc-trend" style="color:var(--red)">▼ Oscilando</div></div>
-    <div class="market-card"><div class="mc-header"><div><div class="mc-sym">US30</div><div class="mc-name">Dow Jones</div></div><div class="mc-badge blue">ÍNDICE</div></div><div class="mc-trend" style="color:var(--green)">▲ Positiva</div></div>
-  </div>
-</section>
-
-<section class="sec-pad boleta-sec" id="boleta">
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;max-width:1100px;margin:0 auto">
-    <div style="border-radius:16px;overflow:hidden;border:1px solid var(--border2)"><img src="boleta.png" alt="Boleta MT5" style="width:100%;display:block"></div>
-    <div>
-      <span class="sec-label">A Boleta</span>
-      <h2 style="font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700">Interface para scalp</h2>
-      <ul style="list-style:none;display:flex;flex-direction:column;gap:.8rem;margin-top:1rem">
-        <li style="color:var(--text2)">✓ Lote ajustável</li>
-        <li style="color:var(--text2)">✓ SL e 3 TPs</li>
-        <li style="color:var(--text2)">✓ BUY/SELL imediato</li>
-        <li style="color:var(--text2)">✓ Break-even 1 clique</li>
-        <li style="color:var(--text2)">✓ Fechamento parcial</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- ══ FORMULÁRIO TESTE GRÁTIS ══ -->
-<section class="sec-pad signup" id="cadastro-teste">
-  <div class="sec-center">
-    <span class="sec-label">Teste Grátis</span>
-    <h2 class="sec-title">Comece a mudar seus resultados hoje</h2>
-    <p class="sec-desc">Sem cartão. Sem compromisso. Apenas seus dados para receber a Boleta.</p>
-  </div>
-  <div class="signup-box">
-    <!-- Formspree xnjlryya → notificação de NOVO TESTE para VOCÊ -->
-    <form action="https://formspree.io/f/xnjlryya" method="POST" id="formTeste">
-      <input type="hidden" name="tipo" value="TESTE_GRATIS">
-      <input type="hidden" name="_subject" value="🔰 NOVO TESTE LATÃO - TRADE WINNER PRO">
-      <div class="form-row">
-        <div class="fg"><label>Nome *</label><input type="text" name="nome" id="testeNome" required></div>
-        <div class="fg"><label>WhatsApp *</label><input type="tel" name="whatsapp" id="testeWhats" required placeholder="+55 41 99999-9999"></div>
-      </div>
-      <div class="fg"><label>E-mail *</label><input type="email" name="email" id="testeEmail" required></div>
-      <div class="fg"><label>ID Terminal MT5 *</label><input type="text" name="terminal_id" id="testeTerminal" required placeholder="MT5 → Ajuda → Sobre"></div>
-      <button type="submit" class="btn-primary" id="btnTeste" style="width:100%;padding:.9rem;font-size:.95rem">🎯 QUERO TESTAR 7 DIAS GRÁTIS</button>
-    </form>
-    <div class="notice-green" style="margin-top:1rem">✅ Chave enviada por WhatsApp e Email</div>
-    <!-- Fallback: caso popup do WA do cliente seja bloqueado -->
-    <div class="whatsapp-fallback" id="whatsappFallbackCliente">
-      <p style="font-size:.8rem;color:var(--text2);margin-bottom:.5rem">📱 WhatsApp não abriu?</p>
-      <a href="#" id="linkWhatsCliente" target="_blank">👉 CLIQUE AQUI para receber a chave no WhatsApp</a>
-    </div>
-  </div>
-</section>
-
-<!-- ══ FORMULÁRIO COMPROVANTE ══ -->
-<section class="sec-pad signup" id="cadastro-comprovante" style="background:rgba(15,15,21,0.9)">
-  <div class="sec-center">
-     <span class="sec-label">Ativação de Licença</span>
-    <h2 class="sec-title">Já fez sua assinatura?</h2>
-    <p class="sec-desc">Envie o comprovante para liberarmos sua licença em minutos.</p>
-  
-  </div>
-  <div class="signup-box">
-    <form action="https://formspree.io/f/xrerdvdw" method="POST">
-      <input type="hidden" name="tipo" value="COMPROVANTE">
-      <input type="hidden" name="_subject" value="📩 COMPROVANTE RECEBIDO - TRADE WINNER PRO">
-      <div class="form-row">
-        <div class="fg"><label>Nome *</label><input type="text" name="nome" required></div>
-        <div class="fg"><label>WhatsApp *</label><input type="tel" name="whatsapp" required placeholder="+55 41 99999-9999"></div>
-      </div>
-      <div class="fg"><label>E-mail *</label><input type="email" name="email" required></div>
-      <div class="fg"><label>Plano *</label><select name="plano" required><option value="">Selecione...</option><option>BRONZE</option><option>PRATA</option><option>OURO</option><option>DIAMANTE</option><option>ELITE</option></select></div>
-      <div class="fg"><label>ID Terminal *</label><input type="text" name="terminal_id" required></div>
-      <div class="fg"><label>Comprovante (código ou link)</label><input type="text" name="comprovante" placeholder="Código da transação ou link"></div>
-      <button type="submit" class="btn-primary" style="width:100%;padding:.9rem">📩 ENVIAR COMPROVANTE</button>
-    </form>
-  </div>
-</section>
-
-<footer style="border-top:1px solid var(--border);background:#0a0a10;padding:3rem clamp(1.5rem,6vw,5rem) 1.5rem;position:relative;z-index:10">
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2.5rem;max-width:1200px;margin:0 auto 2rem">
-    <div>
-      <div style="font-family:'DM Mono',monospace;font-size:.8rem;color:var(--gold);letter-spacing:3px;margin-bottom:.8rem"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--gold);margin-right:8px;box-shadow:0 0 8px var(--gold)"></span>TRADE WINNER PRO</div>
-      <p style="font-size:.82rem;color:var(--text2);line-height:1.7;font-weight:300;margin-bottom:1rem">Boleta inteligente para MetaTrader 5.</p>
-      <div style="display:flex;align-items:center;gap:.4rem;font-size:.7rem;font-family:'DM Mono',monospace"><span style="width:8px;height:8px;border-radius:50%;background:var(--green)"></span><span>ONLINE · Suporte ativo</span></div>
-    </div>
-    <div>
-      <h4 style="font-size:.78rem;font-weight:600;color:#fff;letter-spacing:1px;margin-bottom:1rem;text-transform:uppercase">Links Rápidos</h4>
-      <ul style="list-style:none;display:flex;flex-direction:column;gap:.6rem">
-        <li><a href="#funcoes" style="color:var(--text2);text-decoration:none;font-size:.82rem">⚡ Funcionalidades</a></li>
-        <li><a href="#boleta" style="color:var(--text2);text-decoration:none;font-size:.82rem">📊 A Boleta</a></li>
-        <li><a href="#mercados" style="color:var(--text2);text-decoration:none;font-size:.82rem">🌍 Mercados</a></li>
-        <li><a href="#cadastro-teste" style="color:var(--text2);text-decoration:none;font-size:.82rem">🎯 Teste Grátis</a></li>
-      </ul>
-    </div>
-    <div>
-      <h4 style="font-size:.78rem;font-weight:600;color:#fff;letter-spacing:1px;margin-bottom:1rem;text-transform:uppercase">Fale Conosco</h4>
-      <div style="display:flex;flex-direction:column;gap:.7rem">
-        <a href="mailto:tradewinnerpro@gmail.com" style="display:flex;align-items:center;gap:.6rem;color:var(--text2);text-decoration:none;font-size:.82rem">✉️ tradewinnerpro@gmail.com</a>
-        <a href="https://wa.me/5541999765210" target="_blank" style="display:flex;align-items:center;gap:.6rem;color:var(--text2);text-decoration:none;font-size:.82rem">📲 (41) 99976-5210</a>
-      </div>
-    </div>
-    <div>
-      <h4 style="font-size:.78rem;font-weight:600;color:#fff;letter-spacing:1px;margin-bottom:1rem;text-transform:uppercase">Selo de Confiança</h4>
-      <div style="display:flex;flex-direction:column;gap:.6rem;font-size:.78rem;color:var(--text2)">
-        <div>✓ 7 dias de teste grátis</div><div>✓ Suporte via WhatsApp</div><div>✓ Sem fidelidade</div>
-      </div>
-    </div>
-  </div>
-  <div style="border-top:1px solid var(--border);padding-top:1.5rem;max-width:1200px;margin:0 auto;text-align:center">
-    <div style="font-size:.7rem;color:var(--text2)">© 2025 TRADE WINNER PRO · Todos os direitos reservados</div>
-  </div>
-  <div style="max-width:1200px;margin:1.2rem auto 0;padding:.8rem 1rem;background:rgba(224,82,96,.05);border:1px solid rgba(224,82,96,.1);border-radius:8px;text-align:center">
-    <p style="font-size:.68rem;color:var(--text2);line-height:1.5;font-weight:300">⚠️ <strong style="color:#fff">Aviso de Risco:</strong> Trading é uma atividade de alto risco.</p>
-  </div>
-</footer>
-
 <script>
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'})}})});
 </script>
 
-<!-- ══ EmailJS SDK (envia e-mail ao CLIENTE) ══ -->
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
-<!--
-╔══════════════════════════════════════════════════════════════╗
-║              CONFIGURE O EMAILJS EM 4 PASSOS                ║
-╠══════════════════════════════════════════════════════════════╣
-║ 1. Crie conta GRÁTIS em https://www.emailjs.com             ║
-║ 2. "Email Services" → Add Service → Gmail → copie o ID      ║
-║ 3. "Email Templates" → Create Template:                     ║
-║      Para (To):    {{to_email}}                              ║
-║      Assunto:      🎯 TRADE WINNER PRO - Seu teste chegou!  ║
-║      Corpo: use as variáveis abaixo no template:            ║
-║        {{to_name}} {{chave}} {{link_ea}} {{link_pdf}}       ║
-║    → copie o Template ID                                     ║
-║ 4. "Account" → API Keys → copie a Public Key                ║
-║    Substitua os 3 valores em EMAILJS_* abaixo               ║
-╚══════════════════════════════════════════════════════════════╝
--->
 <script>
 (function(){
+  var SALT="TWPRO-SALT-2025";
+  var LINK_EA="https://comodoro91-oss.github.io/tradewinner-boleta/TRADE_WINNER_PRO_V1.1.ex5";
+  var LINK_PDF="https://comodoro91-oss.github.io/tradewinner-boleta/Manual_TRADE_WINNER.pdf";
+  var SEU_WATS="5541999765210";
 
-  /* ════════════════════════════════════════════════════
-     ▼▼▼  ÚNICAS 3 LINHAS QUE VOCÊ PRECISA PREENCHER  ▼▼▼
-     ════════════════════════════════════════════════════ */
-  var EMAILJS_PUBLIC_KEY  = "SUA_PUBLIC_KEY_AQUI";   // Account → API Keys
-  var EMAILJS_SERVICE_ID  = "SUA_SERVICE_ID_AQUI";   // Email Services → ID
-  var EMAILJS_TEMPLATE_ID = "SUA_TEMPLATE_ID_AQUI";  // Email Templates → ID
-  /* ════════════════════════════════════════════════════ */
-
-  var SALT     = "TWPRO-SALT-2025";
-  var LINK_EA  = "https://comodoro91-oss.github.io/tradewinner-boleta/TRADE_WINNER_PRO_V1.1.ex5";
-  var LINK_PDF = "https://comodoro91-oss.github.io/tradewinner-boleta/Manual_TRADE_WINNER.pdf";
-  var SEU_WATS = "5541999765210";  // seu número com DDI, sem + nem espaços
-
-  /* ── Inicializa EmailJS ──────────────────────────── */
-  try { emailjs.init(EMAILJS_PUBLIC_KEY); } catch(e){}
-
-  /* ── Gera chave LATAO ──────────────────────────── */
   function gerarChave(terminal){
-    var d=terminal+SALT, h=0;
+    var d=terminal+SALT,h=0;
     for(var i=0;i<d.length;i++){var c=d.charCodeAt(i);h=((h<<5)-h)+c;h=h&0x7FFFFFFF}
-    var a=Math.abs(h), p1=a%10000, p2=Math.floor(a/10000)%10000, p3=Math.floor(a/100000000)%10000;
+    var a=Math.abs(h),p1=a%10000,p2=Math.floor(a/10000)%10000,p3=Math.floor(a/100000000)%10000;
     var l="ABCDEFGHJKLMNPQRSTUVWXYZ";
-    return "LATAO-"+l.charAt(p1%l.length)+l.charAt(p2%l.length)+l.charAt(p3%l.length)+
-           "-"+String(p1).padStart(4,'0')+"-"+String(p2%1000).padStart(3,'0')+"-"+String(p3%1000).padStart(3,'0');
+    return "LATAO-"+l.charAt(p1%l.length)+l.charAt(p2%l.length)+l.charAt(p3%l.length)+"-"+String(p1).padStart(4,'0')+"-"+String(p2%1000).padStart(3,'0')+"-"+String(p3%1000).padStart(3,'0');
   }
 
-  /* ── Anti-abuso ────────────────────────────────── */
   function verificaTeste(terminal){
     var t=JSON.parse(localStorage.getItem('twpro_testes_db')||'{}');
     if(t[terminal]){
       var diff=Math.ceil((new Date()-new Date(t[terminal].dataSolicitacao))/86400000);
-      if(diff<=7)  return {ok:false, msg:'⚠️ Terminal já tem teste ativo!\n\nDias restantes: '+(7-diff)};
-      if(t[terminal].totalTestes>=2) return {ok:false, msg:'⚠️ Limite de 2 testes atingido!'};
+      if(diff<=7) return {ok:false,msg:'⚠️ Terminal já tem teste ativo! Dias restantes: '+(7-diff)};
+      if(t[terminal].totalTestes>=2) return {ok:false,msg:'⚠️ Limite de 2 testes atingido!'};
     }
     return {ok:true};
   }
 
-  /* ── Envia e-mail ao CLIENTE via EmailJS ─────────
-     O Formspree (action do form) já envia pra VOCÊ.
-     O EmailJS envia pro CLIENTE.                    */
-  function enviarEmailCliente(nome, email, chave){
-    if(EMAILJS_PUBLIC_KEY==='SUA_PUBLIC_KEY_AQUI'){
-      console.warn('⚠️ EmailJS não configurado — configure as 3 chaves no script.');
-      return;
-    }
-    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-      to_name : nome,
-      to_email: email,
-      chave   : chave,
-      link_ea : LINK_EA,
-      link_pdf: LINK_PDF
-    })
-    .then(function(){ console.log('✅ E-mail enviado ao cliente: '+email); })
-    .catch(function(err){ console.error('❌ EmailJS erro:', JSON.stringify(err)); });
-  }
-
-  /* ══════════════════════════════════════════════════
-     SUBMIT DO FORMULÁRIO
-     Fluxo:
-       1. Valida e gera chave
-       2. Salva localStorage (gerador + notificações)
-       3. Formspree → e-mail de aviso para VOCÊ
-       4. EmailJS → e-mail com chave para o CLIENTE
-       5. WhatsApp → abre no CLIENTE (popup)
-       6. Redireciona ao painel → painel abre WA para VOCÊ
-     ══════════════════════════════════════════════════ */
-  var form = document.getElementById('formTeste');
+  var form=document.getElementById('formTeste');
   if(!form) return;
 
-  form.addEventListener('submit', function(e){
+  form.addEventListener('submit',function(e){
     e.preventDefault();
 
-    var nome     = document.getElementById('testeNome').value.trim();
-    var whatsapp = document.getElementById('testeWhats').value.trim();
-    var email    = document.getElementById('testeEmail').value.trim();
-    var terminal = document.getElementById('testeTerminal').value.trim();
+    var nome=document.getElementById('testeNome').value.trim();
+    var whatsapp=document.getElementById('testeWhats').value.trim();
+    var email=document.getElementById('testeEmail').value.trim();
+    var terminal=document.getElementById('testeTerminal').value.trim();
 
-    if(!nome||!whatsapp||!email||!terminal){
-      alert('⚠️ Preencha todos os campos!'); return;
-    }
+    if(!nome||!whatsapp||!email||!terminal){alert('⚠️ Preencha todos os campos!');return;}
 
-    var v = verificaTeste(terminal);
-    if(!v.ok){ alert(v.msg); return; }
+    var v=verificaTeste(terminal);
+    if(!v.ok){alert(v.msg);return;}
 
-    var chave  = gerarChave(terminal);
-    var hoje   = new Date();
-    var expira = new Date(hoje); expira.setDate(hoje.getDate()+7);
-    var expFmt = expira.toLocaleDateString('pt-BR');
+    var chave=gerarChave(terminal);
+    var hoje=new Date();
+    var expira=new Date(hoje);expira.setDate(hoje.getDate()+7);
+    var expFmt=expira.toLocaleDateString('pt-BR');
 
-    /* ── 1. localStorage ──────────────────────────── */
-    var clientes = JSON.parse(localStorage.getItem('twpro_gerador_db')||'[]');
-    clientes.push({
-      id:Date.now(), nome:nome, whats:whatsapp, email:email, terminal:terminal,
-      chave:chave, plano:'LATAO', dias:7, valor:0,
-      dataCompra  : hoje.toISOString().split('T')[0],
-      dataCadastro: hoje.toISOString(),
-      expira      : expira.toISOString()
-    });
-    localStorage.setItem('twpro_gerador_db', JSON.stringify(clientes));
+    // 1. Salva no localStorage
+    var clientes=JSON.parse(localStorage.getItem('twpro_gerador_db')||'[]');
+    clientes.push({id:Date.now(),nome:nome,whats:whatsapp,email:email,terminal:terminal,chave:chave,plano:'LATAO',dias:7,valor:0,dataCompra:hoje.toISOString().split('T')[0],dataCadastro:hoje.toISOString(),expira:expira.toISOString()});
+    localStorage.setItem('twpro_gerador_db',JSON.stringify(clientes));
 
-    var nots = JSON.parse(localStorage.getItem('twpro_notificacoes')||'[]');
-    nots.unshift({id:Date.now(), tipo:'teste', nome:nome, whatsapp:whatsapp,
-                  email:email, terminal:terminal, chave:chave,
-                  plano:'LATAO 7 dias', data:hoje.toISOString(), lida:false});
-    localStorage.setItem('twpro_notificacoes', JSON.stringify(nots));
+    var nots=JSON.parse(localStorage.getItem('twpro_notificacoes')||'[]');
+    nots.unshift({id:Date.now(),tipo:'teste',nome:nome,whatsapp:whatsapp,email:email,terminal:terminal,chave:chave,plano:'LATAO 7 dias',data:hoje.toISOString(),lida:false});
+    localStorage.setItem('twpro_notificacoes',JSON.stringify(nots));
 
-    var testes = JSON.parse(localStorage.getItem('twpro_testes_db')||'{}');
-    if(!testes[terminal]) testes[terminal]={totalTestes:0, historico:[]};
-    testes[terminal].totalTestes++;
-    testes[terminal].dataSolicitacao = hoje.toISOString();
-    localStorage.setItem('twpro_testes_db', JSON.stringify(testes));
+    var testes=JSON.parse(localStorage.getItem('twpro_testes_db')||'{}');
+    if(!testes[terminal]) testes[terminal]={totalTestes:0,historico:[]};
+    testes[terminal].totalTestes++;testes[terminal].dataSolicitacao=hoje.toISOString();
+    localStorage.setItem('twpro_testes_db',JSON.stringify(testes));
 
-    /* ── 2. Formspree → aviso de NOVO TESTE para VOCÊ ── */
-    var fd = new FormData(form);
-    fd.append('chave_gerada', chave);
-    fd.append('link_ea',      LINK_EA);
-    fd.append('link_pdf',     LINK_PDF);
-    fd.append('plano',        'LATAO 7 dias');
-    fd.append('validade',     expFmt);
-    fetch(form.action, {method:'POST', body:fd, headers:{'Accept':'application/json'}}).catch(function(){});
+    // 2. Envia email para o CLIENTE via Formspree xrerdvdw (Auto-Responder)
+    var fd=new FormData();
+    fd.append('nome',nome);
+    fd.append('email',email);
+    fd.append('whatsapp',whatsapp);
+    fd.append('terminal_id',terminal);
+    fd.append('chave_gerada',chave);
+    fd.append('link_ea',LINK_EA);
+    fd.append('link_pdf',LINK_PDF);
+    fd.append('plano','LATAO 7 dias');
+    fd.append('validade',expFmt);
+    fd.append('_subject','🎯 TRADE WINNER PRO - Teste Ativado!');
+    fetch('https://formspree.io/f/xrerdvdw',{method:'POST',body:fd,headers:{'Accept':'application/json'}})
+    .then(function(r){console.log('✅ Email enviado para cliente: '+email);})
+    .catch(function(err){console.log('⚠️ Erro:',err);});
 
-    /* ── 3. EmailJS → e-mail com chave para o CLIENTE ── */
-    enviarEmailCliente(nome, email, chave);
+    // 3. WhatsApp para o CLIENTE
+    var nc=whatsapp.replace(/\D/g,'');
+    var mc='🎯 *TRADE WINNER PRO - Teste Ativado!*\n\n'+
+           'Olá *'+nome+'*!\n\n'+
+           '✅ Seu teste LATÃO 7 dias foi ativado!\n\n'+
+           '🔑 *Chave:* '+chave+'\n'+
+           '📅 *Válido até:* '+expFmt+'\n\n'+
+           '📥 *EA:* '+LINK_EA+'\n\n'+
+           '📘 *PDF:* '+LINK_PDF+'\n\n'+
+           '📞 Dúvidas? (41) 99976-5210\n\n'+
+           'Bons trades! 📈';
+    window.open('https://wa.me/'+nc+'?text='+encodeURIComponent(mc),'_blank');
 
-    /* ── 4. WhatsApp → abre no CLIENTE (popup) ───────── */
-    var nc = whatsapp.replace(/\D/g,'');
-    var mc = '🎯 *TRADE WINNER PRO - Teste Ativado!*\n\n'+
-             'Olá *'+nome+'*!\n\n'+
-             '✅ Seu teste gratuito LATÃO foi ativado!\n\n'+
-             '🏷️ *Plano:* LATÃO 7 dias GRÁTIS\n'+
-             '🔑 *Chave:* '+chave+'\n'+
-             '📅 *Válido até:* '+expFmt+'\n\n'+
-             '📥 *Baixe o EA:*\n'+LINK_EA+'\n\n'+
-             '📘 *Manual PDF:*\n'+LINK_PDF+'\n\n'+
-             '⚙️ *Como ativar:*\n'+
-             '1. Instale o EA no MT5\n'+
-             '2. No painel clique em ATIVAR LICENÇA\n'+
-             '3. Cole a chave acima\n\n'+
-             '📞 *Dúvidas?* (41) 99976-5210\n\nBons trades! 📈';
-
-    var urlClienteWA = 'https://wa.me/'+nc+'?text='+encodeURIComponent(mc);
-    var waCliente = window.open(urlClienteWA, '_blank');
-
-    /* Fallback caso popup seja bloqueado */
-    setTimeout(function(){
-      if(!waCliente || waCliente.closed){
-        var fb = document.getElementById('whatsappFallbackCliente');
-        document.getElementById('linkWhatsCliente').href = urlClienteWA;
-        if(fb) fb.classList.add('show');
-      }
-    }, 800);
+    // 4. WhatsApp para VOCÊ
+    var mp='🔔 *NOVO TESTE LATÃO*\n\n'+
+           '👤 '+nome+'\n'+
+           '📱 '+whatsapp+'\n'+
+           '📧 '+email+'\n'+
+           '🖥️ '+terminal+'\n'+
+           '🔑 '+chave+'\n'+
+           '📅 '+hoje.toLocaleDateString('pt-BR');
+    window.open('https://wa.me/'+SEU_WATS+'?text='+encodeURIComponent(mp),'_blank');
 
     form.reset();
-
-    alert('✅ CADASTRO REALIZADO!\n\n'+
-          '🔰 LATÃO 7 dias GRÁTIS\n'+
-          '👤 '+nome+'\n'+
-          '🔑 '+chave+'\n'+
-          '📅 Até '+expFmt+'\n\n'+
-          '📱 WhatsApp já foi aberto!\n'+
-          '📧 E-mail enviado!\n\n'+
-          'Aguarde... você será direcionado ao painel.');
-
-    /* ── 5. Redireciona ao PAINEL ─────────────────────
-       O painel detecta os parâmetros da URL e abre
-       automaticamente o WhatsApp para VOCÊ com os dados
-       do novo cliente.                                 */
-    setTimeout(function(){
-      var p = new URLSearchParams({
-        novo     : '1',
-        nome     : nome,
-        email    : email,
-        whatsapp : whatsapp,
-        terminal : terminal,
-        chave    : chave,
-        expira   : expFmt
-      });
-      window.location.href = 'painel.html?' + p.toString();
-    }, 1500);
+    alert('✅ PRONTO!\n\n🔑 '+chave+'\n👤 '+nome+'\n📅 Até '+expFmt+'\n\n📱 WhatsApp aberto!\n📧 Email enviado!');
   });
-
 })();
 </script>
-</body>
-</html>
