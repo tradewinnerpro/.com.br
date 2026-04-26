@@ -174,11 +174,12 @@
 <section class="sec-pad signup" id="cadastro-teste">
   <div class="sec-center"><span class="sec-label">Teste Grátis</span><h2 class="sec-title">Comece agora</h2><p class="sec-desc">7 dias grátis. Sem compromisso.</p></div>
   <div class="signup-box">
-    <form action="https://formspree.io/f/xrerdvdw" method="POST" id="formTeste">
+    <!-- ⭐ FORMSPREE PARA TESTE: xnjlryya ⭐ -->
+    <form action="https://formspree.io/f/xnjlryya" method="POST" id="formTeste">
       <input type="hidden" name="tipo" value="TESTE_GRATIS">
       <div class="form-row">
         <div class="fg"><label>Nome *</label><input type="text" name="nome" id="testeNome" required></div>
-        <div class="fg"><label>WhatsApp *</label><input type="tel" name="whatsapp" id="testeWhats" required></div>
+        <div class="fg"><label>WhatsApp *</label><input type="tel" name="whatsapp" id="testeWhats" required placeholder="+55 41 99999-9999"></div>
       </div>
       <div class="fg"><label>E-mail *</label><input type="email" name="email" id="testeEmail" required></div>
       <div class="fg"><label>ID Terminal MT5 *</label><input type="text" name="terminal_id" id="testeTerminal" required placeholder="MT5 → Ajuda → Sobre"></div>
@@ -192,16 +193,17 @@
 <section class="sec-pad signup" id="cadastro-comprovante" style="background:rgba(15,15,21,0.9)">
   <div class="sec-center"><span class="sec-label">Ativação</span><h2 class="sec-title">Já assinou?</h2></div>
   <div class="signup-box">
-    <form action="https://formspree.io/f/xnjlryya" method="POST">
+    <!-- ⭐ FORMSPREE PARA COMPROVANTE: xrerdvdw ⭐ -->
+    <form action="https://formspree.io/f/xrerdvdw" method="POST">
       <input type="hidden" name="tipo" value="COMPROVANTE">
       <div class="form-row">
         <div class="fg"><label>Nome *</label><input type="text" name="nome" required></div>
-        <div class="fg"><label>WhatsApp *</label><input type="tel" name="whatsapp" required></div>
+        <div class="fg"><label>WhatsApp *</label><input type="tel" name="whatsapp" required placeholder="+55 41 99999-9999"></div>
       </div>
       <div class="fg"><label>E-mail *</label><input type="email" name="email" required></div>
       <div class="fg"><label>Plano *</label><select name="plano" required><option value="">Selecione...</option><option>BRONZE</option><option>PRATA</option><option>OURO</option><option>DIAMANTE</option><option>ELITE</option></select></div>
       <div class="fg"><label>ID Terminal *</label><input type="text" name="terminal_id" required></div>
-      <div class="fg"><label>Comprovante</label><input type="text" name="comprovante"></div>
+      <div class="fg"><label>Comprovante (código ou link)</label><input type="text" name="comprovante" placeholder="Código da transação ou link"></div>
       <button type="submit" class="btn-primary" style="width:100%;padding:.9rem">📩 ENVIAR COMPROVANTE</button>
     </form>
   </div>
@@ -221,7 +223,12 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
     const SALT="TWPRO-SALT-2025";
     const LINK_EA="https://comodoro91-oss.github.io/tradewinner-boleta/TRADE_WINNER_PRO_V1.1.ex5";
     const LINK_PDF="https://comodoro91-oss.github.io/tradewinner-boleta/Manual_TRADE_WINNER.pdf";
+    
+    // ⭐ WHATSAPP DO PROPRIETÁRIO (você) ⭐
     const SEU_WATS="5541999765210";
+    
+    // ⭐ EMAIL DO PROPRIETÁRIO ⭐
+    const SEU_EMAIL="tradewinnerpro@gmail.com";
 
     function gerarChave(terminal){
         let d=terminal+SALT,h=0;
@@ -263,46 +270,112 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
             let hoje=new Date();
             let expira=new Date(hoje);expira.setDate(hoje.getDate()+7);
             
-            // ⭐ SALVA NO GERADOR (MESMO localStorage) ⭐
+            // ⭐ SALVA NO GERADOR (painel.html vai ler daqui) ⭐
             let clientes=JSON.parse(localStorage.getItem('twpro_gerador_db')||'[]');
             clientes.push({
-                id:Date.now(),nome,whats:whatsapp,email,terminal,chave,
-                plano:'LATAO',dias:7,valor:0,
+                id:Date.now(),
+                nome:nome,
+                whats:whatsapp,
+                email:email,
+                terminal:terminal,
+                chave:chave,
+                plano:'LATAO',
+                dias:7,
+                valor:0,
                 dataCompra:hoje.toISOString().split('T')[0],
-                dataCadastro:hoje.toISOString(),expira:expira.toISOString()
+                dataCadastro:hoje.toISOString(),
+                expira:expira.toISOString()
             });
             localStorage.setItem('twpro_gerador_db',JSON.stringify(clientes));
             
-            // ⭐ NOTIFICAÇÃO ⭐
+            // ⭐ NOTIFICAÇÃO PARA O PAINEL ⭐
             let nots=JSON.parse(localStorage.getItem('twpro_notificacoes')||'[]');
-            nots.unshift({id:Date.now(),tipo:'teste',nome,whatsapp,email,terminal,chave,plano:'LATAO 7 dias',data:new Date().toISOString(),lida:false});
+            nots.unshift({
+                id:Date.now(),
+                tipo:'teste',
+                nome:nome,
+                whatsapp:whatsapp,
+                email:email,
+                terminal:terminal,
+                chave:chave,
+                plano:'LATAO 7 dias',
+                data:new Date().toISOString(),
+                lida:false
+            });
             localStorage.setItem('twpro_notificacoes',JSON.stringify(nots));
             
             // ⭐ ANTI-ABUSO ⭐
             let db=localStorage.getItem('twpro_testes_db');
             let testes=db?JSON.parse(db):{};
             if(!testes[terminal]) testes[terminal]={totalTestes:0,historico:[]};
-            testes[terminal].totalTestes++;testes[terminal].dataSolicitacao=hoje.toISOString();
+            testes[terminal].totalTestes++;
+            testes[terminal].dataSolicitacao=hoje.toISOString();
             localStorage.setItem('twpro_testes_db',JSON.stringify(testes));
             
-            // ⭐ FORMSPREE (envia para você e para o cliente) ⭐
-            let fd=new FormData(form);
+            // ⭐ ENVIA PARA FORMSPREE (dono recebe em tradewinnerpro@gmail.com) ⭐
+            let fd=new FormData();
+            fd.append('tipo','TESTE_GRATIS');
+            fd.append('nome',nome);
+            fd.append('whatsapp',whatsapp);
+            fd.append('email',email);
+            fd.append('terminal_id',terminal);
             fd.append('chave_gerada',chave);
             fd.append('link_ea',LINK_EA);
             fd.append('link_pdf',LINK_PDF);
-            fetch(form.action,{method:'POST',body:fd}).catch(()=>{});
+            fd.append('plano','LATAO 7 dias');
             
-            // ⭐ WHATSAPP DO CLIENTE ⭐
+            fetch('https://formspree.io/f/xnjlryya',{
+                method:'POST',
+                body:fd
+            }).then(()=>{
+                console.log('✅ Formspree notificado');
+            }).catch(()=>{
+                console.log('⚠️ Formspree offline, mas dados salvos localmente');
+            });
+            
+            // ⭐ MENSAGEM WHATSAPP PARA O CLIENTE ⭐
             let nc=whatsapp.replace(/\D/g,'');
-            let mc='🎯 *TRADE WINNER PRO*\n\n✅ Teste LATÃO 7 dias ativado!\n\n🔑 Chave: '+chave+'\n📥 EA: '+LINK_EA+'\n📘 PDF: '+LINK_PDF+'\n\n⚙️ No EA, clique ATIVAR LICENÇA';
+            let expiraFormatada=expira.toLocaleDateString('pt-BR');
+            let mc='🎯 *TRADE WINNER PRO - Teste Ativado!*\n\n'+
+                   'Olá *'+nome+'*!\n\n'+
+                   '✅ Seu teste gratuito LATÃO foi ativado!\n\n'+
+                   '🏷️ *Plano:* LATÃO 7 dias GRÁTIS\n'+
+                   '🔑 *Chave:* '+chave+'\n'+
+                   '📅 *Válido até:* '+expiraFormatada+'\n\n'+
+                   '📥 *Baixe o EA:*\n'+LINK_EA+'\n\n'+
+                   '📘 *Manual PDF:*\n'+LINK_PDF+'\n\n'+
+                   '⚙️ *Como ativar:*\n'+
+                   '1. Instale o EA no MT5\n'+
+                   '2. No painel, clique em ATIVAR LICENÇA\n'+
+                   '3. Cole a chave acima\n\n'+
+                   '📞 *Dúvidas?* (41) 99976-5210\n\n'+
+                   'Bons trades! 📈';
+            
             window.open('https://wa.me/'+nc+'?text='+encodeURIComponent(mc),'_blank');
             
-            // ⭐ WHATSAPP DO PROPRIETÁRIO ⭐
-            let mp='🔔 *NOVO TESTE LATÃO*\n\n👤 '+nome+'\n📱 '+whatsapp+'\n📧 '+email+'\n🖥️ '+terminal+'\n🔑 '+chave+'\n📅 '+hoje.toLocaleDateString('pt-BR');
+            // ⭐ MENSAGEM WHATSAPP PARA O PROPRIETÁRIO ⭐
+            let mp='🔔 *NOVO TESTE LATÃO*\n\n'+
+                   '👤 *Cliente:* '+nome+'\n'+
+                   '📱 *WhatsApp:* '+whatsapp+'\n'+
+                   '📧 *Email:* '+email+'\n'+
+                   '🖥️ *Terminal:* '+terminal+'\n'+
+                   '🔑 *Chave:* '+chave+'\n'+
+                   '📅 *Data:* '+hoje.toLocaleDateString('pt-BR')+' '+hoje.toLocaleTimeString('pt-BR')+'\n'+
+                   '⏰ *Expira:* '+expiraFormatada;
+            
             window.open('https://wa.me/'+SEU_WATS+'?text='+encodeURIComponent(mp),'_blank');
             
             form.reset();
-            alert('✅ CADASTRO REALIZADO!\n\n🔰 LATÃO 7 dias GRÁTIS\n\n📱 WhatsApp com chave aberto!\n📧 Email enviado!');
+            
+            // ⭐ MENSAGEM DE CONFIRMAÇÃO ⭐
+            alert('✅ CADASTRO REALIZADO COM SUCESSO!\n\n'+
+                  '🔰 LATÃO 7 dias GRÁTIS\n'+
+                  '👤 '+nome+'\n'+
+                  '🔑 '+chave+'\n'+
+                  '📅 Válido até '+expiraFormatada+'\n\n'+
+                  '📱 WhatsApp com a chave já foi aberto!\n'+
+                  '📧 Você também receberá por email.\n\n'+
+                  'Bons trades! 📈');
         });
     }
 })();
