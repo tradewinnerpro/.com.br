@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>TRADE WINNER PRO · Gerador de Chaves</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#09090d;--bg2:#0f0f15;--surface:#13131a;--border:#1f1f2a;--border2:#2a2a38;--gold:#c9a84c;--gold2:#e8c96a;--text:#e8e8f0;--text2:#8888a8;--green:#3ecf8e;--red:#e05260;--radius:12px}
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{background-color:#09090d;background-image:url('gettyimages.png');background-size:cover;background-position:center 20%;background-repeat:no-repeat;background-attachment:fixed;color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden;min-height:100vh}
+    body::before{content:'';position:fixed;inset:0;background:rgba(9,9,13,0.85);backdrop-filter:blur(2px);z-index:0;pointer-events:none}
+    nav,.main-container,footer{position:relative;z-index:10}
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,2vw,2rem);height:60px;background:rgba(9,9,13,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);gap:0.8rem}
+    .nav-logo{font-family:'DM Mono',monospace;font-size:1.1rem;font-weight:900;color:var(--gold2);letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:7px}
+    .nav-logo-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold);animation:blink 2s ease infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+    .nav-links{display:flex;align-items:center;gap:1.2rem;list-style:none}
+    .nav-links a{font-size:.75rem;font-weight:500;color:var(--text2);text-decoration:none;letter-spacing:.5px;transition:color .2s}
+    .nav-links a:hover{color:var(--gold2)}
+    .notif-link{position:relative;cursor:pointer}
+    .notif-badge{display:none;align-items:center;justify-content:center;min-width:20px;height:20px;border-radius:10px;background:var(--red);color:#fff;font-size:.65rem;font-weight:700;padding:0 6px;position:absolute;top:-12px;right:-15px;animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+    .btn-voltar{display:inline-flex;align-items:center;gap:.5rem;background:transparent;border:1px solid var(--border2);color:var(--text2);font-size:.75rem;font-weight:500;padding:.5rem 1rem;border-radius:6px;text-decoration:none;transition:all .2s}
+    .btn-voltar:hover{border-color:var(--gold);color:var(--gold2)}
+    .main-container{max-width:900px;margin:2rem auto;padding:0 clamp(1rem,3vw,2rem)}
+    .page-header{text-align:center;margin-bottom:2rem}
+    .page-tag{display:inline-flex;align-items:center;gap:.5rem;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.25);border-radius:4px;padding:.35rem .9rem;font-family:'DM Mono',monospace;font-size:.7rem;font-weight:500;color:var(--gold2);letter-spacing:2px;margin:0 auto 1rem}
+    .page-title{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700;letter-spacing:-.5px;line-height:1.2;margin-bottom:.5rem}
+    .page-title em{font-style:normal;color:var(--gold2)}
+    .page-desc{color:var(--text2);font-weight:300;font-size:.95rem}
+    .card{background:rgba(19,19,26,0.95);border:1px solid var(--border2);border-radius:16px;padding:2rem 1.8rem;margin-bottom:1.5rem}
+    .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+    .card-title{font-size:1.1rem;font-weight:600;color:var(--text);display:flex;align-items:center;gap:.5rem}
+    .notificacoes-panel{background:rgba(19,19,26,0.95);border:1px solid var(--gold);border-radius:16px;padding:1.5rem;margin-bottom:1.5rem;display:none}
+    .notificacoes-panel.show{display:block}
+    .notif-item{display:flex;align-items:flex-start;gap:12px;padding:12px;border-radius:10px;margin-bottom:8px;background:rgba(201,168,76,0.04);border:1px solid var(--border);transition:all 0.2s;cursor:pointer}
+    .notif-item:hover{border-color:var(--gold)}
+    .notif-item.nova{border-left:3px solid var(--red);background:rgba(224,82,96,0.05)}
+    .notif-icone{font-size:1.5rem;flex-shrink:0}
+    .notif-info{flex:1}
+    .notif-nome{font-weight:600;font-size:.9rem;color:var(--text)}
+    .notif-detalhe{font-size:.7rem;color:var(--text2);margin-top:2px}
+    .notif-data{font-size:.65rem;color:var(--text2);margin-top:4px}
+    .notif-acoes{display:flex;gap:6px;align-items:center;flex-shrink:0}
+    .btn-notif{padding:6px 12px;border-radius:6px;font-size:.65rem;font-weight:600;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;transition:all 0.2s;white-space:nowrap}
+    .btn-notif:hover{border-color:var(--gold);color:var(--gold2)}
+    .btn-notif.whats{border-color:#25d366;color:#25d366}
+    .sem-notificacoes{text-align:center;padding:2rem;color:var(--text2);font-size:.85rem}
+    .planos-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:1.5rem}
+    @media(max-width:900px){.planos-grid{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:480px){.planos-grid{grid-template-columns:repeat(2,1fr)}}
+    .plano-card{padding:.7rem .3rem;border-radius:6px;text-align:center;cursor:pointer;transition:all 0.2s;user-select:none;border:2px solid transparent;font-family:'DM Sans',sans-serif}
+    .plano-card:hover{transform:translateY(-2px)}
+    .plano-card.active{border-width:2px;border-style:solid}
+    .plano-icone{font-size:1.4rem;margin-bottom:3px}
+    .plano-nome{font-weight:700;font-size:.65rem;text-transform:uppercase;letter-spacing:1px}
+    .plano-dias{font-size:.7rem;font-weight:500;margin:1px 0}
+    .plano-valor{font-size:.65rem;font-weight:600;font-family:'DM Mono',monospace}
+    .plano-latao{background:#CD7F32;color:#FFF5E0}.plano-latao .plano-nome,.plano-latao .plano-valor,.plano-latao .plano-dias{color:#FFF5E0}.plano-latao.active{border-color:#FFF5E0}
+    .plano-bronze{background:#8B6914;color:#FFF5E0}.plano-bronze .plano-nome,.plano-bronze .plano-valor,.plano-bronze .plano-dias{color:#FFF5E0}.plano-bronze.active{border-color:#FFF5E0}
+    .plano-prata{background:#7D8794;color:#FFF}.plano-prata .plano-nome,.plano-prata .plano-valor,.plano-prata .plano-dias{color:#FFF}.plano-prata.active{border-color:#FFF}
+    .plano-ouro{background:#DAA520;color:#1a1a1a}.plano-ouro .plano-nome,.plano-ouro .plano-valor,.plano-ouro .plano-dias{color:#1a1a1a}.plano-ouro.active{border-color:#1a1a1a}
+    .plano-diamante{background:#6A5ACD;color:#FFF}.plano-diamante .plano-nome,.plano-diamante .plano-valor,.plano-diamante .plano-dias{color:#FFF}.plano-diamante.active{border-color:#FFF}
+    .plano-elite{background:#C0392B;color:#FFF}.plano-elite .plano-nome,.plano-elite .plano-valor,.plano-elite .plano-dias{color:#FFF}.plano-elite.active{border-color:#FFF}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:.8rem}
+    @media(max-width:560px){.form-row{grid-template-columns:1fr}}
+    .fg{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.9rem}
+    .fg label{font-size:.78rem;font-weight:500;color:var(--text2)}
+    .fg input,.fg select{background:rgba(9,9,13,0.8);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:.65rem .9rem;font-family:'DM Sans',sans-serif;font-size:.9rem;width:100%}
+    .fg input:focus,.fg select:focus{outline:none;border-color:var(--gold)}
+    .input-group{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+    @media(max-width:560px){.input-group{grid-template-columns:1fr}}
+    .data-box{background:rgba(201,168,76,0.04);border:1px solid rgba(201,168,76,0.1);border-radius:8px;padding:.8rem 1rem;margin-bottom:.9rem}
+    .data-box-label{font-size:.7rem;color:var(--gold);font-family:'DM Mono',monospace;letter-spacing:1px;margin-bottom:.4rem}
+    .btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--gold);color:#09090d;font-weight:700;font-size:.9rem;padding:.75rem 1.8rem;border-radius:6px;text-decoration:none;letter-spacing:.3px;transition:all .2s;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;justify-content:center}
+    .btn-primary:hover{background:var(--gold2);transform:translateY(-2px)}
+    .btn-ghost{display:inline-flex;align-items:center;gap:.5rem;background:transparent;border:1px solid var(--border2);color:var(--text2);font-size:.85rem;font-weight:500;padding:.7rem 1.5rem;border-radius:6px;text-decoration:none;transition:all .2s;cursor:pointer;font-family:'DM Sans',sans-serif}
+    .btn-ghost:hover{border-color:var(--gold);color:var(--gold2)}
+    .chave-box{background:rgba(201,168,76,0.06);border:2px solid var(--gold);border-radius:12px;padding:1.5rem;text-align:center;margin-top:1.5rem;display:none}
+    .chave-box.show{display:block;animation:fadeInUp 0.4s ease}
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .chave-label{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem}
+    .chave-valor{font-family:'DM Mono',monospace;font-size:1.1rem;font-weight:500;color:var(--gold2);letter-spacing:1px;word-break:break-all;margin-bottom:.5rem}
+    .badge-plano{display:inline-block;padding:.25rem .8rem;border-radius:20px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem}
+    .badge-latao{background:#CD7F32;color:#FFF5E0}.badge-bronze{background:#8B6914;color:#FFF5E0}.badge-prata{background:#7D8794;color:#FFF}.badge-ouro{background:#DAA520;color:#1a1a1a}.badge-diamante{background:#6A5ACD;color:#FFF}.badge-elite{background:#C0392B;color:#FFF}
+    .table-wrapper{overflow-x:auto;border-radius:10px;border:1px solid var(--border)}
+    table{width:100%;border-collapse:collapse;min-width:750px}
+    th{text-align:left;padding:12px 10px;color:var(--gold);font-size:.65rem;text-transform:uppercase;letter-spacing:1px;background:rgba(19,19,26,0.95);border-bottom:2px solid var(--gold);font-family:'DM Mono',monospace;position:sticky;top:0}
+    td{padding:10px;border-bottom:1px solid var(--border);font-size:.8rem;vertical-align:middle}
+    tr:hover td{background:rgba(201,168,76,0.03)}
+    .client-name{font-weight:600;color:var(--text)}
+    .client-detail{font-size:.68rem;color:var(--text2)}
+    .chave-display{background:rgba(201,168,76,0.08);padding:4px 8px;border-radius:4px;font-family:'DM Mono',monospace;font-size:.68rem;color:var(--gold2);border:1px solid rgba(201,168,76,0.2);display:inline-block;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .status-badge{display:inline-block;padding:3px 8px;border-radius:20px;font-size:.6rem;font-weight:700;text-transform:uppercase}
+    .status-ativo{background:rgba(62,207,142,0.15);color:var(--green)}
+    .status-vencido{background:rgba(224,82,96,0.15);color:var(--red)}
+    .action-btns{display:flex;gap:4px;flex-wrap:wrap}
+    .btn-icon{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.9rem;border:1px solid transparent;cursor:pointer;transition:all 0.2s;background:transparent}
+    .btn-icon:hover{transform:translateY(-2px)}
+    .btn-icon-chave{border-color:var(--gold);color:var(--gold)}.btn-icon-chave:hover{background:rgba(201,168,76,0.15)}
+    .btn-icon-delete{border-color:var(--red);color:var(--red)}.btn-icon-delete:hover{background:rgba(224,82,96,0.15)}
+    .status-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem}
+    @media(max-width:600px){.status-grid{grid-template-columns:repeat(2,1fr)}}
+    .status-card{background:rgba(19,19,26,0.9);border:1px solid var(--border);border-radius:12px;padding:1rem .8rem;text-align:center;cursor:pointer;transition:all .2s}
+    .status-card:hover{transform:translateY(-2px)}
+    .status-card.active{border-color:var(--gold)}
+    .status-number{display:block;font-family:'DM Mono',monospace;font-size:1.8rem;font-weight:500;color:var(--gold2)}
+    .status-label{font-size:.7rem;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+    .status-number.green{color:var(--green)}.status-number.red{color:var(--red)}
+    .finance-box{background:rgba(19,19,26,0.9);border:1px solid var(--border2);border-left:4px solid var(--gold);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem}
+    .finance-total{font-family:'DM Mono',monospace;font-size:2rem;font-weight:500;color:#fff;margin:.3rem 0}
+    .botoes-whatsapp{display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap}
+    .botoes-whatsapp button{flex:1;min-width:100px;padding:.6rem;font-size:.75rem;font-weight:600}
+    .btn-whats-chave{background:transparent;border:1px solid var(--gold);color:var(--gold)}
+    .btn-whats-cobranca{background:transparent;border:1px solid #25d366;color:#25d366}
+    footer{border-top:1px solid var(--border);background:rgba(10,10,16,0.95);padding:2rem clamp(1.5rem,6vw,5rem) 1rem;text-align:center;margin-top:3rem}
+    footer p{font-size:.7rem;color:var(--text2)}
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><span class="nav-logo-dot"></span>TRADE WINNER PRO</div>
+  <ul class="nav-links">
+    <li><a href="index.html">🏠 Início</a></li>
+    <li><a href="#gerador">Gerador</a></li>
+    <li><a href="#clientes">Clientes</a></li>
+    <li class="notif-link" onclick="mostrarNotificacoes()">
+      <a href="#notificacoes" style="font-size:1.2rem">🔔</a>
+      <span class="notif-badge" id="notifContador">0</span>
+    </li>
+  </ul>
+  <a href="index.html" class="btn-voltar">← Voltar ao Site</a>
+</nav>
+
+<div class="main-container">
+
+  <div class="page-header" id="gerador">
+    <div class="page-tag"><span class="nav-logo-dot"></span>LICENSE MANAGER</div>
+    <h1 class="page-title">Gerador de <em>Chaves</em></h1>
+    <p class="page-desc">Cadastre clientes e gerencie licenças</p>
+  </div>
+
+  <!-- ⭐ PAINEL NOTIFICAÇÕES ⭐ -->
+  <div class="notificacoes-panel" id="painelNotificacoes">
+    <div class="card-header">
+      <span class="card-title">🔔 Últimos Cadastros</span>
+      <button class="btn-ghost" style="width:auto;padding:.3rem .8rem;font-size:.7rem" onclick="marcarTodasLidas()">✓ MARCAR TUDO LIDO</button>
+    </div>
+    <div id="listaNotificacoes"><div class="sem-notificacoes">✅ Nenhum cadastro recente</div></div>
+  </div>
+
+  <!-- ══ GERAR CHAVE ══ -->
+  <div class="card">
+    <div class="card-header"><span class="card-title">🔐 Nova Licença</span></div>
+    <div class="form-row">
+      <div class="fg"><label>Nome *</label><input type="text" id="nomeInput" placeholder="Nome do cliente"></div>
+      <div class="fg"><label>WhatsApp *</label><input type="tel" id="whatsInput" placeholder="+55 41 99999-9999"></div>
+    </div>
+    <div class="fg"><label>E-mail</label><input type="email" id="emailInput" placeholder="email@cliente.com"></div>
+
+    <label style="font-size:.78rem;font-weight:500;color:var(--text2);margin-bottom:.5rem;display:block">Plano *</label>
+    <div class="planos-grid" id="planosGrid">
+      <div class="plano-card plano-latao active" data-plano="LATAO" data-dias="7" data-valor="0" onclick="selecionarPlano('LATAO',7,0,this)"><div class="plano-icone">🔰</div><div class="plano-nome">Latão</div><div class="plano-dias">7 dias</div><div class="plano-valor">GRÁTIS</div></div>
+      <div class="plano-card plano-bronze" data-plano="BRONZE" data-dias="30" data-valor="49.90" onclick="selecionarPlano('BRONZE',30,49.90,this)"><div class="plano-icone">🥉</div><div class="plano-nome">Bronze</div><div class="plano-dias">30 dias</div><div class="plano-valor">R$ 49,90</div></div>
+      <div class="plano-card plano-prata" data-plano="PRATA" data-dias="90" data-valor="129.90" onclick="selecionarPlano('PRATA',90,129.90,this)"><div class="plano-icone">🥈</div><div class="plano-nome">Prata</div><div class="plano-dias">90 dias</div><div class="plano-valor">R$ 129,90</div></div>
+      <div class="plano-card plano-ouro" data-plano="OURO" data-dias="180" data-valor="199.90" onclick="selecionarPlano('OURO',180,199.90,this)"><div class="plano-icone">🥇</div><div class="plano-nome">Ouro</div><div class="plano-dias">180 dias</div><div class="plano-valor">R$ 199,90</div></div>
+      <div class="plano-card plano-diamante" data-plano="DIAMANTE" data-dias="270" data-valor="299.90" onclick="selecionarPlano('DIAMANTE',270,299.90,this)"><div class="plano-icone">💎</div><div class="plano-nome">Diamante</div><div class="plano-dias">270 dias</div><div class="plano-valor">R$ 299,90</div></div>
+      <div class="plano-card plano-elite" data-plano="ELITE" data-dias="365" data-valor="399.90" onclick="selecionarPlano('ELITE',365,399.90,this)"><div class="plano-icone">👑</div><div class="plano-nome">Elite</div><div class="plano-dias">365 dias</div><div class="plano-valor">R$ 399,90</div></div>
+    </div>
+
+    <div class="input-group">
+      <div class="fg"><label>Valor Pago (R$)</label><input type="number" id="valorInput" value="0"></div>
+      <div class="fg"><label>ID Terminal MT5 *</label><input type="text" id="terminalInput" placeholder="12345678"></div>
+    </div>
+
+    <div class="data-box"><div class="data-box-label">📅 DATA DA COMPRA</div><input type="date" id="dataCompraInput" style="background:rgba(9,9,13,0.8);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:.6rem .9rem;font-family:'DM Sans',sans-serif;font-size:.9rem;width:100%"></div>
+
+    <div class="fg"><label>Senha Mestra</label><input type="password" id="senhaMestraInput" value="TWPRO2025"></div>
+
+    <button class="btn-primary" onclick="cadastrarCliente()">✨ GERAR CHAVE E CADASTRAR</button>
+
+    <div class="chave-box" id="chaveGeradaBox">
+      <div class="chave-label">🔑 CHAVE GERADA</div>
+      <div class="chave-valor" id="chaveGeradaDisplay"></div>
+      <span class="badge-plano" id="planoGeradoBadge"></span><br>
+      <button class="btn-ghost" onclick="copiarChaveGerada()" style="width:auto;display:inline-flex">📋 COPIAR</button>
+    </div>
+  </div>
+
+  <!-- ══ FINANCEIRO ══ -->
+  <div class="finance-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem">
+      <span style="font-family:'DM Mono',monospace;font-size:.7rem;color:var(--gold);letter-spacing:2px">💵 LIVRO CAIXA</span>
+      <span style="font-size:.75rem;color:var(--text2)" id="periodoAtivoLabel">Tudo</span>
+    </div>
+    <div class="finance-total" id="totalFaturamento">R$ 0,00</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:.8rem">
+      <button class="btn-ghost active" id="periodoTudo" onclick="setPeriodo('tudo')">📊 Tudo</button>
+      <button class="btn-ghost" id="periodoHoje" onclick="setPeriodo('hoje')">📅 Hoje</button>
+      <button class="btn-ghost" id="periodoMes" onclick="setPeriodo('mes')">📆 Mês</button>
+      <button class="btn-ghost" id="periodoAno" onclick="setPeriodo('ano')">📈 Ano</button>
+    </div>
+    <div class="botoes-whatsapp">
+      <button class="btn-ghost btn-whats-chave" onclick="enviarWhatsAppLivre('entrega')">🔑 CHAVE</button>
+      <button class="btn-ghost btn-whats-cobranca" onclick="enviarWhatsAppLivre('cobranca')">📱 COBRANÇA</button>
+    </div>
+  </div>
+
+  <!-- ⭐ STATUS CARDS ⭐ -->
+  <div class="status-grid">
+    <div class="status-card active" id="statusTodos" onclick="setFiltroStatus('todos')"><span class="status-number" id="countTodos">0</span><span class="status-label">Total</span></div>
+    <div class="status-card" id="statusAtivos" onclick="setFiltroStatus('ativos')"><span class="status-number green" id="countAtivos">0</span><span class="status-label">Ativos</span></div>
+    <div class="status-card" id="statusVencendo" onclick="setFiltroStatus('vencendo')"><span class="status-number" id="countVencendo" style="color:var(--gold)">0</span><span class="status-label">Vence Hoje</span></div>
+    <div class="status-card" id="statusVencidos" onclick="setFiltroStatus('vencidos')"><span class="status-number red" id="countVencidos">0</span><span class="status-label">Vencidos</span></div>
+  </div>
+
+  <!-- ══ LISTA DE CLIENTES ══ -->
+  <div class="card" id="clientes">
+    <div class="card-header"><span class="card-title">📋 Clientes Cadastrados</span></div>
+    <input type="text" id="buscaInput" placeholder="🔍 PESQUISAR" onkeyup="renderizarTabela()" style="background:rgba(9,9,13,0.8);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:.65rem .9rem;font-family:'DM Sans',sans-serif;font-size:.9rem;width:100%;margin-bottom:1rem">
+    <div class="table-wrapper">
+      <table><thead><tr><th>Cliente</th><th>Terminal</th><th>🔑 Chave</th><th>Plano</th><th>Expira</th><th>Valor</th><th>Ações</th></tr></thead>
+      <tbody id="tabelaBody"></tbody></table>
+    </div>
+  </div>
+
+</div>
+
+<footer><p>© 2025 TRADE WINNER PRO · Gerador de Chaves</p></footer>
+
+<!-- ⭐⭐⭐ SCRIPTS ⭐⭐⭐ -->
+<script>
+(function(){
+    const SENHA="TWPRO2025";
+    const SALT="TWPRO-SALT-2025";
+    const LINK_EA="https://comodoro91-oss.github.io/tradewinner-boleta/TRADE_WINNER_PRO_V1.1.ex5";
+    const LINK_PDF="https://comodoro91-oss.github.io/tradewinner-boleta/Manual_TRADE_WINNER.pdf";
+    
+    let clientes=[];
+    let filtroStatus='todos';
+    let periodoAtual='tudo';
+    let planoSelecionado='LATAO';
+    let diasSelecionados=7;
+    let valorSelecionado=0;
+    let ultimaChaveGerada='';
+
+    function gerarHash(terminal){
+        let d=terminal+SALT,h=0;
+        for(let i=0;i<d.length;i++){let c=d.charCodeAt(i);h=((h<<5)-h)+c;h=h&0x7FFFFFFF}
+        let a=Math.abs(h),p1=a%10000,p2=Math.floor(a/10000)%10000,p3=Math.floor(a/100000000)%10000;
+        const l="ABCDEFGHJKLMNPQRSTUVWXYZ";
+        return l.charAt(p1%l.length)+l.charAt(p2%l.length)+l.charAt(p3%l.length)+"-"+String(p1).padStart(4,'0')+"-"+String(p2%1000).padStart(3,'0')+"-"+String(p3%1000).padStart(3,'0');
+    }
+    function gerarChave(t,p){return p+"-"+gerarHash(t)}
+
+    function carregarDados(){
+        let db=localStorage.getItem('twpro_gerador_db');
+        if(db){try{clientes=JSON.parse(db)}catch(e){clientes=[]}}
+        preencherDataHoje();
+        renderizarTudo();
+        atualizarContadorNotificacoes();
+    }
+    function salvarDados(){localStorage.setItem('twpro_gerador_db',JSON.stringify(clientes))}
+    function preencherDataHoje(){
+        let h=new Date();
+        document.getElementById('dataCompraInput').value=h.getFullYear()+'-'+String(h.getMonth()+1).padStart(2,'0')+'-'+String(h.getDate()).padStart(2,'0');
+    }
+
+    window.selecionarPlano=function(p,d,v,e){
+        planoSelecionado=p;diasSelecionados=d;valorSelecionado=v;
+        document.querySelectorAll('.plano-card').forEach(c=>c.classList.remove('active'));
+        e.classList.add('active');
+        document.getElementById('valorInput').value=v.toFixed(2);
+    };
+
+    window.cadastrarCliente=function(){
+        let n=document.getElementById('nomeInput').value.trim();
+        let w=document.getElementById('whatsInput').value.trim();
+        let em=document.getElementById('emailInput').value.trim();
+        let t=document.getElementById('terminalInput').value.trim();
+        let v=parseFloat(document.getElementById('valorInput').value);
+        let s=document.getElementById('senhaMestraInput').value;
+        let dc=document.getElementById('dataCompraInput').value;
+        if(!n||!w||!t)return alert('⚠️ Preencha Nome, WhatsApp e ID Terminal!');
+        if(s!==SENHA)return alert('⚠️ Senha incorreta!');
+        if(!dc){preencherDataHoje();dc=document.getElementById('dataCompraInput').value}
+        let chave=gerarChave(t,planoSelecionado);ultimaChaveGerada=chave;
+        let h=new Date(),exp=new Date(h);exp.setDate(h.getDate()+diasSelecionados);
+        clientes.push({id:Date.now(),nome:n,whats:w,email:em,terminal:t,valor:v,chave,dataCadastro:h.toISOString(),expira:exp.toISOString(),plano:planoSelecionado,dias:diasSelecionados,dataCompra:dc});
+        salvarDados();
+        document.getElementById('chaveGeradaDisplay').textContent=chave;
+        document.getElementById('planoGeradoBadge').textContent=planoSelecionado;
+        document.getElementById('planoGeradoBadge').className='badge-plano badge-'+planoSelecionado.toLowerCase();
+        document.getElementById('chaveGeradaBox').classList.add('show');
+        document.getElementById('nomeInput').value='';document.getElementById('whatsInput').value='';
+        document.getElementById('terminalInput').value='';document.getElementById('emailInput').value='';
+        renderizarTudo();
+    };
+
+    window.copiarChaveGerada=function(){if(ultimaChaveGerada)navigator.clipboard.writeText(ultimaChaveGerada).then(()=>alert('✅ Chave copiada!'))};
+
+    window.enviarWhatsAppLivre=function(tipo){
+        let m='🎯 TRADE WINNER PRO\n\n✅ Licença ativada!\n🔑 Chave: XXXX\n📥 EA: '+LINK_EA;
+        if(tipo==='cobranca') m='⚠️ Sua licença está vencendo! Renove agora.';
+        window.open('https://wa.me/?text='+encodeURIComponent(m),'_blank');
+    };
+
+    function renderizarTudo(){renderizarTabela();atualizarContadores();calcularFaturamento()}
+
+    window.renderizarTabela=function(){
+        let busca=document.getElementById('buscaInput').value.toLowerCase();
+        let hoje=new Date();hoje.setHours(0,0,0,0);
+        let lista=clientes.filter(c=>{
+            let m=!busca||c.nome.toLowerCase().includes(busca)||c.whats.includes(busca)||c.terminal.includes(busca);
+            if(!m)return false;
+            let exp=new Date(c.expira);exp.setHours(0,0,0,0);
+            let d=Math.ceil((exp-hoje)/86400000);
+            if(filtroStatus==='ativos')return d>0;
+            if(filtroStatus==='vencendo')return d===0;
+            if(filtroStatus==='vencidos')return d<0;
+            return true;
+        });
+        lista.sort((a,b)=>new Date(a.expira)-new Date(b.expira));
+        let tb=document.getElementById('tabelaBody');
+        if(!lista.length){tb.innerHTML='<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--text2)">Nenhum cliente</td></tr>';return}
+        tb.innerHTML=lista.map(c=>{
+            let exp=new Date(c.expira),d=Math.ceil((exp-hoje)/86400000),sc,st;
+            if(d<0){sc='status-vencido';st='VENCIDO'}else{sc='status-ativo';st='ATIVO'}
+            let bc='badge-'+(c.plano||'LATAO').toLowerCase();
+            return '<tr><td><div class="client-name">'+c.nome+'</div><div class="client-detail">'+c.whats+'</div></td><td>'+c.terminal+'</td><td><span class="chave-display">'+c.chave+'</span></td><td><span class="badge-plano '+bc+'">'+c.plano+'</span></td><td>'+exp.toLocaleDateString('pt-BR')+'<br><span class="status-badge '+sc+'">'+st+'</span></td><td>R$ '+c.valor.toFixed(2)+'</td><td><div class="action-btns"><button class="btn-icon btn-icon-chave" onclick="enviarWhatsCliente(\''+c.id+'\')">🔑</button><button class="btn-icon btn-icon-delete" onclick="removerCliente(\''+c.id+'\')">🗑️</button></div></td></tr>';
+        }).join('');
+    };
+
+    window.enviarWhatsCliente=function(cid){
+        let c=clientes.find(x=>x.id==cid);if(!c)return;
+        let m='🎯 TRADE WINNER PRO\n\n✅ Plano '+c.plano+' ativado!\n🔑 Chave: '+c.chave+'\n📥 EA: '+LINK_EA;
+        window.open('https://wa.me/'+c.whats.replace(/\D/g,'')+'?text='+encodeURIComponent(m),'_blank');
+    };
+
+    window.removerCliente=function(id){if(!confirm('🗑️ Remover?'))return;clientes=clientes.filter(c=>c.id!=id);salvarDados();renderizarTudo()};
+
+    function atualizarContadores(){
+        let h=new Date();h.setHours(0,0,0,0);let t=0,a=0,v=0,vc=0;
+        clientes.forEach(c=>{let e=new Date(c.expira);e.setHours(0,0,0,0);let d=Math.ceil((e-h)/86400000);t++;if(d>0)a++;else if(d===0)v++;else vc++;});
+        document.getElementById('countTodos').textContent=t;
+        document.getElementById('countAtivos').textContent=a;
+        document.getElementById('countVencendo').textContent=v;
+        document.getElementById('countVencidos').textContent=vc;
+    }
+
+    function calcularFaturamento(){
+        let total=0,h=new Date();h.setHours(0,0,0,0);
+        clientes.forEach(c=>{let dc=new Date(c.dataCadastro),inc=false;if(periodoAtual==='tudo')inc=true;else if(periodoAtual==='hoje')inc=dc.toDateString()===h.toDateString();else if(periodoAtual==='mes')inc=dc.getMonth()===h.getMonth()&&dc.getFullYear()===h.getFullYear();else if(periodoAtual==='ano')inc=dc.getFullYear()===h.getFullYear();if(inc)total+=c.valor;});
+        document.getElementById('totalFaturamento').textContent='R$ '+total.toFixed(2);
+    }
+
+    window.setFiltroStatus=function(f){
+        filtroStatus=f;
+        document.querySelectorAll('.status-card').forEach(c=>c.classList.remove('active'));
+        document.getElementById('status'+f.charAt(0).toUpperCase()+f.slice(1)).classList.add('active');
+        renderizarTabela();
+    };
+
+    window.setPeriodo=function(p){
+        periodoAtual=p;
+        ['periodoTudo','periodoHoje','periodoMes','periodoAno'].forEach(id=>document.getElementById(id).classList.remove('active'));
+        document.getElementById('periodo'+p.charAt(0).toUpperCase()+p.slice(1)).classList.add('active');
+        document.getElementById('periodoAtivoLabel').textContent=p==='tudo'?'Tudo':p==='hoje'?'Hoje':p==='mes'?'Mês':'Ano';
+        calcularFaturamento();
+    };
+
+    function carregarNotificacoes(){return JSON.parse(localStorage.getItem('twpro_notificacoes')||'[]')}
+    function salvarNotificacoes(n){localStorage.setItem('twpro_notificacoes',JSON.stringify(n))}
+    
+    window.mostrarNotificacoes=function(){
+        let p=document.getElementById('painelNotificacoes');
+        p.classList.toggle('show');
+        if(p.classList.contains('show'))renderizarNotificacoes();
+    };
+    
+    function renderizarNotificacoes(){
+        let nots=carregarNotificacoes(),c=document.getElementById('listaNotificacoes');
+        if(nots.length===0){c.innerHTML='<div class="sem-notificacoes">✅ Nenhum cadastro recente</div>';return}
+        c.innerHTML=nots.slice(0,20).map(n=>{
+            let ic=n.tipo==='teste'?'🔰':'📩',cl=n.lida?'':'nova';
+            let d=new Date(n.data),ds=d.toLocaleDateString('pt-BR')+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+            return '<div class="notif-item '+cl+'" onclick="marcarLida(\''+n.id+'\')"><div class="notif-icone">'+ic+'</div><div class="notif-info"><div class="notif-nome">'+n.nome+'</div><div class="notif-detalhe">📱 '+n.whatsapp+' | 📧 '+n.email+'</div><div class="notif-detalhe">🖥️ '+n.terminal+' | 🏷️ '+n.plano+' | 🔑 '+n.chave+'</div><div class="notif-data">'+ds+' '+(n.lida?'✅':'🆕')+'</div></div><div class="notif-acoes"><button class="btn-notif whats" onclick="event.stopPropagation();window.open(\'https://wa.me/'+n.whatsapp.replace(/\D/g,'')+'\',\'_blank\')">📱</button></div></div>';
+        }).join('');
+    }
+    
+    window.marcarLida=function(id){let ns=carregarNotificacoes(),f=ns.find(n=>n.id==id);if(f)f.lida=true;salvarNotificacoes(ns);renderizarNotificacoes();atualizarContadorNotificacoes();};
+    window.marcarTodasLidas=function(){let ns=carregarNotificacoes();ns.forEach(n=>n.lida=true);salvarNotificacoes(ns);renderizarNotificacoes();atualizarContadorNotificacoes();};
+    
+    function atualizarContadorNotificacoes(){
+        let ns=carregarNotificacoes(),nl=ns.filter(n=>!n.lida).length;
+        let ct=document.getElementById('notifContador');
+        if(ct){ct.textContent=nl;ct.style.display=nl>0?'flex':'none'}
+    }
+
+    // ⭐ ATUALIZA A CADA 5 SEGUNDOS ⭐
+    setInterval(function(){
+        let db=localStorage.getItem('twpro_gerador_db');
+        if(db){
+            let novos=JSON.parse(db);
+            if(novos.length !== clientes.length){
+                clientes=novos;
+                renderizarTudo();
+                atualizarContadorNotificacoes();
+            }
+        }
+        // Verifica novas notificações
+        let nots=carregarNotificacoes();
+        let contador=document.getElementById('notifContador');
+        if(contador){
+            let nl=nots.filter(n=>!n.lida).length;
+            contador.textContent=nl;
+            contador.style.display=nl>0?'flex':'none';
+        }
+    },5000);
+
+    carregarDados();
+})();
