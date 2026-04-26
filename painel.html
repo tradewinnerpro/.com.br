@@ -239,6 +239,7 @@
     const SALT="TWPRO-SALT-2025";
     const LINK_EA="https://comodoro91-oss.github.io/tradewinner-boleta/TRADE_WINNER_PRO_V1.1.ex5";
     const LINK_PDF="https://comodoro91-oss.github.io/tradewinner-boleta/Manual_TRADE_WINNER.pdf";
+    const SEU_WATS="5541999765210";
     
     let clientes=[];
     let filtroStatus='todos';
@@ -290,22 +291,53 @@
         if(!dc){preencherDataHoje();dc=document.getElementById('dataCompraInput').value}
         let chave=gerarChave(t,planoSelecionado);ultimaChaveGerada=chave;
         let h=new Date(),exp=new Date(h);exp.setDate(h.getDate()+diasSelecionados);
-        clientes.push({id:Date.now(),nome:n,whats:w,email:em,terminal:t,valor:v,chave,dataCadastro:h.toISOString(),expira:exp.toISOString(),plano:planoSelecionado,dias:diasSelecionados,dataCompra:dc});
+        clientes.push({
+            id:Date.now(),
+            nome:n,
+            whats:w,
+            email:em,
+            terminal:t,
+            valor:v,
+            chave:chave,
+            dataCadastro:h.toISOString(),
+            expira:exp.toISOString(),
+            plano:planoSelecionado,
+            dias:diasSelecionados,
+            dataCompra:dc
+        });
         salvarDados();
+        
         document.getElementById('chaveGeradaDisplay').textContent=chave;
         document.getElementById('planoGeradoBadge').textContent=planoSelecionado;
         document.getElementById('planoGeradoBadge').className='badge-plano badge-'+planoSelecionado.toLowerCase();
         document.getElementById('chaveGeradaBox').classList.add('show');
-        document.getElementById('nomeInput').value='';document.getElementById('whatsInput').value='';
-        document.getElementById('terminalInput').value='';document.getElementById('emailInput').value='';
+        
+        document.getElementById('nomeInput').value='';
+        document.getElementById('whatsInput').value='';
+        document.getElementById('terminalInput').value='';
+        document.getElementById('emailInput').value='';
+        
         renderizarTudo();
+        
+        // Abrir WhatsApp do cliente automaticamente
+        let nc=w.replace(/\D/g,'');
+        let expFormatada=exp.toLocaleDateString('pt-BR');
+        let mc='🎯 *TRADE WINNER PRO - Licença Ativada!*\n\n'+
+               'Olá *'+n+'*!\n\n'+
+               '✅ Seu plano *'+planoSelecionado+'* foi ativado!\n\n'+
+               '🔑 *Chave:* '+chave+'\n'+
+               '📅 *Válido até:* '+expFormatada+'\n\n'+
+               '📥 *EA:* '+LINK_EA+'\n'+
+               '📘 *PDF:* '+LINK_PDF+'\n\n'+
+               'Bons trades! 📈';
+        window.open('https://wa.me/'+nc+'?text='+encodeURIComponent(mc),'_blank');
     };
 
     window.copiarChaveGerada=function(){if(ultimaChaveGerada)navigator.clipboard.writeText(ultimaChaveGerada).then(()=>alert('✅ Chave copiada!'))};
 
     window.enviarWhatsAppLivre=function(tipo){
-        let m='🎯 TRADE WINNER PRO\n\n✅ Licença ativada!\n🔑 Chave: XXXX\n📥 EA: '+LINK_EA;
-        if(tipo==='cobranca') m='⚠️ Sua licença está vencendo! Renove agora.';
+        let m='🎯 TRADE WINNER PRO\n\n✅ Licença ativada!\n🔑 Chave: COLE A CHAVE AQUI\n📥 EA: '+LINK_EA;
+        if(tipo==='cobranca') m='⚠️ Sua licença está vencendo! Renove agora.\n📞 Entre em contato: (41) 99976-5210';
         window.open('https://wa.me/?text='+encodeURIComponent(m),'_blank');
     };
 
@@ -331,17 +363,25 @@
             let exp=new Date(c.expira),d=Math.ceil((exp-hoje)/86400000),sc,st;
             if(d<0){sc='status-vencido';st='VENCIDO'}else{sc='status-ativo';st='ATIVO'}
             let bc='badge-'+(c.plano||'LATAO').toLowerCase();
-            return '<tr><td><div class="client-name">'+c.nome+'</div><div class="client-detail">'+c.whats+'</div></td><td>'+c.terminal+'</td><td><span class="chave-display">'+c.chave+'</span></td><td><span class="badge-plano '+bc+'">'+c.plano+'</span></td><td>'+exp.toLocaleDateString('pt-BR')+'<br><span class="status-badge '+sc+'">'+st+'</span></td><td>R$ '+c.valor.toFixed(2)+'</td><td><div class="action-btns"><button class="btn-icon btn-icon-chave" onclick="enviarWhatsCliente(\''+c.id+'\')">🔑</button><button class="btn-icon btn-icon-delete" onclick="removerCliente(\''+c.id+'\')">🗑️</button></div></td></tr>';
+            return '<tr><td><div class="client-name">'+c.nome+'</div><div class="client-detail">📱 '+c.whats+(c.email?' | 📧 '+c.email:'')+'</div></td><td>'+c.terminal+'</td><td><span class="chave-display" title="'+c.chave+'">'+c.chave+'</span></td><td><span class="badge-plano '+bc+'">'+c.plano+'</span></td><td>'+exp.toLocaleDateString('pt-BR')+'<br><span class="status-badge '+sc+'">'+st+'</span></td><td>R$ '+(c.valor||0).toFixed(2)+'</td><td><div class="action-btns"><button class="btn-icon btn-icon-chave" onclick="enviarWhatsCliente(\''+c.id+'\')" title="Enviar chave no WhatsApp">🔑</button><button class="btn-icon btn-icon-delete" onclick="removerCliente(\''+c.id+'\')" title="Remover">🗑️</button></div></td></tr>';
         }).join('');
     };
 
     window.enviarWhatsCliente=function(cid){
         let c=clientes.find(x=>x.id==cid);if(!c)return;
-        let m='🎯 TRADE WINNER PRO\n\n✅ Plano '+c.plano+' ativado!\n🔑 Chave: '+c.chave+'\n📥 EA: '+LINK_EA;
+        let exp=new Date(c.expira);
+        let m='🎯 *TRADE WINNER PRO - Licença Ativada!*\n\n'+
+               'Olá *'+c.nome+'*!\n\n'+
+               '✅ Seu plano *'+c.plano+'* está ativo!\n'+
+               '🔑 *Chave:* '+c.chave+'\n'+
+               '📅 *Válido até:* '+exp.toLocaleDateString('pt-BR')+'\n\n'+
+               '📥 *EA:* '+LINK_EA+'\n'+
+               '📘 *PDF:* '+LINK_PDF+'\n\n'+
+               '📞 *Suporte:* (41) 99976-5210';
         window.open('https://wa.me/'+c.whats.replace(/\D/g,'')+'?text='+encodeURIComponent(m),'_blank');
     };
 
-    window.removerCliente=function(id){if(!confirm('🗑️ Remover?'))return;clientes=clientes.filter(c=>c.id!=id);salvarDados();renderizarTudo()};
+    window.removerCliente=function(id){if(!confirm('🗑️ Remover este cliente?'))return;clientes=clientes.filter(c=>c.id!=id);salvarDados();renderizarTudo()};
 
     function atualizarContadores(){
         let h=new Date();h.setHours(0,0,0,0);let t=0,a=0,v=0,vc=0;
@@ -354,7 +394,14 @@
 
     function calcularFaturamento(){
         let total=0,h=new Date();h.setHours(0,0,0,0);
-        clientes.forEach(c=>{let dc=new Date(c.dataCadastro),inc=false;if(periodoAtual==='tudo')inc=true;else if(periodoAtual==='hoje')inc=dc.toDateString()===h.toDateString();else if(periodoAtual==='mes')inc=dc.getMonth()===h.getMonth()&&dc.getFullYear()===h.getFullYear();else if(periodoAtual==='ano')inc=dc.getFullYear()===h.getFullYear();if(inc)total+=c.valor;});
+        clientes.forEach(c=>{
+            let dc=new Date(c.dataCadastro),inc=false;
+            if(periodoAtual==='tudo')inc=true;
+            else if(periodoAtual==='hoje')inc=dc.toDateString()===h.toDateString();
+            else if(periodoAtual==='mes')inc=dc.getMonth()===h.getMonth()&&dc.getFullYear()===h.getFullYear();
+            else if(periodoAtual==='ano')inc=dc.getFullYear()===h.getFullYear();
+            if(inc)total+=(c.valor||0);
+        });
         document.getElementById('totalFaturamento').textContent='R$ '+total.toFixed(2);
     }
 
@@ -401,26 +448,24 @@
         if(ct){ct.textContent=nl;ct.style.display=nl>0?'flex':'none'}
     }
 
-    // ⭐ ATUALIZA A CADA 5 SEGUNDOS ⭐
+    // ⭐ ATUALIZA A CADA 3 SEGUNDOS ⭐
     setInterval(function(){
         let db=localStorage.getItem('twpro_gerador_db');
         if(db){
-            let novos=JSON.parse(db);
-            if(novos.length !== clientes.length){
-                clientes=novos;
-                renderizarTudo();
-                atualizarContadorNotificacoes();
-            }
+            try{
+                let novos=JSON.parse(db);
+                // Verifica se há mudanças
+                if(JSON.stringify(novos) !== JSON.stringify(clientes)){
+                    clientes=novos;
+                    renderizarTudo();
+                }
+            }catch(e){}
         }
-        // Verifica novas notificações
-        let nots=carregarNotificacoes();
-        let contador=document.getElementById('notifContador');
-        if(contador){
-            let nl=nots.filter(n=>!n.lida).length;
-            contador.textContent=nl;
-            contador.style.display=nl>0?'flex':'none';
-        }
-    },5000);
+        atualizarContadorNotificacoes();
+    },3000);
 
     carregarDados();
 })();
+</script>
+</body>
+</html>
