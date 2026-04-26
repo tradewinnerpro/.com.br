@@ -231,7 +231,7 @@
   </div>
 </section>
 
-<!-- ⭐⭐⭐ FOOTER COMPLETO ⭐⭐⭐ -->
+<!-- ⭐⭐⭐ FOOTER ÚNICO ⭐⭐⭐ -->
 <footer style="border-top:1px solid var(--border);background:#0a0a10;padding:3rem clamp(1.5rem,6vw,5rem) 1.5rem;position:relative;z-index:10">
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2.5rem;max-width:1200px;margin:0 auto 2rem">
     <div>
@@ -281,12 +281,15 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
     const LINK_EA="https://comodoro91-oss.github.io/tradewinner-boleta/TRADE_WINNER_PRO_V1.1.ex5";
     const LINK_PDF="https://comodoro91-oss.github.io/tradewinner-boleta/Manual_TRADE_WINNER.pdf";
     
-    // ⭐ SEUS DADOS ⭐
     const SEU_WATS="5541999765210";
     const SEU_EMAIL="tradewinnerpro@gmail.com";
     
-    // ⭐ FORM FANTASMA PARA ENVIAR EMAIL PRO CLIENTE ⭐
+    // ⭐ FORM FANTASMA: envia email PARA O CLIENTE ⭐
     const FORM_FANTASMA="https://formspree.io/f/xgorqjba";
+    
+    // Controle para evitar bloqueio de popup
+    let whatsappCliente=null;
+    let whatsappDono=null;
 
     function gerarChave(terminal){
         let d=terminal+SALT,h=0;
@@ -307,6 +310,19 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
             if(t[terminal].totalTestes>=2) return {ok:false,msg:'⚠️ Limite de 2 testes atingido!'};
         }
         return {ok:true};
+    }
+
+    // Função para abrir WhatsApp SEM bloqueio de popup
+    function abrirWhatsApp(numero,mensagem){
+        let url='https://wa.me/'+numero+'?text='+encodeURIComponent(mensagem);
+        let a=document.createElement('a');
+        a.href=url;
+        a.target='_blank';
+        a.rel='noopener';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        console.log('📱 WhatsApp aberto para: '+numero);
     }
 
     var form=document.getElementById('formTeste');
@@ -352,7 +368,21 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
             localStorage.setItem('twpro_testes_db',JSON.stringify(testes));
             
             // ═══════════════════════════════════
-            // ⭐ FORM FANTASMA: ENVIA EMAIL PARA O CLIENTE ⭐
+            // ⭐ FORM PRINCIPAL (xnjlryya) → VOCÊ ⭐
+            // ═══════════════════════════════════
+            let fdDono=new FormData(form);
+            fdDono.append('chave_gerada',chave);
+            fdDono.append('link_ea',LINK_EA);
+            fdDono.append('link_pdf',LINK_PDF);
+            fdDono.append('plano','LATAO 7 dias');
+            fdDono.append('validade',expiraFormatada);
+            
+            fetch(form.action,{method:'POST',body:fdDono})
+            .then(r=>console.log('✅ Email enviado para VOCÊ: '+SEU_EMAIL))
+            .catch(err=>console.log('⚠️ Form principal offline'));
+            
+            // ═══════════════════════════════════
+            // ⭐ FORM FANTASMA (xgorqjba) → CLIENTE ⭐
             // ═══════════════════════════════════
             let fdFantasma=new FormData();
             fdFantasma.append('nome',nome);
@@ -368,22 +398,8 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
             fdFantasma.append('_subject','🎯 TRADE WINNER PRO - Teste Ativado!');
             
             fetch(FORM_FANTASMA,{method:'POST',body:fdFantasma})
-            .then(r=>console.log('✅ Email enviado para o cliente: '+email))
+            .then(r=>console.log('✅ Email enviado para CLIENTE: '+email))
             .catch(err=>console.log('⚠️ Form fantasma offline'));
-            
-            // ═══════════════════════════════════
-            // ⭐ FORM PRINCIPAL: ENVIA EMAIL PARA VOCÊ ⭐
-            // ═══════════════════════════════════
-            let fdDono=new FormData(form);
-            fdDono.append('chave_gerada',chave);
-            fdDono.append('link_ea',LINK_EA);
-            fdDono.append('link_pdf',LINK_PDF);
-            fdDono.append('plano','LATAO 7 dias');
-            fdDono.append('validade',expiraFormatada);
-            
-            fetch(form.action,{method:'POST',body:fdDono})
-            .then(r=>console.log('✅ Email enviado para '+SEU_EMAIL))
-            .catch(err=>console.log('⚠️ Form principal offline'));
             
             // ═══════════════════════════════════
             // ⭐ WHATSAPP CLIENTE ⭐
@@ -403,20 +419,24 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
                    '3. Cole a chave acima\n\n'+
                    '📞 *Dúvidas?* (41) 99976-5210\n\n'+
                    'Bons trades! 📈';
-            window.open('https://wa.me/'+nc+'?text='+encodeURIComponent(mc),'_blank');
+            
+            abrirWhatsApp(nc,mc);
             
             // ═══════════════════════════════════
-            // ⭐ WHATSAPP PROPRIETÁRIO ⭐
+            // ⭐ WHATSAPP PROPRIETÁRIO (VOCÊ) ⭐
             // ═══════════════════════════════════
-            let mp='🔔 *NOVO TESTE LATÃO*\n\n'+
-                   '👤 *Cliente:* '+nome+'\n'+
-                   '📱 *WhatsApp:* '+whatsapp+'\n'+
-                   '📧 *Email:* '+email+'\n'+
-                   '🖥️ *Terminal:* '+terminal+'\n'+
-                   '🔑 *Chave:* '+chave+'\n'+
-                   '📅 *Data:* '+hoje.toLocaleDateString('pt-BR')+' '+hoje.toLocaleTimeString('pt-BR')+'\n'+
-                   '⏰ *Expira:* '+expiraFormatada;
-            window.open('https://wa.me/'+SEU_WATS+'?text='+encodeURIComponent(mp),'_blank');
+            setTimeout(function(){
+                let mp='🔔 *NOVO TESTE LATÃO*\n\n'+
+                       '👤 *Cliente:* '+nome+'\n'+
+                       '📱 *WhatsApp:* '+whatsapp+'\n'+
+                       '📧 *Email:* '+email+'\n'+
+                       '🖥️ *Terminal:* '+terminal+'\n'+
+                       '🔑 *Chave:* '+chave+'\n'+
+                       '📅 *Data:* '+hoje.toLocaleDateString('pt-BR')+' '+hoje.toLocaleTimeString('pt-BR')+'\n'+
+                       '⏰ *Expira:* '+expiraFormatada;
+                
+                abrirWhatsApp(SEU_WATS,mp);
+            },1500); // Pequeno delay para evitar bloqueio
             
             form.reset();
             
