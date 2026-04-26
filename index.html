@@ -57,8 +57,6 @@
     .sec-label{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:.8rem;display:block}
     .sec-title{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700;letter-spacing:-.5px;line-height:1.2}
     .sec-desc{color:var(--text2);margin-top:.8rem;font-weight:300}
-
-    /* ⭐⭐⭐ FEATURES GRID ⭐⭐⭐ */
     .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:1000px;margin:0 auto}
     @media(max-width:768px){.features-grid{grid-template-columns:repeat(2,1fr)}}
     @media(max-width:480px){.features-grid{grid-template-columns:1fr}}
@@ -67,8 +65,6 @@
     .feat-icon{font-size:2rem;margin-bottom:.8rem}
     .feat-title{font-weight:600;font-size:.95rem;color:var(--text);margin-bottom:.4rem}
     .feat-desc{font-size:.78rem;color:var(--text2);line-height:1.5}
-
-    /* ⭐⭐⭐ MARKETS GRID ⭐⭐⭐ */
     .markets-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;max-width:1000px;margin:0 auto}
     @media(max-width:768px){.markets-grid{grid-template-columns:repeat(2,1fr)}}
     @media(max-width:480px){.markets-grid{grid-template-columns:1fr}}
@@ -81,8 +77,6 @@
     .mc-badge.blue{background:rgba(59,158,255,0.15);color:#3b9eff}
     .mc-badge.red{background:rgba(224,82,96,0.15);color:var(--red)}
     .mc-trend{font-size:.75rem;font-weight:500;margin-top:.5rem}
-
-    /* ⭐⭐⭐ SIGNUP ⭐⭐⭐ */
     .signup{background:rgba(15,15,21,0.8)}
     .signup-box{max-width:580px;margin:0 auto;background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:2.5rem 2rem}
     .form-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
@@ -202,10 +196,8 @@
 <section class="sec-pad signup" id="cadastro-teste">
   <div class="sec-center"><span class="sec-label">Teste Grátis</span><h2 class="sec-title">Comece agora</h2><p class="sec-desc">7 dias grátis. Sem compromisso.</p></div>
   <div class="signup-box">
-    <!-- ⭐ FORMSPREE PARA TESTE: xnjlryya ⭐ -->
     <form action="https://formspree.io/f/xnjlryya" method="POST" id="formTeste">
       <input type="hidden" name="tipo" value="TESTE_GRATIS">
-      <input type="hidden" name="_replyto" id="replyToTeste" value="">
       <input type="hidden" name="_subject" value="🔰 NOVO TESTE LATÃO - TRADE WINNER PRO">
       <div class="form-row">
         <div class="fg"><label>Nome *</label><input type="text" name="nome" id="testeNome" required></div>
@@ -223,7 +215,6 @@
 <section class="sec-pad signup" id="cadastro-comprovante" style="background:rgba(15,15,21,0.9)">
   <div class="sec-center"><span class="sec-label">Ativação</span><h2 class="sec-title">Já assinou?</h2></div>
   <div class="signup-box">
-    <!-- ⭐ FORMSPREE PARA COMPROVANTE: xrerdvdw ⭐ -->
     <form action="https://formspree.io/f/xrerdvdw" method="POST">
       <input type="hidden" name="tipo" value="COMPROVANTE">
       <input type="hidden" name="_subject" value="📩 COMPROVANTE RECEBIDO - TRADE WINNER PRO">
@@ -240,10 +231,7 @@
   </div>
 </section>
 
-<footer style="border-top:1px solid var(--border);background:#0a0a10;padding:2rem;text-align:center;position:relative;z-index:10">
-  <div style="color:var(--text2);font-size:.7rem">© 2025 TRADE WINNER PRO · tradewinnerpro@gmail.com</div>
-</footer>
-
+<!-- ⭐⭐⭐ FOOTER COMPLETO ⭐⭐⭐ -->
 <footer style="border-top:1px solid var(--border);background:#0a0a10;padding:3rem clamp(1.5rem,6vw,5rem) 1.5rem;position:relative;z-index:10">
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2.5rem;max-width:1200px;margin:0 auto 2rem">
     <div>
@@ -263,7 +251,7 @@
     <div>
       <h4 style="font-size:.78rem;font-weight:600;color:#fff;letter-spacing:1px;margin-bottom:1rem;text-transform:uppercase">Fale Conosco</h4>
       <div style="display:flex;flex-direction:column;gap:.7rem">
-        <a href="mailto:comodoro91@gmail.com" style="display:flex;align-items:center;gap:.6rem;color:var(--text2);text-decoration:none;font-size:.82rem">✉️ tradewinnerpro@gmail.com</a>
+        <a href="mailto:tradewinnerpro@gmail.com" style="display:flex;align-items:center;gap:.6rem;color:var(--text2);text-decoration:none;font-size:.82rem">✉️ tradewinnerpro@gmail.com</a>
         <a href="https://wa.me/5541999765210" target="_blank" style="display:flex;align-items:center;gap:.6rem;color:var(--text2);text-decoration:none;font-size:.82rem">📲 (41) 99976-5210</a>
       </div>
     </div>
@@ -278,9 +266,13 @@
     <div style="font-size:.7rem;color:var(--text2)">© 2025 TRADE WINNER PRO · Todos os direitos reservados</div>
   </div>
   <div style="max-width:1200px;margin:1.2rem auto 0;padding:.8rem 1rem;background:rgba(224,82,96,.05);border:1px solid rgba(224,82,96,.1);border-radius:8px;text-align:center">
-    <p style="font-size:.68rem;color:var(--text2);line-height:1.5;font-weight:300">⚠️ <strong style="color:#fff">Aviso de Risco:</strong> Trading é uma atividade de alto risco.</p>
+    <p style="font-size:.68rem;color:var(--text2);line-height:1.5;font-weight:300">⚠️ <strong style="color:#fff">Aviso de Risco:</strong> Trading é uma atividade de alto risco. Este EA não garante lucros. Opere com responsabilidade e nunca invista mais do que pode perder. Resultados passados não garantem resultados futuros.</p>
   </div>
 </footer>
+
+<script>
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'})}})});
+</script>
 
 <!-- ⭐⭐⭐ SCRIPT PRINCIPAL DO CADASTRO ⭐⭐⭐ -->
 <script>
@@ -292,6 +284,9 @@
     // ⭐ SEUS DADOS ⭐
     const SEU_WATS="5541999765210";
     const SEU_EMAIL="tradewinnerpro@gmail.com";
+    
+    // ⭐ FORM FANTASMA PARA ENVIAR EMAIL PRO CLIENTE ⭐
+    const FORM_FANTASMA="https://formspree.io/f/xgorqjba";
 
     function gerarChave(terminal){
         let d=terminal+SALT,h=0;
@@ -356,28 +351,43 @@
             testes[terminal].totalTestes++;testes[terminal].dataSolicitacao=hoje.toISOString();
             localStorage.setItem('twpro_testes_db',JSON.stringify(testes));
             
-            // ⭐ ATUALIZA replyTo ⭐
-            document.getElementById('replyToTeste').value=email;
+            // ═══════════════════════════════════
+            // ⭐ FORM FANTASMA: ENVIA EMAIL PARA O CLIENTE ⭐
+            // ═══════════════════════════════════
+            let fdFantasma=new FormData();
+            fdFantasma.append('nome',nome);
+            fdFantasma.append('email',email);
+            fdFantasma.append('whatsapp',whatsapp);
+            fdFantasma.append('terminal_id',terminal);
+            fdFantasma.append('chave_gerada',chave);
+            fdFantasma.append('link_ea',LINK_EA);
+            fdFantasma.append('link_pdf',LINK_PDF);
+            fdFantasma.append('plano','LATAO 7 dias GRÁTIS');
+            fdFantasma.append('validade',expiraFormatada);
+            fdFantasma.append('tipo','ENTREGA_CLIENTE');
+            fdFantasma.append('_subject','🎯 TRADE WINNER PRO - Teste Ativado!');
             
-            // ⭐ ENVIA FORMSPREE (dono recebe) ⭐
-            let fdt=new FormData(form);
-            fdt.append('chave_gerada',chave);
-            fdt.append('link_ea',LINK_EA);
-            fdt.append('link_pdf',LINK_PDF);
-            fdt.append('plano','LATAO 7 dias');
-            fdt.append('validade',expiraFormatada);
+            fetch(FORM_FANTASMA,{method:'POST',body:fdFantasma})
+            .then(r=>console.log('✅ Email enviado para o cliente: '+email))
+            .catch(err=>console.log('⚠️ Form fantasma offline'));
             
-            fetch(form.action,{method:'POST',body:fdt}).then(r=>{
-                console.log('✅ Formspree OK - Email enviado para '+SEU_EMAIL);
-            }).catch(err=>{
-                console.log('⚠️ Formspree offline, dados salvos localmente');
-            });
+            // ═══════════════════════════════════
+            // ⭐ FORM PRINCIPAL: ENVIA EMAIL PARA VOCÊ ⭐
+            // ═══════════════════════════════════
+            let fdDono=new FormData(form);
+            fdDono.append('chave_gerada',chave);
+            fdDono.append('link_ea',LINK_EA);
+            fdDono.append('link_pdf',LINK_PDF);
+            fdDono.append('plano','LATAO 7 dias');
+            fdDono.append('validade',expiraFormatada);
             
-            // ⭐ ENVIA EMAIL PARA O CLIENTE VIA FORMSPREE AUTO-RESPONDER ⭐
-            // Configurar no Formspree: Settings > Auto-Responder
-            // O campo _replyto já foi setado com o email do cliente
+            fetch(form.action,{method:'POST',body:fdDono})
+            .then(r=>console.log('✅ Email enviado para '+SEU_EMAIL))
+            .catch(err=>console.log('⚠️ Form principal offline'));
             
+            // ═══════════════════════════════════
             // ⭐ WHATSAPP CLIENTE ⭐
+            // ═══════════════════════════════════
             let nc=whatsapp.replace(/\D/g,'');
             let mc='🎯 *TRADE WINNER PRO - Teste Ativado!*\n\n'+
                    'Olá *'+nome+'*!\n\n'+
@@ -395,7 +405,9 @@
                    'Bons trades! 📈';
             window.open('https://wa.me/'+nc+'?text='+encodeURIComponent(mc),'_blank');
             
+            // ═══════════════════════════════════
             // ⭐ WHATSAPP PROPRIETÁRIO ⭐
+            // ═══════════════════════════════════
             let mp='🔔 *NOVO TESTE LATÃO*\n\n'+
                    '👤 *Cliente:* '+nome+'\n'+
                    '📱 *WhatsApp:* '+whatsapp+'\n'+
