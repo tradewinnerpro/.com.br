@@ -29,6 +29,10 @@
     .status-number{font-family:'DM Mono',monospace;font-size:1.8rem;color:#e8c96a}
     .status-number.green{color:#3ecf8e}.status-number.red{color:#e05260}
     .status-label{font-size:.7rem;color:#8888a8;text-transform:uppercase;margin-top:4px}
+    .alerta-novo{background:rgba(37,211,102,0.08);border:2px solid #25d366;border-radius:12px;padding:1.5rem;text-align:center;margin-bottom:1.5rem;display:none}
+    .alerta-novo.show{display:block}
+    .alerta-novo .btn-email{display:inline-block;background:#25d366;color:#fff;padding:.8rem 2rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:.9rem;margin:0 .5rem;cursor:pointer;border:none}
+    .alerta-novo .btn-email.azul{background:#3b9eff}
     .table-wrapper{overflow-x:auto;border-radius:10px;border:1px solid #2a2a38;background:#13131a}
     table{width:100%;border-collapse:collapse;min-width:700px}
     th{text-align:left;padding:12px 10px;color:#c9a84c;font-size:.65rem;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid #c9a84c;font-family:'DM Mono',monospace;background:#13131a}
@@ -40,6 +44,7 @@
     .chave-texto{font-family:'DM Mono',monospace;font-size:.68rem;color:#e8c96a;background:rgba(201,168,76,0.08);padding:3px 6px;border-radius:4px;display:inline-block;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}
     .btn-icon{width:30px;height:30px;border-radius:6px;border:1px solid #2a2a38;background:transparent;color:#8888a8;cursor:pointer;font-size:.8rem;margin:0 2px}
     .btn-icon.whats{border-color:#25d366;color:#25d366}
+    .btn-icon.email{border-color:#3b9eff;color:#3b9eff}
     .btn-icon.delete{border-color:#e05260;color:#e05260}
     .busca{width:100%;padding:.65rem;border-radius:8px;border:1px solid #2a2a38;background:#09090d;color:#e8e8f0;margin-bottom:1rem;font-size:.85rem}
     .busca:focus{outline:none;border-color:#c9a84c}
@@ -57,7 +62,7 @@
   <p class="erro" id="erroSenha">Senha incorreta!</p>
 </div>
 
-<!-- PAINEL (OCULTO ATÉ LOGIN) -->
+<!-- PAINEL -->
 <div class="container" id="painel">
   <nav>
     <span class="nav-logo">⚡ TRADE WINNER PRO</span>
@@ -67,6 +72,14 @@
     </div>
   </nav>
 
+  <!-- ALERTA NOVO CADASTRO -->
+  <div class="alerta-novo" id="alertaNovo">
+    <p style="color:#25d366;font-weight:600;font-size:1rem;">🔔 NOVO CADASTRO!</p>
+    <p id="infoNovo" style="font-size:.8rem;color:#8888a8;margin:.5rem 0"></p>
+    <button class="btn-email" onclick="enviarEmailAgora()">📧 ENVIAR EMAIL PARA O CLIENTE</button>
+    <button class="btn-email azul" onclick="fecharAlerta()">✓ OK, JÁ ENVIEI</button>
+  </div>
+
   <div class="status-grid">
     <div class="status-card"><span class="status-number" id="countTodos">0</span><span class="status-label">Total</span></div>
     <div class="status-card"><span class="status-number green" id="countAtivos">0</span><span class="status-label">Ativos</span></div>
@@ -74,7 +87,7 @@
     <div class="status-card"><span class="status-number red" id="countVencidos">0</span><span class="status-label">Vencidos</span></div>
   </div>
 
-  <input type="text" class="busca" id="buscaInput" placeholder="🔍 Pesquisar por nome, WhatsApp ou terminal..." onkeyup="renderizar()">
+  <input type="text" class="busca" id="buscaInput" placeholder="🔍 Pesquisar..." onkeyup="renderizar()">
 
   <div class="table-wrapper">
     <table>
@@ -86,13 +99,21 @@
   <footer>© 2025 TRADE WINNER PRO</footer>
 </div>
 
+<!-- SMTPjs -->
+<script src="https://smtpjs.com/v3/smtp.js"></script>
+
 <script>
-// ⭐ SENHA DO PAINEL ⭐
+// ⭐ SENHA DO PAINEL
 var SENHA_PAINEL = "TWPRO2025";
+
+// ⭐ CONFIGURE A SENHA DE APP DO GMAIL AQUI
+var SENHA_APP_GMAIL = "SENHA_DE_APP_AQUI";
+
 var SEU_WATS = "5541999765210";
 var LINK_EA = "https://comodoro91-oss.github.io/tradewinner-boleta/TRADE_WINNER_PRO_V1.1.ex5";
 var LINK_PDF = "https://comodoro91-oss.github.io/tradewinner-boleta/Manual_TRADE_WINNER.pdf";
 var clientes = [];
+var ultimoNovo = null; // guarda dados do último cadastro
 
 function verificarSenha(){
   var s = document.getElementById('senhaInput').value;
@@ -111,7 +132,6 @@ function sair(){
   location.reload();
 }
 
-// Auto-login se já estiver logado
 if(sessionStorage.getItem('twpro_logado')==='1'){
   document.getElementById('telaLogin').style.display = 'none';
   document.getElementById('painel').style.display = 'block';
@@ -122,6 +142,106 @@ function carregarDados(){
   var db = localStorage.getItem('twpro_gerador_db');
   if(db){ try{ clientes = JSON.parse(db); }catch(e){ clientes = []; } }
   renderizar();
+  verificarNovosCadastros();
+}
+
+// ⭐ VERIFICA SE TEM CLIENTE NOVO (sem email enviado)
+function verificarNovosCadastros(){
+  var naoEnviados = JSON.parse(localStorage.getItem('twpro_nao_enviados')||'[]');
+  if(naoEnviados.length > 0){
+    ultimoNovo = naoEnviados[0];
+    document.getElementById('infoNovo').textContent = 
+      '👤 '+ultimoNovo.nome+' | 📧 '+ultimoNovo.email+' | 🔑 '+ultimoNovo.chave;
+    document.getElementById('alertaNovo').classList.add('show');
+  }
+}
+
+// ⭐ ENVIAR EMAIL PARA O CLIENTE
+function enviarEmailAgora(){
+  if(!ultimoNovo){
+    alert('Nenhum cliente pendente!');
+    return;
+  }
+  
+  var btn = document.querySelector('.btn-email');
+  btn.textContent = '⏳ ENVIANDO...';
+  btn.disabled = true;
+  
+  Email.send({
+    Host: "smtp.gmail.com",
+    Username: "tradewinnerpro@gmail.com",
+    Password: SENHA_APP_GMAIL,
+    To: ultimoNovo.email,
+    From: "tradewinnerpro@gmail.com",
+    Subject: "🎯 TRADE WINNER PRO - Teste Ativado!",
+    Body: "Olá "+ultimoNovo.nome+"!\n\n"+
+          "✅ Seu teste LATÃO 7 dias GRÁTIS foi ativado!\n\n"+
+          "🔑 Chave: "+ultimoNovo.chave+"\n"+
+          "📅 Válido até: "+ultimoNovo.expFmt+"\n\n"+
+          "📥 Baixe o EA:\n"+LINK_EA+"\n\n"+
+          "📘 Manual PDF:\n"+LINK_PDF+"\n\n"+
+          "⚙️ Como ativar:\n"+
+          "1. Instale o EA no MT5\n"+
+          "2. No painel, clique em ATIVAR LICENÇA\n"+
+          "3. Cole a chave acima\n\n"+
+          "📞 Dúvidas? (41) 99976-5210\n\n"+
+          "Bons trades! 📈\n\n"+
+          "Equipe TRADE WINNER PRO"
+  }).then(function(m){
+    alert('✅ Email enviado para: '+ultimoNovo.email);
+    removerPendente();
+    btn.textContent = '📧 ENVIAR EMAIL PARA O CLIENTE';
+    btn.disabled = false;
+  }).catch(function(err){
+    alert('❌ Erro ao enviar email. Verifique a senha de app.\n\n'+err);
+    btn.textContent = '📧 TENTAR NOVAMENTE';
+    btn.disabled = false;
+  });
+}
+
+function removerPendente(){
+  var naoEnviados = JSON.parse(localStorage.getItem('twpro_nao_enviados')||'[]');
+  naoEnviados.shift();
+  localStorage.setItem('twpro_nao_enviados', JSON.stringify(naoEnviados));
+  ultimoNovo = null;
+  document.getElementById('alertaNovo').classList.remove('show');
+}
+
+function fecharAlerta(){
+  removerPendente();
+}
+
+// ⭐ ENVIAR EMAIL PARA CLIENTE PELO BOTÃO NA TABELA
+function enviarEmailCliente(id){
+  var c = clientes.find(function(x){ return x.id == id; });
+  if(!c) return;
+  
+  if(SENHA_APP_GMAIL === 'SENHA_DE_APP_AQUI'){
+    alert('⚠️ Configure a senha de app do Gmail no código!');
+    return;
+  }
+  
+  var exp = new Date(c.expira);
+  
+  Email.send({
+    Host: "smtp.gmail.com",
+    Username: "tradewinnerpro@gmail.com",
+    Password: SENHA_APP_GMAIL,
+    To: c.email,
+    From: "tradewinnerpro@gmail.com",
+    Subject: "🎯 TRADE WINNER PRO - Sua Licença",
+    Body: "Olá "+c.nome+"!\n\n"+
+          "✅ Seu plano "+c.plano+" está ativo!\n\n"+
+          "🔑 Chave: "+c.chave+"\n"+
+          "📅 Válido até: "+exp.toLocaleDateString('pt-BR')+"\n\n"+
+          "📥 EA: "+LINK_EA+"\n"+
+          "📘 PDF: "+LINK_PDF+"\n\n"+
+          "📞 Suporte: (41) 99976-5210"
+  }).then(function(m){
+    alert('✅ Email enviado para: '+c.email);
+  }).catch(function(err){
+    alert('❌ Erro: '+err);
+  });
 }
 
 function renderizar(){
@@ -129,12 +249,10 @@ function renderizar(){
   var hoje = new Date(); hoje.setHours(0,0,0,0);
   
   var lista = clientes.filter(function(c){
-    var m = !busca || c.nome.toLowerCase().includes(busca) || c.whats.includes(busca) || c.terminal.includes(busca);
-    return m;
+    return !busca || c.nome.toLowerCase().includes(busca) || c.whats.includes(busca) || c.terminal.includes(busca);
   });
   lista.sort(function(a,b){ return new Date(a.expira) - new Date(b.expira); });
   
-  // Contadores
   var t=0, a=0, v=0, vc=0;
   clientes.forEach(function(c){
     var exp = new Date(c.expira); exp.setHours(0,0,0,0);
@@ -155,17 +273,18 @@ function renderizar(){
   tb.innerHTML = lista.map(function(c){
     var exp = new Date(c.expira);
     var d = Math.ceil((exp - hoje)/86400000);
-    var statusClasse = d < 0 ? 'badge-vencido' : 'badge-ativo';
-    var statusTexto = d < 0 ? 'VENCIDO' : 'ATIVO';
+    var sc = d < 0 ? 'badge-vencido' : 'badge-ativo';
+    var st = d < 0 ? 'VENCIDO' : 'ATIVO';
     return '<tr>'+
-      '<td><b>'+c.nome+'</b><br><span style="font-size:.68rem;color:#8888a8">📱 '+c.whats+(c.email?' | 📧 '+c.email:'')+'</span></td>'+
+      '<td><b>'+c.nome+'</b><br><span style="font-size:.68rem;color:#8888a8">📱 '+c.whats+'<br>📧 '+c.email+'</span></td>'+
       '<td>'+c.terminal+'</td>'+
-      '<td><span class="chave-texto" onclick="copiar(\''+c.id+'\')" title="Clique para copiar">'+c.chave+'</span></td>'+
+      '<td><span class="chave-texto" onclick="copiar(\''+c.id+'\')">'+c.chave+'</span></td>'+
       '<td><span class="badge" style="background:'+(c.plano==='LATAO'?'#CD7F32':c.plano==='BRONZE'?'#8B6914':c.plano==='PRATA'?'#7D8794':c.plano==='OURO'?'#DAA520':c.plano==='DIAMANTE'?'#6A5ACD':'#C0392B')+'">'+c.plano+'</span></td>'+
-      '<td>'+exp.toLocaleDateString('pt-BR')+'<br><span class="badge '+statusClasse+'">'+statusTexto+'</span></td>'+
+      '<td>'+exp.toLocaleDateString('pt-BR')+'<br><span class="badge '+sc+'">'+st+'</span></td>'+
       '<td>R$ '+(c.valor||0).toFixed(2)+'</td>'+
       '<td>'+
         '<button class="btn-icon whats" onclick="whatsCliente(\''+c.id+'\')" title="WhatsApp">📱</button>'+
+        '<button class="btn-icon email" onclick="enviarEmailCliente(\''+c.id+'\')" title="Enviar Email">📧</button>'+
         '<button class="btn-icon delete" onclick="remover(\''+c.id+'\')" title="Remover">🗑️</button>'+
       '</td>'+
     '</tr>';
@@ -174,7 +293,7 @@ function renderizar(){
 
 window.copiar = function(id){
   var c = clientes.find(function(x){ return x.id == id; });
-  if(c){ navigator.clipboard.writeText(c.chave).then(function(){ alert('✅ Copiado: '+c.chave); }); }
+  if(c){ navigator.clipboard.writeText(c.chave).then(function(){ alert('✅ Copiado!'); }); }
 };
 
 window.whatsCliente = function(id){
@@ -186,13 +305,12 @@ window.whatsCliente = function(id){
 };
 
 window.remover = function(id){
-  if(!confirm('Remover este cliente?')) return;
+  if(!confirm('Remover?')) return;
   clientes = clientes.filter(function(c){ return c.id != id; });
   localStorage.setItem('twpro_gerador_db', JSON.stringify(clientes));
   renderizar();
 };
 
-// Atualiza a cada 5 segundos
 setInterval(function(){
   var db = localStorage.getItem('twpro_gerador_db');
   if(db){
@@ -201,10 +319,11 @@ setInterval(function(){
       if(JSON.stringify(novos) !== JSON.stringify(clientes)){
         clientes = novos;
         renderizar();
+        verificarNovosCadastros();
       }
     }catch(e){}
   }
-}, 5000);
+}, 3000);
 </script>
 </body>
 </html>
