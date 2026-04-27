@@ -366,7 +366,7 @@
         testes[terminal].testeAtivo=true;
         localStorage.setItem('twpro_testes_db',JSON.stringify(testes));
         
-        // ⭐ EMAIL DONO ⭐
+                // ⭐ EMAIL DONO ⭐
         emailjs.send("service_kqme5zs","template_4xqebas",{
             to_email: "tradewinnerpro@gmail.com",
             nome: nome,
@@ -375,11 +375,14 @@
             terminal_id: terminal,
             chave: chave,
             plano: "LATAO 7 dias",
-            validade: expiraFormatada
-        }).then(function(){
-            console.log('✅ Email DONO enviado!');
+            validade: expiraFormatada,
+            data_cadastro: hoje.toLocaleDateString('pt-BR') + ' ' + hoje.toLocaleTimeString('pt-BR'),
+            link_ea: LINK_EA,
+            link_pdf: LINK_PDF
+        }).then(function(response){
+            console.log('✅ Email DONO enviado! Status: '+response.status);
         }).catch(function(err){
-            console.warn('⚠️ Email dono erro:',err);
+            console.warn('⚠️ Email dono erro:', err);
         });
 
         // ⭐ EMAIL CLIENTE ⭐
@@ -442,19 +445,22 @@
         btn.disabled = true;
         btn.textContent = '⏳ Enviando...';
 
-        emailjs.send("service_kqme5zs","template_4xqebas",{
-            to_email:    "tradewinnerpro@gmail.com",
-            nome:        nome,
-            whatsapp:    whatsapp,
-            email:       email,
+                emailjs.send("service_kqme5zs","template_4xqebas",{
+            to_email: "tradewinnerpro@gmail.com",
+            nome: nome,
+            whatsapp: whatsapp,
+            email: email,
             terminal_id: terminal,
-            chave:       codigo||'(aguardando geração)',
-            plano:       plano+' — COMPROVANTE',
-            validade:    'Aguardando ativação'
-        }).then(function(){
-            console.log('✅ Comprovante enviado para o DONO!');
+            chave: codigo || 'Não informado',
+            plano: plano + ' — COMPROVANTE',
+            validade: 'Aguardando ativação',
+            data_cadastro: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR'),
+            link_ea: LINK_EA,
+            link_pdf: LINK_PDF
+        }).then(function(response){
+            console.log('✅ Comprovante enviado! Status: '+response.status);
         }).catch(function(err){
-            console.warn('⚠️ EmailJS dono comprovante:',err);
+            console.warn('⚠️ Erro comprovante:', err);
         });
 
         emailjs.send("service_kqme5zs","template_rlrvpbm",{
