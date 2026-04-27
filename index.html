@@ -305,13 +305,27 @@
     function verificaTeste(terminal){
         let db=localStorage.getItem('twpro_testes_db');
         let t=db?JSON.parse(db):{};
+        
         if(t[terminal]){
             let d=new Date(t[terminal].dataSolicitacao);
             let h=new Date();
             let diff=Math.ceil((h-d)/86400000);
-            if(diff<=7) return {ok:false,msg:'⚠️ Terminal já tem teste ativo! Dias restantes: '+(7-diff)};
-            if(t[terminal].totalTestes>=2) return {ok:false,msg:'⚠️ Limite de 2 testes atingido!'};
+            
+            // Se o teste atual ainda está ativo (dentro dos 7 dias)
+            if(diff<=7 && t[terminal].testeAtivo) {
+                return {ok:false,msg:'⚠️ Terminal já tem teste ativo! Dias restantes: '+(7-diff)};
+            }
+            
+            // Se já atingiu o limite de 2 testes
+            if(t[terminal].totalTestes>=2) {
+                return {ok:false,msg:'⚠️ Limite de 2 testes atingido para este terminal!'};
+            }
+            
+            // Se o teste expirou, permite novo teste
+            t[terminal].testeAtivo = false;
+            localStorage.setItem('twpro_testes_db',JSON.stringify(t));
         }
+        
         return {ok:true};
     }
 
@@ -349,11 +363,13 @@
         nots.unshift({id:Date.now(),tipo:'teste',nome:nome,whatsapp:whatsapp,email:email,terminal:terminal,chave:chave,plano:'LATAO 7 dias',data:new Date().toISOString(),lida:false});
         localStorage.setItem('twpro_notificacoes',JSON.stringify(nots));
         
-        // ⭐ ANTI-ABUSO ⭐
+        // ⭐ ANTI-ABUSO CORRIGIDO ⭐
         let db=localStorage.getItem('twpro_testes_db');
         let testes=db?JSON.parse(db):{};
-        if(!testes[terminal]) testes[terminal]={totalTestes:0,historico:[]};
-        testes[terminal].totalTestes++;testes[terminal].dataSolicitacao=hoje.toISOString();
+        if(!testes[terminal]) testes[terminal]={totalTestes:0,historico:[],testeAtivo:false};
+        testes[terminal].totalTestes++;
+        testes[terminal].dataSolicitacao=hoje.toISOString();
+        testes[terminal].testeAtivo=true;
         localStorage.setItem('twpro_testes_db',JSON.stringify(testes));
         
         // ⭐ ENVIA EMAIL PARA VOCÊ (xnjlryya) ⭐
@@ -393,7 +409,7 @@
         
         window.open('https://wa.me/'+nc+'?text='+encodeURIComponent(mc),'_blank');
         
-        // ⭐ WHATSAPP DO DONO (LINK VISÍVEL) ⭐
+        // ⭐ WHATSAPP DO DONO ⭐
         let mp='🔔 *NOVO TESTE LATÃO*\n\n'+
                '👤 *Cliente:* '+nome+'\n'+
                '📱 *WhatsApp:* '+whatsapp+'\n'+
@@ -405,16 +421,13 @@
         
         let donoUrl='https://wa.me/'+SEU_WATS+'?text='+encodeURIComponent(mp);
         
-        // Mostra o botão verde de fallback SEMPRE
         let alerta=document.getElementById('alertaDono');
         let link=document.getElementById('linkDonoWhats');
         link.href=donoUrl;
         alerta.classList.add('show');
         
-        // Tenta abrir popup também
         window.open(donoUrl,'_blank');
         
-        // Limpa formulário
         document.getElementById('formTeste').reset();
         
         alert('✅ CADASTRO REALIZADO!\n\n🔰 LATÃO 7 dias GRÁTIS\n👤 '+nome+'\n🔑 '+chave+'\n📅 Até '+expiraFormatada+'\n\n📱 WhatsApp do cliente já foi aberto!\n📧 Emails enviados!\n📲 Clique no botão verde abaixo para receber no seu WhatsApp!');
