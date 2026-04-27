@@ -178,32 +178,21 @@
     .plano-latao { background: #CD7F32; color: #FFF5E0; }
     .plano-latao .plano-nome, .plano-latao .plano-valor, .plano-latao .plano-dias { color: #FFF5E0; }
     .plano-latao.active { border-color: #FFF5E0; box-shadow: 0 0 10px rgba(205,127,50,0.4); }
-    .plano-latao:hover { background: #DE9043; }
-
     .plano-bronze { background: #8B6914; color: #FFF5E0; }
     .plano-bronze .plano-nome, .plano-bronze .plano-valor, .plano-bronze .plano-dias { color: #FFF5E0; }
     .plano-bronze.active { border-color: #FFF5E0; box-shadow: 0 0 10px rgba(139,105,20,0.4); }
-    .plano-bronze:hover { background: #A07818; }
-
     .plano-prata { background: #7D8794; color: #FFFFFF; }
     .plano-prata .plano-nome, .plano-prata .plano-valor, .plano-prata .plano-dias { color: #FFFFFF; }
     .plano-prata.active { border-color: #FFFFFF; box-shadow: 0 0 10px rgba(125,135,148,0.4); }
-    .plano-prata:hover { background: #949FAC; }
-
     .plano-ouro { background: #DAA520; color: #1a1a1a; }
     .plano-ouro .plano-nome, .plano-ouro .plano-valor, .plano-ouro .plano-dias { color: #1a1a1a; }
     .plano-ouro.active { border-color: #1a1a1a; box-shadow: 0 0 12px rgba(218,165,32,0.5); }
-    .plano-ouro:hover { background: #E8B830; }
-
     .plano-diamante { background: #6A5ACD; color: #FFFFFF; }
     .plano-diamante .plano-nome, .plano-diamante .plano-valor, .plano-diamante .plano-dias { color: #FFFFFF; }
     .plano-diamante.active { border-color: #FFFFFF; box-shadow: 0 0 12px rgba(106,90,205,0.4); }
-    .plano-diamante:hover { background: #7B6ED8; }
-
     .plano-elite { background: #C0392B; color: #FFFFFF; }
     .plano-elite .plano-nome, .plano-elite .plano-valor, .plano-elite .plano-dias { color: #FFFFFF; }
     .plano-elite.active { border-color: #FFFFFF; box-shadow: 0 0 12px rgba(192,57,43,0.4); }
-    .plano-elite:hover { background: #D44637; }
 
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; margin-bottom: .8rem; }
     @media(max-width:560px){.form-row{grid-template-columns:1fr}}
@@ -216,8 +205,6 @@
       transition: border-color .2s;
     }
     .fg input:focus, .fg select:focus, .fg textarea:focus { outline: none; border-color: var(--gold); }
-    .fg input::placeholder { color: #555; }
-    .fg textarea { resize: vertical; min-height: 80px; }
     .input-group { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
     @media(max-width:560px){.input-group{grid-template-columns:1fr}}
     .data-box { background: rgba(201,168,76,0.04); border: 1px solid rgba(201,168,76,0.1); border-radius: 8px; padding: .8rem 1rem; margin-bottom: .9rem; }
@@ -244,10 +231,6 @@
 
     .btn-whats-chave { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
     .btn-whats-chave:hover { background: rgba(201,168,76,0.15); }
-    .btn-whats-cobranca { background: transparent; border: 1px solid #25d366; color: #25d366; }
-    .btn-whats-cobranca:hover { background: rgba(37,211,102,0.15); }
-    .btn-whats-teste { background: transparent; border: 1px solid #3498db; color: #3498db; }
-    .btn-whats-teste:hover { background: rgba(52,152,219,0.15); }
     .btn-enviar-email { background: transparent; border: 1px solid #e67e22; color: #e67e22; }
     .btn-enviar-email:hover { background: rgba(230,126,34,0.15); }
 
@@ -306,8 +289,6 @@
 
     .finance-box { background: rgba(19, 19, 26, 0.9); border: 1px solid var(--border2); border-left: 4px solid var(--gold); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
     .finance-total { font-family: 'DM Mono', monospace; font-size: 2rem; font-weight: 500; color: #fff; margin: .3rem 0; }
-    .botoes-whatsapp { display: flex; gap: 8px; margin-top: 1rem; flex-wrap: wrap; }
-    .botoes-whatsapp button { flex: 1; min-width: 100px; padding: .6rem; font-size: .75rem; font-weight: 600; }
 
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); z-index: 200; }
     .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 201; width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; background: var(--surface); border: 1px solid var(--border2); border-radius: 16px; padding: 2rem; }
@@ -321,7 +302,6 @@
 
     footer { border-top: 1px solid var(--border); background: rgba(10, 10, 16, 0.95); padding: 2rem clamp(1.5rem,6vw,5rem) 1rem; text-align: center; margin-top: 3rem; }
     footer p { font-size: .7rem; color: var(--text2); }
-    hr { margin: 20px 0; border-color: var(--border); }
 
     .conteudo-bloqueado { display: none; }
     .conteudo-bloqueado.desbloqueado { display: block; }
@@ -331,7 +311,6 @@
       .nav-logo{font-size:.75rem}
       .card{padding:1.2rem 1rem}
       .chave-valor{font-size:.85rem}
-      .botoes-whatsapp button{flex:1 1 45%;min-width:80px}
     }
   </style>
 </head>
@@ -399,24 +378,12 @@
 
     <label style="font-size:.78rem;font-weight:500;color:var(--text2);margin-bottom:.5rem;display:block">Plano *</label>
     <div class="planos-grid" id="planosGrid">
-      <div class="plano-card plano-latao active" data-plano="LATAO" data-dias="7" data-valor="0" onclick="selecionarPlano('LATAO',7,0,this)">
-        <div class="plano-icone">🔰</div><div class="plano-nome">Latão</div><div class="plano-dias">7 dias</div><div class="plano-valor">GRÁTIS</div>
-      </div>
-      <div class="plano-card plano-bronze" data-plano="BRONZE" data-dias="30" data-valor="49.90" onclick="selecionarPlano('BRONZE',30,49.90,this)">
-        <div class="plano-icone">🥉</div><div class="plano-nome">Bronze</div><div class="plano-dias">30 dias</div><div class="plano-valor">R$ 49,90</div>
-      </div>
-      <div class="plano-card plano-prata" data-plano="PRATA" data-dias="90" data-valor="129.90" onclick="selecionarPlano('PRATA',90,129.90,this)">
-        <div class="plano-icone">🥈</div><div class="plano-nome">Prata</div><div class="plano-dias">90 dias</div><div class="plano-valor">R$ 129,90</div>
-      </div>
-      <div class="plano-card plano-ouro" data-plano="OURO" data-dias="180" data-valor="199.90" onclick="selecionarPlano('OURO',180,199.90,this)">
-        <div class="plano-icone">🥇</div><div class="plano-nome">Ouro</div><div class="plano-dias">180 dias</div><div class="plano-valor">R$ 199,90</div>
-      </div>
-      <div class="plano-card plano-diamante" data-plano="DIAMANTE" data-dias="270" data-valor="299.90" onclick="selecionarPlano('DIAMANTE',270,299.90,this)">
-        <div class="plano-icone">💎</div><div class="plano-nome">Diamante</div><div class="plano-dias">270 dias</div><div class="plano-valor">R$ 299,90</div>
-      </div>
-      <div class="plano-card plano-elite" data-plano="ELITE" data-dias="365" data-valor="399.90" onclick="selecionarPlano('ELITE',365,399.90,this)">
-        <div class="plano-icone">👑</div><div class="plano-nome">Elite</div><div class="plano-dias">365 dias</div><div class="plano-valor">R$ 399,90</div>
-      </div>
+      <div class="plano-card plano-latao active" data-plano="LATAO" data-dias="7" data-valor="0" onclick="selecionarPlano('LATAO',7,0,this)"><div class="plano-icone">🔰</div><div class="plano-nome">Latão</div><div class="plano-dias">7 dias</div><div class="plano-valor">GRÁTIS</div></div>
+      <div class="plano-card plano-bronze" data-plano="BRONZE" data-dias="30" data-valor="49.90" onclick="selecionarPlano('BRONZE',30,49.90,this)"><div class="plano-icone">🥉</div><div class="plano-nome">Bronze</div><div class="plano-dias">30 dias</div><div class="plano-valor">R$ 49,90</div></div>
+      <div class="plano-card plano-prata" data-plano="PRATA" data-dias="90" data-valor="129.90" onclick="selecionarPlano('PRATA',90,129.90,this)"><div class="plano-icone">🥈</div><div class="plano-nome">Prata</div><div class="plano-dias">90 dias</div><div class="plano-valor">R$ 129,90</div></div>
+      <div class="plano-card plano-ouro" data-plano="OURO" data-dias="180" data-valor="199.90" onclick="selecionarPlano('OURO',180,199.90,this)"><div class="plano-icone">🥇</div><div class="plano-nome">Ouro</div><div class="plano-dias">180 dias</div><div class="plano-valor">R$ 199,90</div></div>
+      <div class="plano-card plano-diamante" data-plano="DIAMANTE" data-dias="270" data-valor="299.90" onclick="selecionarPlano('DIAMANTE',270,299.90,this)"><div class="plano-icone">💎</div><div class="plano-nome">Diamante</div><div class="plano-dias">270 dias</div><div class="plano-valor">R$ 299,90</div></div>
+      <div class="plano-card plano-elite" data-plano="ELITE" data-dias="365" data-valor="399.90" onclick="selecionarPlano('ELITE',365,399.90,this)"><div class="plano-icone">👑</div><div class="plano-nome">Elite</div><div class="plano-dias">365 dias</div><div class="plano-valor">R$ 399,90</div></div>
     </div>
 
     <div class="input-group">
@@ -570,7 +537,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
     let logado=false;
     let notificacoesProcessadas=new Set();
 
-    // LOGIN
+    // ⭐ LOGIN ⭐
     window.verificarSenha=function(){
         let senha=document.getElementById('senhaLoginInput').value;
         if(senha===SENHA_MESTRA){
@@ -580,7 +547,10 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
             document.getElementById('senhaLoginInput').value='';
             document.getElementById('loginError').classList.remove('show');
             carregarDados();
-            verificarNovosCadastros();
+            // Verifica imediatamente após login
+            setTimeout(function(){
+                verificarNovosCadastros();
+            }, 500);
         }else{
             document.getElementById('loginError').classList.add('show');
             document.getElementById('senhaLoginInput').value='';
@@ -596,37 +566,41 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         document.getElementById('senhaLoginInput').focus();
     };
 
+    // ⭐ VERIFICA NOVOS CADASTROS ⭐
     function verificarNovosCadastros(){
         if(!logado)return;
-        let nots=JSON.parse(localStorage.getItem('twpro_notificacoes')||'[]');
-        let novasNotificacoes=nots.filter(n=>!notificacoesProcessadas.has(n.id));
         
-        if(novasNotificacoes.length>0){
-            console.log('🆕 '+novasNotificacoes.length+' novo(s) cadastro(s) detectado(s)!');
+        let nots = JSON.parse(localStorage.getItem('twpro_notificacoes')||'[]');
+        let novasNotificacoes = nots.filter(n => !notificacoesProcessadas.has(n.id));
+        
+        if(novasNotificacoes.length > 0){
+            console.log('🆕 ' + novasNotificacoes.length + ' novo(s) cadastro(s) detectado(s)!');
             
-            novasNotificacoes.forEach(n=>{
+            novasNotificacoes.forEach(n => {
                 notificacoesProcessadas.add(n.id);
-                salvarNotificacoesProcessadas();
                 
                 // WhatsApp para o DONO
-                let msgDono='🔔 *NOVO CADASTRO - '+n.plano+'*\n\n'+
-                    '👤 *Cliente:* '+n.nome+'\n'+
-                    '📱 *WhatsApp:* '+n.whatsapp+'\n'+
-                    '📧 *Email:* '+n.email+'\n'+
-                    '🖥️ *Terminal:* '+n.terminal+'\n'+
-                    '🔑 *Chave:* '+n.chave+'\n'+
-                    '📅 *Data:* '+new Date().toLocaleString('pt-BR');
-                window.open('https://wa.me/'+SEU_WATS+'?text='+encodeURIComponent(msgDono),'_blank');
+                let msgDono = '🔔 *NOVO CADASTRO* - ' + n.plano + '\n\n' +
+                    '👤 *Cliente:* ' + n.nome + '\n' +
+                    '📱 *WhatsApp:* ' + n.whatsapp + '\n' +
+                    '📧 *Email:* ' + n.email + '\n' +
+                    '🖥️ *Terminal:* ' + n.terminal + '\n' +
+                    '🔑 *Chave:* ' + n.chave + '\n' +
+                    '📅 *Data:* ' + new Date().toLocaleString('pt-BR');
+                
+                window.open('https://wa.me/' + SEU_WATS + '?text=' + encodeURIComponent(msgDono), '_blank');
                 
                 // Email para o CLIENTE
                 enviarEmailAutomatico(n);
             });
             
+            salvarNotificacoesProcessadas();
             renderizarNotificacoes();
             atualizarContadorNotificacoes();
         }
     }
 
+    // ⭐ ENVIO AUTOMÁTICO DE EMAIL ⭐
     function enviarEmailAutomatico(notificacao){
         console.log('📧 Enviando email para cliente: '+notificacao.email);
         let expiraFormatada = new Date(Date.now()+7*86400000).toLocaleDateString('pt-BR');
@@ -644,7 +618,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
             terminal_id: notificacao.terminal || '',
             validade: expiraFormatada
         }).then(function(response){
-            console.log('✅ Email CLIENTE enviado! '+notificacao.email+' Status: '+response.status);
+            console.log('✅ Email CLIENTE enviado! '+notificacao.email);
         }).catch(function(err){
             console.log('⚠️ Erro email cliente:', err);
         });
@@ -665,7 +639,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         let cfg=localStorage.getItem('twpro_gerador_cfg');
         if(cfg){try{let s=JSON.parse(cfg);config={...config,...s}}catch(e){}}
         carregarInputsConfig();atualizarValoresPlanos();preencherDataHoje();renderizarTudo();atualizarContadorNotificacoes();
-        
         let proc=localStorage.getItem('twpro_notificacoes_processadas');
         if(proc){try{notificacoesProcessadas=new Set(JSON.parse(proc))}catch(e){}}
     }
@@ -856,7 +829,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
 
     // NOTIFICAÇÕES
     function carregarNotificacoes(){return JSON.parse(localStorage.getItem('twpro_notificacoes')||'[]')}
-    function salvarNotificacoes(n){localStorage.setItem('twpro_notificacoes',JSON.stringify(n))}
     window.mostrarNotificacoes=function(){
         let p=document.getElementById('painelNotificacoes');p.classList.toggle('show');
         if(p.classList.contains('show'))renderizarNotificacoes();
@@ -867,20 +839,20 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         c.innerHTML=nots.slice(0,20).map(n=>{
             let ic=n.tipo==='teste'?'🔰':'📩',cl=n.lida?'':'nova';
             let d=new Date(n.data),ds=d.toLocaleDateString('pt-BR')+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-            let processada=notificacoesProcessadas.has(n.id)?'✅':'🔄';
-            return `<div class="notif-item ${cl}" onclick="marcarLida('${n.id}')"><div class="notif-icone">${ic}</div><div class="notif-info"><div class="notif-nome">${n.nome} ${processada}</div><div class="notif-detalhe">📱 ${n.whatsapp||'N/I'} | 📧 ${n.email||'N/I'}</div><div class="notif-detalhe">🖥️ Terminal: ${n.terminal||'N/I'} | 🏷️ ${n.plano||'LATÃO'}</div><div class="notif-data">${ds} ${n.lida?'✅':'🆕'}</div></div><div class="notif-acoes">${n.whatsapp?`<button class="btn-notif whats" onclick="event.stopPropagation();window.open('https://wa.me/${n.whatsapp.replace(/\D/g,'')}','_blank')">📱</button>`:''}${n.email?`<button class="btn-notif email" onclick="event.stopPropagation();reenviarEmailNotificacao('${n.id}')">📧</button>`:''}</div></div>`;
+            return `<div class="notif-item ${cl}" onclick="marcarLida('${n.id}')"><div class="notif-icone">${ic}</div><div class="notif-info"><div class="notif-nome">${n.nome}</div><div class="notif-detalhe">📱 ${n.whatsapp||'N/I'} | 📧 ${n.email||'N/I'}</div><div class="notif-detalhe">🖥️ Terminal: ${n.terminal||'N/I'} | 🏷️ ${n.plano||'LATÃO'}</div><div class="notif-data">${ds} ${n.lida?'✅':'🆕'}</div></div></div>`;
         }).join('');
     }
-    
-    window.reenviarEmailNotificacao=function(nid){
-        let nots=carregarNotificacoes(),n=nots.find(x=>x.id==nid);
-        if(!n)return;
-        enviarEmailAutomatico(n);
-        alert('✅ Email reenviado para: '+n.email);
+    window.marcarLida=function(id){
+        let ns=carregarNotificacoes(),f=ns.find(n=>n.id==id);
+        if(f)f.lida=true;
+        localStorage.setItem('twpro_notificacoes',JSON.stringify(ns));
+        renderizarNotificacoes();atualizarContadorNotificacoes();
     };
-    
-    window.marcarLida=function(id){let ns=carregarNotificacoes(),f=ns.find(n=>n.id==id);if(f)f.lida=true;salvarNotificacoes(ns);renderizarNotificacoes();atualizarContadorNotificacoes();};
-    window.marcarTodasLidas=function(){let ns=carregarNotificacoes();ns.forEach(n=>n.lida=true);salvarNotificacoes(ns);renderizarNotificacoes();atualizarContadorNotificacoes();};
+    window.marcarTodasLidas=function(){
+        let ns=carregarNotificacoes();ns.forEach(n=>n.lida=true);
+        localStorage.setItem('twpro_notificacoes',JSON.stringify(ns));
+        renderizarNotificacoes();atualizarContadorNotificacoes();
+    };
     function atualizarContadorNotificacoes(){
         let ns=carregarNotificacoes(),nl=ns.filter(n=>!n.lida).length;
         let ct=document.getElementById('notifContador');if(ct){ct.textContent=nl;ct.style.display=nl>0?'flex':'none'}
@@ -907,14 +879,13 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
     };
     window.gerarRelatorio=function(tipo){
         fecharModais();
-        let h=new Date(),tit='',cf=[];
+        let tit='',cf=[];
         clientes.forEach(c=>{let e=new Date(c.expira);e.setHours(0,0,0,0);let hd=new Date();hd.setHours(0,0,0,0);let d=Math.ceil((e-hd)/86400000);if(tipo==='todos')cf.push(c);else if(tipo==='ativos'&&d>0)cf.push(c);else if(tipo==='vencidos'&&d<0)cf.push(c);else if(tipo==='financeiro')cf.push(c)});
         if(tipo==='todos')tit='TODOS';else if(tipo==='ativos')tit='ATIVOS';else if(tipo==='vencidos')tit='VENCIDOS';else tit='FINANCEIRO';
-        let tc=cf.length,tf=cf.reduce((s,c)=>s+c.valor,0);
         let pw=window.open('','_blank');
-        let html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Relatório - ${tit}</title><style>body{font-family:sans-serif;padding:40px;background:#0a0e17;color:#e0e6f0}.h{text-align:center;margin-bottom:30px}.h h1{color:#ffd700}.s{background:#131b2a;padding:20px;display:flex;justify-content:space-around;border-radius:12px;margin-bottom:30px}.sv{font-size:28px;font-weight:bold;color:#00c3a0}table{width:100%;border-collapse:collapse}th{background:#1a2538;color:#ffd700;padding:12px}td{padding:10px;border-bottom:1px solid #253040}.bp{padding:12px 30px;background:#00c3a0;color:#0a0e17;border:none;border-radius:8px;cursor:pointer;font-size:16px;font-weight:bold}</style></head><body><div class="h"><h1>TRADE WINNER PRO</h1><h2>${tit}</h2></div><div class="s"><div><div class="sv">${tc}</div><div>Clientes</div></div><div><div class="sv">R$ ${tf.toFixed(2)}</div><div>Faturamento</div></div></div><table><thead><tr><th>Cliente</th><th>WhatsApp</th><th>Plano</th><th>Chave</th><th>Expira</th><th>Valor</th></tr></thead><tbody>`;
-        cf.forEach(c=>{html+=`<tr><td>${c.nome}</td><td>${c.whats}</td><td>${c.plano}</td><td style="font-family:monospace">${c.chave}</td><td>${new Date(c.expira).toLocaleDateString('pt-BR')}</td><td>R$ ${c.valor.toFixed(2)}</td></tr>`});
-        html+=`</tbody></table><div style="margin-top:30px;text-align:center"><button class="bp" onclick="window.print()">🖨️ IMPRIMIR</button></div></body></html>`;
+        let html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Relatório - ${tit}</title><style>body{font-family:sans-serif;padding:40px;background:#0a0e17;color:#e0e6f0}h1{color:#ffd700}table{width:100%;border-collapse:collapse}th{background:#1a2538;color:#ffd700;padding:12px}td{padding:10px;border-bottom:1px solid #253040}</style></head><body><h1>TRADE WINNER PRO - ${tit}</h1><table><tr><th>Cliente</th><th>WhatsApp</th><th>Plano</th><th>Chave</th><th>Expira</th><th>Valor</th></tr>`;
+        cf.forEach(c=>{html+=`<tr><td>${c.nome}</td><td>${c.whats}</td><td>${c.plano}</td><td>${c.chave}</td><td>${new Date(c.expira).toLocaleDateString('pt-BR')}</td><td>R$ ${c.valor.toFixed(2)}</td></tr>`});
+        html+=`</table><button onclick="window.print()" style="margin-top:20px;padding:10px 20px;background:#00c3a0;border:none;border-radius:8px;cursor:pointer;font-weight:bold">🖨️ IMPRIMIR</button></body></html>`;
         pw.document.write(html);pw.document.close();
     };
 
@@ -924,7 +895,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         document.getElementById('conteudoPrincipal').classList.add('desbloqueado');
         logado=true;
         carregarDados();
-        verificarNovosCadastros();
+        setTimeout(function(){verificarNovosCadastros();},500);
     }
 
     window.addEventListener('beforeunload',()=>{
@@ -932,12 +903,13 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         salvarNotificacoesProcessadas();
     });
 
+    // Verifica a cada 5 segundos
     setInterval(()=>{
         if(logado){
             verificarNovosCadastros();
             atualizarContadorNotificacoes();
         }
-    },10000);
+    },5000);
 })();
 </script>
 </body>
