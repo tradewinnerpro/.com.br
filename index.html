@@ -199,12 +199,41 @@
     <h2 class="sec-title">Comece a mudar seus resultados hoje</h2>
     <p class="sec-desc">Sem cartão. Sem compromisso. Apenas seus dados para receber a Boleta.</p>
   </div>
-   <!-- ⭐ BOTÃO DE AJUDA DO TERMINAL ⭐ -->
-    <div style="text-align:center; margin-bottom:1rem;">
-        <button onclick="mostrarAjudaTerminal()" style="background:transparent; border:1px solid #c9a84c; color:#c9a84c; padding:.5rem 1rem; border-radius:6px; cursor:pointer; font-size:.8rem;">
-            🔍 NÃO SEI MEU ID TERMINAL - CLIQUE AQUI
+  <!-- BOTÃO: COMO ENCONTRAR MEU ID -->
+<div style="text-align:center; margin: 1rem 0;">
+    <button onclick="mostrarAjudaTerminal()" style="background:transparent; border:1px solid #c9a84c; color:#c9a84c; padding:.5rem 1rem; border-radius:6px; cursor:pointer; font-size:.8rem;">
+        🔍 COMO ENCONTRAR MEU ID TERMINAL MT5
+    </button>
+</div>
+
+<!-- MODAL DE AJUDA -->
+<div id="modalTerminal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:999; align-items:center; justify-content:center;">
+    <div style="background:#13131a; border:2px solid #c9a84c; border-radius:16px; padding:2rem; max-width:500px; width:90%; text-align:center;">
+        <h3 style="color:#e8c96a; margin-bottom:1rem;">🔍 Como encontrar seu ID Terminal</h3>
+        
+        <div style="text-align:left; background:#0f0f15; border-radius:12px; padding:1.5rem; margin:1rem 0; line-height:2.2; color:#e8e8f0;">
+            <p>📌 <strong style="color:#c9a84c;">Passo 1:</strong> Abra seu <strong>MetaTrader 5</strong></p>
+            <p>📌 <strong style="color:#c9a84c;">Passo 2:</strong> Clique no menu <strong>Ajuda</strong></p>
+            <p>📌 <strong style="color:#c9a84c;">Passo 3:</strong> Clique em <strong>Sobre</strong></p>
+            <p>📌 <strong style="color:#c9a84c;">Passo 4:</strong> Copie o número do <strong>Terminal</strong></p>
+        </div>
+        
+        <p style="color:#8888a8; font-size:.85rem;">O ID Terminal é um número como: <strong style="color:#3ecf8e;">12345678</strong></p>
+        
+        <button onclick="fecharModalTerminal()" style="background:#c9a84c; color:#09090d; border:none; padding:12px 30px; border-radius:8px; font-weight:bold; cursor:pointer; margin-top:10px; width:100%;">
+            ✅ ENTENDI, JÁ TENHO MEU ID
         </button>
     </div>
+</div>
+
+<script>
+function mostrarAjudaTerminal() {
+    document.getElementById('modalTerminal').style.display = 'flex';
+}
+function fecharModalTerminal() {
+    document.getElementById('modalTerminal').style.display = 'none';
+}
+</script>
   <div class="signup-box">
     <form id="formTeste" onsubmit="return false;">
       <input type="hidden" name="tipo" value="TESTE_GRATIS">
