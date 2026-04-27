@@ -87,9 +87,6 @@
     .fg input:focus,.fg select:focus{outline:none;border-color:var(--gold)}
     .notice-green{font-size:.75rem;color:var(--green);background:rgba(62,207,142,.05);border:1px solid rgba(62,207,142,.15);border-radius:6px;padding:.7rem .9rem;margin-top:.5rem;text-align:center}
     .ticker-wrap{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(15,15,21,0.9);overflow:hidden;padding:.4rem 0}
-    .alerta-whatsapp{background:rgba(37,211,102,0.08);border:2px solid #25d366;border-radius:12px;padding:1.2rem;text-align:center;margin-top:1.2rem;display:none}
-    .alerta-whatsapp.show{display:block}
-    .alerta-whatsapp a{display:inline-block;background:#25d366;color:#fff;padding:.7rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:.85rem;margin-top:.5rem}
   </style>
 </head>
 <body>
@@ -192,13 +189,9 @@
   </div>
 </section>
 
-<!-- ══ FORMULÁRIO TESTE GRÁTIS ══ -->
+<!-- FORMULÁRIO TESTE GRÁTIS -->
 <section class="sec-pad signup" id="cadastro-teste">
-  <div class="sec-center">
-    <span class="sec-label">Teste Grátis</span>
-    <h2 class="sec-title">Comece a mudar seus resultados hoje</h2>
-    <p class="sec-desc">Sem cartão. Sem compromisso. Apenas seus dados para receber a Boleta.</p>
-  </div>
+  <div class="sec-center"><span class="sec-label">Teste Grátis</span><h2 class="sec-title">Comece agora</h2><p class="sec-desc">7 dias grátis. Sem compromisso.</p></div>
   <div class="signup-box">
     <form id="formTeste" onsubmit="return false;">
       <input type="hidden" name="tipo" value="TESTE_GRATIS">
@@ -210,25 +203,13 @@
       <div class="fg"><label>ID Terminal MT5 *</label><input type="text" name="terminal_id" id="testeTerminal" required placeholder="MT5 → Ajuda → Sobre"></div>
       <button type="submit" class="btn-primary" id="btnTeste" style="width:100%;padding:.9rem;font-size:.95rem">🎯 QUERO TESTAR 7 DIAS GRÁTIS</button>
     </form>
-    <div class="notice-green" style="margin-top:1rem">✅ Chave enviada por WhatsApp e Email</div>
-
-    <!-- ⭐ ALERTA WHATSAPP DO DONO ⭐ -->
-    <div class="alerta-whatsapp" id="alertaDono">
-      <p style="color:#25d366;font-weight:600;margin-bottom:.3rem">📱 CLIQUE NO BOTÃO ABAIXO</p>
-      <p style="font-size:.75rem;color:var(--text2);margin-bottom:.5rem">Para receber os dados deste cadastro no seu WhatsApp</p>
-      <a href="#" id="linkDonoWhats" target="_blank" rel="noopener">📲 RECEBER DADOS NO WHATSAPP</a>
-    </div>
+    <div class="notice-green" style="margin-top:1rem">✅ Após cadastro, você receberá a chave via WhatsApp e Email</div>
   </div>
 </section>
 
-<!-- ══ FORMULÁRIO COMPROVANTE ══ -->
+<!-- FORMULÁRIO COMPROVANTE -->
 <section class="sec-pad signup" id="cadastro-comprovante" style="background:rgba(15,15,21,0.9)">
- <div class="sec-center">
-     <span class="sec-label">Ativação de Licença</span>
-    <h2 class="sec-title">Já fez sua assinatura?</h2>
-    <p class="sec-desc">Envie o comprovante para liberarmos sua licença em minutos.</p>
-  
-  </div>
+  <div class="sec-center"><span class="sec-label">Ativação</span><h2 class="sec-title">Já assinou?</h2></div>
   <div class="signup-box">
     <form action="https://formspree.io/f/xrerdvdw" method="POST">
       <input type="hidden" name="tipo" value="COMPROVANTE">
@@ -246,7 +227,6 @@
   </div>
 </section>
 
-<!-- ⭐⭐⭐ FOOTER ⭐⭐⭐ -->
 <footer style="border-top:1px solid var(--border);background:#0a0a10;padding:3rem clamp(1.5rem,6vw,5rem) 1.5rem;position:relative;z-index:10">
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2.5rem;max-width:1200px;margin:0 auto 2rem">
     <div>
@@ -285,14 +265,11 @@
   </div>
 </footer>
 
-<!-- ⭐⭐⭐ SCRIPT PRINCIPAL ⭐⭐⭐ -->
 <script>
 (function(){
     const SALT="TWPRO-SALT-2025";
     const LINK_EA="https://comodoro91-oss.github.io/tradewinner-boleta/TRADE_WINNER_PRO_V1.1.ex5";
     const LINK_PDF="https://comodoro91-oss.github.io/tradewinner-boleta/Manual_TRADE_WINNER.pdf";
-    const SEU_WATS="5541999765210";
-    const SEU_EMAIL="tradewinnerpro@gmail.com";
 
     function gerarChave(terminal){
         let d=terminal+SALT,h=0;
@@ -305,33 +282,20 @@
     function verificaTeste(terminal){
         let db=localStorage.getItem('twpro_testes_db');
         let t=db?JSON.parse(db):{};
-        
         if(t[terminal]){
             let d=new Date(t[terminal].dataSolicitacao);
             let h=new Date();
             let diff=Math.ceil((h-d)/86400000);
-            
-            // Se o teste atual ainda está ativo (dentro dos 7 dias)
-            if(diff<=7 && t[terminal].testeAtivo) {
-                return {ok:false,msg:'⚠️ Terminal já tem teste ativo! Dias restantes: '+(7-diff)};
-            }
-            
-            // Se já atingiu o limite de 2 testes
-            if(t[terminal].totalTestes>=2) {
-                return {ok:false,msg:'⚠️ Limite de 2 testes atingido para este terminal!'};
-            }
-            
-            // Se o teste expirou, permite novo teste
-            t[terminal].testeAtivo = false;
+            if(diff<=7 && t[terminal].testeAtivo) return {ok:false,msg:'⚠️ Terminal já tem teste ativo! Dias restantes: '+(7-diff)};
+            if(t[terminal].totalTestes>=2) return {ok:false,msg:'⚠️ Limite de 2 testes atingido!'};
+            t[terminal].testeAtivo=false;
             localStorage.setItem('twpro_testes_db',JSON.stringify(t));
         }
-        
         return {ok:true};
     }
 
     document.getElementById('btnTeste').addEventListener('click',function(e){
         e.preventDefault();
-        
         let nome=document.getElementById('testeNome').value.trim();
         let whatsapp=document.getElementById('testeWhats').value.trim();
         let email=document.getElementById('testeEmail').value.trim();
@@ -347,7 +311,7 @@
         let expira=new Date(hoje);expira.setDate(hoje.getDate()+7);
         let expiraFormatada=expira.toLocaleDateString('pt-BR');
         
-        // ⭐ SALVA NO GERADOR (localStorage) ⭐
+        // Salva no localStorage
         let clientes=JSON.parse(localStorage.getItem('twpro_gerador_db')||'[]');
         clientes.push({
             id:Date.now(),nome:nome,whats:whatsapp,email:email,terminal:terminal,
@@ -356,14 +320,13 @@
             dataCadastro:hoje.toISOString(),expira:expira.toISOString()
         });
         localStorage.setItem('twpro_gerador_db',JSON.stringify(clientes));
-        console.log('✅ Cliente salvo no localStorage. Total: '+clientes.length);
         
-        // ⭐ NOTIFICAÇÃO ⭐
+        // Notificação para o painel
         let nots=JSON.parse(localStorage.getItem('twpro_notificacoes')||'[]');
         nots.unshift({id:Date.now(),tipo:'teste',nome:nome,whatsapp:whatsapp,email:email,terminal:terminal,chave:chave,plano:'LATAO 7 dias',data:new Date().toISOString(),lida:false});
         localStorage.setItem('twpro_notificacoes',JSON.stringify(nots));
         
-        // ⭐ ANTI-ABUSO CORRIGIDO ⭐
+        // Anti-abuso
         let db=localStorage.getItem('twpro_testes_db');
         let testes=db?JSON.parse(db):{};
         if(!testes[terminal]) testes[terminal]={totalTestes:0,historico:[],testeAtivo:false};
@@ -372,25 +335,7 @@
         testes[terminal].testeAtivo=true;
         localStorage.setItem('twpro_testes_db',JSON.stringify(testes));
         
-        // ⭐ ENVIA EMAIL PARA VOCÊ (xnjlryya) ⭐
-        let fdDono=new FormData();
-        fdDono.append('tipo','TESTE_GRATIS');
-        fdDono.append('nome',nome);
-        fdDono.append('whatsapp',whatsapp);
-        fdDono.append('email',email);
-        fdDono.append('terminal_id',terminal);
-        fdDono.append('chave_gerada',chave);
-        fdDono.append('link_ea',LINK_EA);
-        fdDono.append('link_pdf',LINK_PDF);
-        fdDono.append('plano','LATAO 7 dias');
-        fdDono.append('validade',expiraFormatada);
-        fdDono.append('_subject','🔰 NOVO TESTE LATÃO - '+nome);
-        
-        fetch('https://formspree.io/f/xnjlryya',{method:'POST',body:fdDono})
-        .then(r=>console.log('✅ Email enviado para VOCÊ'))
-        .catch(err=>console.log('⚠️ Erro form principal'));
-        
-        // ⭐ WHATSAPP DO CLIENTE ⭐
+        // WhatsApp do CLIENTE (automático)
         let nc=whatsapp.replace(/\D/g,'');
         let mc='🎯 *TRADE WINNER PRO - Teste Ativado!*\n\n'+
                'Olá *'+nome+'*!\n\n'+
@@ -409,28 +354,9 @@
         
         window.open('https://wa.me/'+nc+'?text='+encodeURIComponent(mc),'_blank');
         
-        // ⭐ WHATSAPP DO DONO ⭐
-        let mp='🔔 *NOVO TESTE LATÃO*\n\n'+
-               '👤 *Cliente:* '+nome+'\n'+
-               '📱 *WhatsApp:* '+whatsapp+'\n'+
-               '📧 *Email:* '+email+'\n'+
-               '🖥️ *Terminal:* '+terminal+'\n'+
-               '🔑 *Chave:* '+chave+'\n'+
-               '📅 *Data:* '+hoje.toLocaleDateString('pt-BR')+' '+hoje.toLocaleTimeString('pt-BR')+'\n'+
-               '⏰ *Expira:* '+expiraFormatada;
-        
-        let donoUrl='https://wa.me/'+SEU_WATS+'?text='+encodeURIComponent(mp);
-        
-        let alerta=document.getElementById('alertaDono');
-        let link=document.getElementById('linkDonoWhats');
-        link.href=donoUrl;
-        alerta.classList.add('show');
-        
-        window.open(donoUrl,'_blank');
-        
         document.getElementById('formTeste').reset();
         
-        alert('✅ CADASTRO REALIZADO!\n\n🔰 LATÃO 7 dias GRÁTIS\n👤 '+nome+'\n🔑 '+chave+'\n📅 Até '+expiraFormatada+'\n\n📱 WhatsApp do cliente já foi aberto!\n📧 Emails enviados!\n📲 Clique no botão verde abaixo para receber no seu WhatsApp!');
+        alert('✅ CADASTRO REALIZADO COM SUCESSO!\n\n🔰 Plano LATÃO 7 dias GRÁTIS\n👤 '+nome+'\n🔑 '+chave+'\n📅 Válido até: '+expiraFormatada+'\n\n📱 WhatsApp com os dados já foi aberto!\n📧 Em breve você receberá um email com todas as informações.');
     });
 })();
 </script>
