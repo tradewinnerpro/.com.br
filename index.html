@@ -148,7 +148,7 @@
         border: 2px solid #c9a84c;
         border-radius: 20px;
         padding: 2rem;
-        max-width: 500px;
+        max-width: 520px;
         width: 90%;
         text-align: center;
         box-shadow: 0 0 50px rgba(201,168,76,0.2);
@@ -158,20 +158,20 @@
         font-size: 1.3rem;
         margin-bottom: 1rem;
     }
-    .modal-terminal-box .passos {
+    .modal-terminal-box .info-box {
         text-align: left;
         background: #0a0a10;
         border-radius: 12px;
         padding: 1.5rem;
         margin: 1rem 0;
-        line-height: 2.2;
+        line-height: 2;
     }
-    .modal-terminal-box .passos p {
+    .modal-terminal-box .info-box p {
         color: #e8e8f0;
         font-size: .9rem;
     }
-    .modal-terminal-box .passos span {
-        color: #c9a84c;
+    .modal-terminal-box .info-box .destaque {
+        color: #3ecf8e;
         font-weight: 700;
     }
     .modal-terminal-box .exemplo {
@@ -219,6 +219,24 @@
     .btn-ajuda-terminal:hover {
         background: rgba(201,168,76,0.1);
         border-style: solid;
+    }
+    
+    /* ═══════════════════════════════════════════ */
+    /* ⭐ AVISO CELULAR ⭐ */
+    /* ═══════════════════════════════════════════ */
+    .aviso-celular {
+        color: #c9a84c;
+        font-size: .7rem;
+        margin-top: .3rem;
+        display: none;
+        text-align: center;
+        background: rgba(201,168,76,0.05);
+        padding: .5rem;
+        border-radius: 6px;
+        border: 1px solid rgba(201,168,76,0.2);
+    }
+    .aviso-celular.show {
+        display: block;
     }
   </style>
 </head>
@@ -358,12 +376,19 @@
         <div class="fg"><label>WhatsApp *</label><input type="tel" name="whatsapp" id="testeWhats" required placeholder="+55 41 99999-9999"></div>
       </div>
       <div class="fg"><label>E-mail *</label><input type="email" name="email" id="testeEmail" required></div>
-      <div class="fg"><label>ID Terminal MT5 *</label><input type="text" name="terminal_id" id="testeTerminal" required placeholder="MT5 → Ajuda → Sobre"></div>
+      <div class="fg">
+        <label>ID Terminal MT5 *</label>
+        <input type="text" name="terminal_id" id="testeTerminal" required placeholder="Para teste, digite CELULAR se não souber">
+        <div class="aviso-celular" id="avisoCelular">
+          📱 <strong>Não sabe seu ID?</strong> Digite <strong>"CELULAR"</strong> no campo acima.<br>
+          Após instalar a Boleta, o ID aparecerá no rodapé do painel para futuras assinaturas.
+        </div>
+      </div>
       
       <!-- ⭐ BOTÃO DE AJUDA DO TERMINAL ⭐ -->
       <div style="text-align:center; margin-bottom:.8rem;">
           <button type="button" onclick="mostrarAjudaTerminal()" class="btn-ajuda-terminal">
-              🔍 NÃO SEI MEU ID TERMINAL MT5 - CLIQUE AQUI
+              🔍 NÃO SEI MEU ID TERMINAL - CLIQUE AQUI
           </button>
       </div>
       
@@ -397,7 +422,13 @@
       </div>
       <div class="fg"><label>E-mail *</label><input type="email" id="compEmail" required></div>
       <div class="fg"><label>Plano *</label><select id="compPlano" required><option value="">Selecione...</option><option>BRONZE</option><option>PRATA</option><option>OURO</option><option>DIAMANTE</option><option>ELITE</option></select></div>
-      <div class="fg"><label>ID Terminal *</label><input type="text" id="compTerminal" required></div>
+      <div class="fg">
+        <label>ID Terminal *</label>
+        <input type="text" id="compTerminal" required placeholder="Após instalar a Boleta, o ID aparece no rodapé do painel">
+        <small style="color:#8888a8; font-size:.7rem; margin-top:.3rem;">
+          💡 O ID do Terminal aparece no <strong>rodapé da Boleta</strong> após a instalação.
+        </small>
+      </div>
       <div class="fg"><label>Comprovante (código ou link)</label><input type="text" id="compCodigo" placeholder="Código da transação ou link"></div>
       <button type="submit" class="btn-primary" id="btnComprovante" style="width:100%;padding:.9rem">📩 ENVIAR COMPROVANTE</button>
     </form>
@@ -447,18 +478,20 @@
 </footer>
 
 <!-- ═══════════════════════════════════════════ -->
-<!-- ⭐ MODAL DE AJUDA DO TERMINAL ⭐ -->
+<!-- ⭐ MODAL AJUDA TERMINAL ⭐ -->
 <!-- ═══════════════════════════════════════════ -->
 <div class="modal-terminal-overlay" id="modalAjudaTerminal">
     <div class="modal-terminal-box">
-        <h3>🔍 Como encontrar seu ID Terminal</h3>
+        <h3>🔍 Sobre o ID do Terminal</h3>
         
-        <div class="passos">
-            <p><span>📌 Passo 1:</span> Abra o <strong>MetaTrader 5</strong> no seu computador</p>
-            <p><span>📌 Passo 2:</span> No menu superior, clique em <strong>Ajuda</strong></p>
-            <p><span>📌 Passo 3:</span> Depois clique em <strong>Sobre</strong></p>
-            <p><span>📌 Passo 4:</span> Na janela, procure <strong>"Terminal"</strong></p>
-            <p><span>📌 Passo 5:</span> Copie o número e cole no campo ID Terminal</p>
+        <div class="info-box">
+            <p><strong style="color:#c9a84c;">📌 Para o TESTE GRÁTIS:</strong></p>
+            <p>Não se preocupe! Digite <span class="destaque">"CELULAR"</span> no campo ID Terminal.</p>
+            <p>O teste vai funcionar normalmente!</p>
+            
+            <p style="margin-top:15px;"><strong style="color:#c9a84c;">📌 Para a ASSINATURA:</strong></p>
+            <p>Após instalar a <strong>Boleta Trade Winner Pro</strong> no MT5, o <span class="destaque">ID do Terminal</span> aparecerá no <strong>rodapé do painel</strong> da Boleta.</p>
+            <p>Use esse ID para ativar sua licença.</p>
         </div>
         
         <div class="exemplo">
@@ -469,11 +502,12 @@
             <strong style="color:#e8c96a;">⚠️ Importante:</strong><br>
             • O ID do Terminal é <strong>único por computador</strong><br>
             • Mesmo tendo várias contas (demo/real), o ID é o <strong>mesmo</strong><br>
-            • Só muda se instalar o MT5 em outro PC
+            • O MT5 só funciona no computador (Windows/Mac)<br>
+            • <strong>No celular, digite "CELULAR" para o teste</strong>
         </p>
         
         <button class="btn-fechar-modal" onclick="fecharAjudaTerminal()">
-            ✅ ENTENDI! JÁ TENHO MEU ID
+            ✅ ENTENDI!
         </button>
     </div>
 </div>
@@ -488,23 +522,16 @@
 <!-- ═══════════════════════════════════════════ -->
 <script>
 (function(){
-    // ═══════════════════════════════════════════
-    // ⭐ INICIALIZAÇÃO DO EMAILJS ⭐
-    // ═══════════════════════════════════════════
+    // ⭐ INICIALIZAÇÃO DO EMAILJS
     emailjs.init("w0fvMYDTwWsWL5hnS");
     
-    // ═══════════════════════════════════════════
-    // ⭐ CONSTANTES ⭐
-    // ═══════════════════════════════════════════
+    // ⭐ CONSTANTES
     const SALT="TWPRO-SALT-2025";
     const LINK_EA="https://tradewinnerpro.github.io/.com.br/TRADE_WINNER_PRO_V1.1.ex5";
     const LINK_PDF="https://tradewinnerpro.github.io/.com.br/Manual_TRADE_WINNER.pdf";
     const SEU_WATS="5541999765210";
-    const SEU_EMAIL="tradewinnerpro@gmail.com";
 
-    // ═══════════════════════════════════════════
-    // ⭐ FUNÇÃO: GERAR CHAVE ⭐
-    // ═══════════════════════════════════════════
+    // ⭐ FUNÇÃO: GERAR CHAVE
     function gerarChave(terminal){
         let d=terminal+SALT,h=0;
         for(let i=0;i<d.length;i++){let c=d.charCodeAt(i);h=((h<<5)-h)+c;h=h&0x7FFFFFFF}
@@ -513,36 +540,23 @@
         return "LATAO-"+l.charAt(p1%l.length)+l.charAt(p2%l.length)+l.charAt(p3%l.length)+"-"+String(p1).padStart(4,'0')+"-"+String(p2%1000).padStart(3,'0')+"-"+String(p3%1000).padStart(3,'0');
     }
 
-    // ═══════════════════════════════════════════
-    // ⭐ FUNÇÃO: VERIFICAR TESTE ⭐
-    // ═══════════════════════════════════════════
+    // ⭐ FUNÇÃO: VERIFICAR TESTE
     function verificaTeste(terminal){
         let db=localStorage.getItem('twpro_testes_db');
         let t=db?JSON.parse(db):{};
-        
         if(t[terminal]){
             let d=new Date(t[terminal].dataSolicitacao);
             let h=new Date();
             let diff=Math.ceil((h-d)/86400000);
-            
-            if(diff<=7 && t[terminal].testeAtivo) {
-                return {ok:false,msg:'⚠️ Terminal já tem teste ativo! Dias restantes: '+(7-diff)};
-            }
-            
-            if(t[terminal].totalTestes>=2) {
-                return {ok:false,msg:'⚠️ Limite de 2 testes atingido para este terminal!'};
-            }
-            
-            t[terminal].testeAtivo = false;
+            if(diff<=7 && t[terminal].testeAtivo) return {ok:false,msg:'⚠️ Terminal já tem teste ativo! Dias restantes: '+(7-diff)};
+            if(t[terminal].totalTestes>=2) return {ok:false,msg:'⚠️ Limite de 2 testes atingido!'};
+            t[terminal].testeAtivo=false;
             localStorage.setItem('twpro_testes_db',JSON.stringify(t));
         }
-        
         return {ok:true};
     }
 
-    // ═══════════════════════════════════════════
-    // ⭐ EVENTO: BOTÃO TESTE GRÁTIS ⭐
-    // ═══════════════════════════════════════════
+    // ⭐ EVENTO: BOTÃO TESTE GRÁTIS
     document.getElementById('btnTeste').addEventListener('click',function(e){
         e.preventDefault();
         
@@ -553,6 +567,12 @@
         
         if(!nome||!whatsapp||!email||!terminal){alert('⚠️ Preencha todos os campos!');return;}
         
+        // ⭐ SE O USUÁRIO DIGITOU "CELULAR"
+        if(terminal.toUpperCase() === 'CELULAR'){
+            terminal = 'CELULAR-' + Date.now();
+            alert('📱 Tudo bem! Cadastro realizado com sucesso!\n\nQuando instalar a Boleta no MT5, o ID do Terminal aparecerá no rodapé do painel.\n\nUse esse ID para futuras assinaturas.');
+        }
+        
         let v=verificaTeste(terminal);
         if(!v.ok){alert(v.msg);return;}
         
@@ -562,9 +582,7 @@
         let expiraFormatada=expira.toLocaleDateString('pt-BR');
         let dataAgora=hoje.toLocaleDateString('pt-BR')+' '+hoje.toLocaleTimeString('pt-BR');
         
-        // ═══════════════════════════════════════
-        // ⭐ SALVAR NO LOCALSTORAGE ⭐
-        // ═══════════════════════════════════════
+        // Salvar no localStorage
         let clientes=JSON.parse(localStorage.getItem('twpro_gerador_db')||'[]');
         clientes.push({
             id:Date.now(),nome:nome,whats:whatsapp,email:email,terminal:terminal,
@@ -573,18 +591,13 @@
             dataCadastro:hoje.toISOString(),expira:expira.toISOString()
         });
         localStorage.setItem('twpro_gerador_db',JSON.stringify(clientes));
-        console.log('✅ Cliente salvo no localStorage. Total: '+clientes.length);
         
-        // ═══════════════════════════════════════
-        // ⭐ NOTIFICAÇÃO PARA O PAINEL ⭐
-        // ═══════════════════════════════════════
+        // Notificação para o painel
         let nots=JSON.parse(localStorage.getItem('twpro_notificacoes')||'[]');
         nots.unshift({id:Date.now(),tipo:'teste',nome:nome,whatsapp:whatsapp,email:email,terminal:terminal,chave:chave,plano:'LATAO 7 dias',data:new Date().toISOString(),lida:false});
         localStorage.setItem('twpro_notificacoes',JSON.stringify(nots));
         
-        // ═══════════════════════════════════════
-        // ⭐ ANTI-ABUSO ⭐
-        // ═══════════════════════════════════════
+        // Anti-abuso
         let db=localStorage.getItem('twpro_testes_db');
         let testes=db?JSON.parse(db):{};
         if(!testes[terminal]) testes[terminal]={totalTestes:0,historico:[],testeAtivo:false};
@@ -593,57 +606,25 @@
         testes[terminal].testeAtivo=true;
         localStorage.setItem('twpro_testes_db',JSON.stringify(testes));
         
-        // ═══════════════════════════════════════
-        // ⭐ ENVIAR EMAIL PARA O DONO ⭐
-        // ═══════════════════════════════════════
-        var templateParamsDono = {
+        // Email DONO
+        emailjs.send("service_kqme5zs","template_4xqebas",{
             to_email: "tradewinnerpro@gmail.com",
-            nome: nome,
-            whatsapp: whatsapp,
-            email_cliente: email,
-            terminal_id: terminal,
-            chave: chave,
-            plano: "LATAO 7 dias GRÁTIS",
-            validade: expiraFormatada,
+            nome: nome, whatsapp: whatsapp, email_cliente: email,
+            terminal_id: terminal, chave: chave,
+            plano: "LATAO 7 dias GRÁTIS", validade: expiraFormatada,
             data_cadastro: dataAgora
-        };
-        console.log('Enviando email DONO:', templateParamsDono);
-        
-        emailjs.send("service_kqme5zs","template_4xqebas", templateParamsDono)
-        .then(function(response){
-            console.log('✅ Email DONO enviado! Status: '+response.status);
-        }).catch(function(err){
-            console.warn('⚠️ Email dono erro:', err);
-        });
+        }).then(function(r){console.log('✅ Email DONO OK');}).catch(function(e){console.log('⚠️ Erro dono:',e);});
 
-        // ═══════════════════════════════════════
-        // ⭐ ENVIAR EMAIL PARA O CLIENTE ⭐
-        // ═══════════════════════════════════════
-        var templateParamsCliente = {
-            to_email: email,
-            to_name: nome,
-            nome: nome,
-            chave: chave,
-            expira: expiraFormatada,
+        // Email CLIENTE
+        emailjs.send("service_kqme5zs","template_rlrvpbm",{
+            to_email: email, to_name: nome, nome: nome,
+            chave: chave, expira: expiraFormatada,
             plano: "LATAO 7 dias GRÁTIS",
-            link_ea: LINK_EA,
-            link_pdf: LINK_PDF,
-            whatsapp: whatsapp,
-            terminal_id: terminal,
-            validade: expiraFormatada
-        };
-        console.log('Enviando email CLIENTE:', templateParamsCliente);
-        
-        emailjs.send("service_kqme5zs","template_rlrvpbm", templateParamsCliente)
-        .then(function(response){
-            console.log('✅ Email CLIENTE enviado! Status: '+response.status);
-        }).catch(function(err){
-            console.warn('⚠️ Email cliente erro:', err);
-        });
+            link_ea: LINK_EA, link_pdf: LINK_PDF,
+            whatsapp: whatsapp, terminal_id: terminal, validade: expiraFormatada
+        }).then(function(r){console.log('✅ Email CLIENTE OK');}).catch(function(e){console.log('⚠️ Erro cliente:',e);});
 
-        // ═══════════════════════════════════════
-        // ⭐ WHATSAPP DO CLIENTE ⭐
-        // ═══════════════════════════════════════
+        // WhatsApp Cliente
         let nc=whatsapp.replace(/\D/g,'');
         let mc='🎯 *TRADE WINNER PRO - Teste Ativado!*\n\n'+
                'Olá *'+nome+'*!\n\n'+
@@ -657,94 +638,60 @@
                '1. Instale o EA no MT5\n'+
                '2. No painel, clique em ATIVAR LICENÇA\n'+
                '3. Cole a chave acima\n\n'+
+               '💡 *Importante:* O ID do Terminal aparece no rodapé da Boleta após instalação.\n'+
+               'Use esse ID para futuras assinaturas.\n\n'+
                '📞 *Dúvidas?* (41) 99976-5210\n\n'+
                'Bons trades! 📈';
         window.open('https://wa.me/'+nc+'?text='+encodeURIComponent(mc),'_blank');
 
         document.getElementById('formTeste').reset();
-        alert('✅ CADASTRO REALIZADO!\n\n🔰 LATÃO 7 dias GRÁTIS\n👤 '+nome+'\n🔑 '+chave+'\n📅 Até '+expiraFormatada+'\n\n📧 Email enviado para você e para o cliente!');
+        alert('✅ CADASTRO REALIZADO!\n\n🔰 LATÃO 7 dias GRÁTIS\n👤 '+nome+'\n🔑 '+chave+'\n📅 Até '+expiraFormatada+'\n\n📱 WhatsApp com dados enviado!\n📧 Emails enviados!');
     });
 
-    // ═══════════════════════════════════════════
-    // ⭐ EVENTO: BOTÃO COMPROVANTE ⭐
-    // ═══════════════════════════════════════════
+    // ⭐ EVENTO: BOTÃO COMPROVANTE
     document.getElementById('btnComprovante').addEventListener('click',function(e){
         e.preventDefault();
 
-        let nome      = document.getElementById('compNome').value.trim();
-        let whatsapp  = document.getElementById('compWhats').value.trim();
-        let email     = document.getElementById('compEmail').value.trim();
-        let plano     = document.getElementById('compPlano').value.trim();
-        let terminal  = document.getElementById('compTerminal').value.trim();
-        let codigo    = document.getElementById('compCodigo').value.trim();
+        let nome=document.getElementById('compNome').value.trim();
+        let whatsapp=document.getElementById('compWhats').value.trim();
+        let email=document.getElementById('compEmail').value.trim();
+        let plano=document.getElementById('compPlano').value.trim();
+        let terminal=document.getElementById('compTerminal').value.trim();
+        let codigo=document.getElementById('compCodigo').value.trim();
 
         if(!nome||!whatsapp||!email||!plano||!terminal){
             alert('⚠️ Preencha todos os campos obrigatórios!');return;
         }
 
-        let btn = document.getElementById('btnComprovante');
-        btn.disabled = true;
-        btn.textContent = '⏳ Enviando...';
-        
+        let btn=document.getElementById('btnComprovante');
+        btn.disabled=true;
+        btn.textContent='⏳ Enviando...';
         let dataAgora=new Date().toLocaleDateString('pt-BR')+' '+new Date().toLocaleTimeString('pt-BR');
 
-        // Email DONO - Comprovante
-        var templateParamsDonoComp = {
-            to_email: "tradewinnerpro@gmail.com",
-            nome: nome,
-            whatsapp: whatsapp,
-            email_cliente: email,
-            terminal_id: terminal,
-            chave: codigo||'Não informado',
-            plano: plano+' — COMPROVANTE',
-            validade: 'Aguardando ativação',
-            data_cadastro: dataAgora
-        };
-        
-        emailjs.send("service_kqme5zs","template_4xqebas", templateParamsDonoComp)
-        .then(function(response){
-            console.log('✅ Comprovante DONO enviado!');
-        }).catch(function(err){
-            console.warn('⚠️ Erro comprovante dono:', err);
-        });
+        emailjs.send("service_kqme5zs","template_4xqebas",{
+            to_email:"tradewinnerpro@gmail.com", nome:nome, whatsapp:whatsapp,
+            email_cliente:email, terminal_id:terminal,
+            chave:codigo||'Não informado', plano:plano+' — COMPROVANTE',
+            validade:'Aguardando ativação', data_cadastro:dataAgora
+        }).then(function(r){console.log('✅ Comprovante OK');}).catch(function(e){console.log('⚠️ Erro:',e);});
 
-        // Email CLIENTE - Confirmação
-        var templateParamsCliComp = {
-            to_email: email,
-            to_name: nome,
-            nome: nome,
-            chave: '⏳ Sua chave será enviada em breve após confirmação do pagamento',
-            expira: 'A definir após ativação',
-            plano: plano,
-            link_ea: LINK_EA,
-            link_pdf: LINK_PDF,
-            whatsapp: whatsapp,
-            terminal_id: terminal,
-            validade: 'A definir após ativação'
-        };
-        
-        emailjs.send("service_kqme5zs","template_rlrvpbm", templateParamsCliComp)
-        .then(function(response){
-            console.log('✅ Confirmação CLIENTE enviada!');
-        }).catch(function(err){
-            console.warn('⚠️ Erro comprovante cliente:', err);
-        });
+        emailjs.send("service_kqme5zs","template_rlrvpbm",{
+            to_email:email, to_name:nome, nome:nome,
+            chave:'⏳ Sua chave será enviada após confirmação do pagamento',
+            expira:'A definir após ativação', plano:plano,
+            link_ea:LINK_EA, link_pdf:LINK_PDF,
+            whatsapp:whatsapp, terminal_id:terminal, validade:'A definir após ativação'
+        }).then(function(r){console.log('✅ Confirmação OK');}).catch(function(e){console.log('⚠️ Erro:',e);});
 
-        // Salvar notificação
         let nots=JSON.parse(localStorage.getItem('twpro_notificacoes')||'[]');
-        nots.unshift({
-            id:Date.now(),tipo:'comprovante',nome:nome,whatsapp:whatsapp,
-            email:email,terminal:terminal,chave:codigo||'pendente',
-            plano:plano,data:new Date().toISOString(),lida:false
-        });
+        nots.unshift({id:Date.now(),tipo:'comprovante',nome:nome,whatsapp:whatsapp,email:email,terminal:terminal,chave:codigo||'pendente',plano:plano,data:new Date().toISOString(),lida:false});
         localStorage.setItem('twpro_notificacoes',JSON.stringify(nots));
 
         document.getElementById('formComprovante').reset();
         document.getElementById('compSucesso').style.display='block';
-        btn.disabled = false;
-        btn.textContent = '📩 ENVIAR COMPROVANTE';
-
-        alert('✅ COMPROVANTE ENVIADO!\n\n👤 '+nome+'\n🏷️ Plano: '+plano+'\n\n📧 Confirmação enviada para seu email!\nEntraremos em contato em breve para ativar sua licença.');
+        btn.disabled=false;
+        btn.textContent='📩 ENVIAR COMPROVANTE';
+        alert('✅ COMPROVANTE ENVIADO!\n\n👤 '+nome+'\n🏷️ Plano: '+plano+'\n\n📧 Confirmação enviada!\nEntraremos em contato para ativar sua licença.');
     });
 })();
 </script>
@@ -753,17 +700,26 @@
 <!-- ⭐ SCRIPT DO MODAL DE AJUDA ⭐ -->
 <!-- ═══════════════════════════════════════════ -->
 <script>
-    // Função para ABRIR o modal de ajuda do terminal
+    // Detectar se é celular e mostrar aviso
+    function isMobile() {
+        return /Android|iPhone|iPad|iPod|webOS/i.test(navigator.userAgent);
+    }
+    if (isMobile()) {
+        document.getElementById('avisoCelular').classList.add('show');
+        document.getElementById('testeTerminal').placeholder = 'Digite "CELULAR" aqui';
+    }
+    
+    // Abrir modal de ajuda
     function mostrarAjudaTerminal() {
         document.getElementById('modalAjudaTerminal').classList.add('show');
     }
     
-    // Função para FECHAR o modal de ajuda do terminal
+    // Fechar modal de ajuda
     function fecharAjudaTerminal() {
         document.getElementById('modalAjudaTerminal').classList.remove('show');
     }
     
-    // Fecha o modal clicando fora dele (no fundo escuro)
+    // Fechar modal clicando fora
     document.getElementById('modalAjudaTerminal').addEventListener('click', function(e) {
         if (e.target === this) {
             fecharAjudaTerminal();
