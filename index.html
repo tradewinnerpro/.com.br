@@ -87,6 +87,9 @@
     .fg input:focus,.fg select:focus{outline:none;border-color:var(--gold)}
     .notice-green{font-size:.75rem;color:var(--green);background:rgba(62,207,142,.05);border:1px solid rgba(62,207,142,.15);border-radius:6px;padding:.7rem .9rem;margin-top:.5rem;text-align:center}
     .ticker-wrap{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(15,15,21,0.9);overflow:hidden;padding:.4rem 0}
+    .alerta-whatsapp{background:rgba(37,211,102,0.08);border:2px solid #25d366;border-radius:12px;padding:1.2rem;text-align:center;margin-top:1.2rem;display:none}
+    .alerta-whatsapp.show{display:block}
+    .alerta-whatsapp a{display:inline-block;background:#25d366;color:#fff;padding:.7rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:.85rem;margin-top:.5rem}
   </style>
 </head>
 <body>
@@ -189,9 +192,13 @@
   </div>
 </section>
 
-<!-- FORMULÁRIO TESTE GRÁTIS -->
+<!-- ══ FORMULÁRIO TESTE GRÁTIS ══ -->
 <section class="sec-pad signup" id="cadastro-teste">
-  <div class="sec-center"><span class="sec-label">Teste Grátis</span><h2 class="sec-title">Comece agora</h2><p class="sec-desc">7 dias grátis. Sem compromisso.</p></div>
+  <div class="sec-center">
+    <span class="sec-label">Teste Grátis</span>
+    <h2 class="sec-title">Comece a mudar seus resultados hoje</h2>
+    <p class="sec-desc">Sem cartão. Sem compromisso. Apenas seus dados para receber a Boleta.</p>
+  </div>
   <div class="signup-box">
     <form id="formTeste" onsubmit="return false;">
       <input type="hidden" name="tipo" value="TESTE_GRATIS">
@@ -204,12 +211,23 @@
       <button type="submit" class="btn-primary" id="btnTeste" style="width:100%;padding:.9rem;font-size:.95rem">🎯 QUERO TESTAR 7 DIAS GRÁTIS</button>
     </form>
     <div class="notice-green" style="margin-top:1rem">✅ Chave enviada por WhatsApp e Email</div>
+
+    <!-- ⭐ ALERTA WHATSAPP DO DONO ⭐ -->
+    <div class="alerta-whatsapp" id="alertaDono">
+      <p style="color:#25d366;font-weight:600;margin-bottom:.3rem">📱 CLIQUE NO BOTÃO ABAIXO</p>
+      <p style="font-size:.75rem;color:var(--text2);margin-bottom:.5rem">Para receber os dados deste cadastro no seu WhatsApp</p>
+      <a href="#" id="linkDonoWhats" target="_blank" rel="noopener">📲 RECEBER DADOS NO WHATSAPP</a>
+    </div>
   </div>
 </section>
 
-<!-- FORMULÁRIO COMPROVANTE -->
+<!-- ══ FORMULÁRIO COMPROVANTE ══ -->
 <section class="sec-pad signup" id="cadastro-comprovante" style="background:rgba(15,15,21,0.9)">
-  <div class="sec-center"><span class="sec-label">Ativação</span><h2 class="sec-title">Já assinou?</h2></div>
+ <div class="sec-center">
+     <span class="sec-label">Ativação de Licença</span>
+    <h2 class="sec-title">Já fez sua assinatura?</h2>
+    <p class="sec-desc">Envie o comprovante para liberarmos sua licença em minutos.</p>
+  </div>
   <div class="signup-box">
     <form id="formComprovante" onsubmit="return false;">
       <div class="form-row">
@@ -222,9 +240,11 @@
       <div class="fg"><label>Comprovante (código ou link)</label><input type="text" id="compCodigo" placeholder="Código da transação ou link"></div>
       <button type="submit" class="btn-primary" id="btnComprovante" style="width:100%;padding:.9rem">📩 ENVIAR COMPROVANTE</button>
     </form>
+    <div class="notice-green" id="compSucesso" style="margin-top:1rem;display:none">✅ Comprovante enviado! Em breve entraremos em contato.</div>
   </div>
 </section>
 
+<!-- ⭐⭐⭐ FOOTER ⭐⭐⭐ -->
 <footer style="border-top:1px solid var(--border);background:#0a0a10;padding:3rem clamp(1.5rem,6vw,5rem) 1.5rem;position:relative;z-index:10">
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2.5rem;max-width:1200px;margin:0 auto 2rem">
     <div>
@@ -263,15 +283,17 @@
   </div>
 </footer>
 
-<!-- EmailJS + Script -->
+<!-- ⭐⭐⭐ SCRIPTS ⭐⭐⭐ -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>
 (function(){
     emailjs.init("w0fvMYDTwWsWL5hnS");
     
     const SALT="TWPRO-SALT-2025";
-    const LINK_EA="https://comodoro91-oss.github.io/tradewinner-boleta/TRADE_WINNER_PRO_V1.1.ex5";
-    const LINK_PDF="https://comodoro91-oss.github.io/tradewinner-boleta/Manual_TRADE_WINNER.pdf";
+    const LINK_EA="https://https://tradewinnerpro.github.io/.com.br/TRADE_WINNER_PRO_V1.1.ex5";
+    const LINK_PDF="https://https://tradewinnerpro.github.io/.com.br//Manual_TRADE_WINNER.pdf";
+    const SEU_WATS="5541999765210";
+    const SEU_EMAIL="tradewinnerpro@gmail.com";
 
     function gerarChave(terminal){
         let d=terminal+SALT,h=0;
@@ -284,20 +306,30 @@
     function verificaTeste(terminal){
         let db=localStorage.getItem('twpro_testes_db');
         let t=db?JSON.parse(db):{};
+        
         if(t[terminal]){
             let d=new Date(t[terminal].dataSolicitacao);
             let h=new Date();
             let diff=Math.ceil((h-d)/86400000);
-            if(diff<=7 && t[terminal].testeAtivo) return {ok:false,msg:'⚠️ Terminal já tem teste ativo! Dias restantes: '+(7-diff)};
-            if(t[terminal].totalTestes>=2) return {ok:false,msg:'⚠️ Limite de 2 testes atingido!'};
-            t[terminal].testeAtivo=false;
+            
+            if(diff<=7 && t[terminal].testeAtivo) {
+                return {ok:false,msg:'⚠️ Terminal já tem teste ativo! Dias restantes: '+(7-diff)};
+            }
+            
+            if(t[terminal].totalTestes>=2) {
+                return {ok:false,msg:'⚠️ Limite de 2 testes atingido para este terminal!'};
+            }
+            
+            t[terminal].testeAtivo = false;
             localStorage.setItem('twpro_testes_db',JSON.stringify(t));
         }
+        
         return {ok:true};
     }
 
     document.getElementById('btnTeste').addEventListener('click',function(e){
         e.preventDefault();
+        
         let nome=document.getElementById('testeNome').value.trim();
         let whatsapp=document.getElementById('testeWhats').value.trim();
         let email=document.getElementById('testeEmail').value.trim();
@@ -313,7 +345,6 @@
         let expira=new Date(hoje);expira.setDate(hoje.getDate()+7);
         let expiraFormatada=expira.toLocaleDateString('pt-BR');
         
-        // Salva no localStorage
         let clientes=JSON.parse(localStorage.getItem('twpro_gerador_db')||'[]');
         clientes.push({
             id:Date.now(),nome:nome,whats:whatsapp,email:email,terminal:terminal,
@@ -323,12 +354,10 @@
         });
         localStorage.setItem('twpro_gerador_db',JSON.stringify(clientes));
         
-        // Notificação
         let nots=JSON.parse(localStorage.getItem('twpro_notificacoes')||'[]');
         nots.unshift({id:Date.now(),tipo:'teste',nome:nome,whatsapp:whatsapp,email:email,terminal:terminal,chave:chave,plano:'LATAO 7 dias',data:new Date().toISOString(),lida:false});
         localStorage.setItem('twpro_notificacoes',JSON.stringify(nots));
         
-        // Anti-abuso
         let db=localStorage.getItem('twpro_testes_db');
         let testes=db?JSON.parse(db):{};
         if(!testes[terminal]) testes[terminal]={totalTestes:0,historico:[],testeAtivo:false};
@@ -345,12 +374,14 @@
             email: email,
             terminal_id: terminal,
             chave: chave,
-            plano: "LATAO 7 dias GRÁTIS",
-            validade: expiraFormatada,
-            link_ea: LINK_EA,
-            link_pdf: LINK_PDF
-        }).then(function(r){console.log('✅ Email DONO OK');}).catch(function(e){console.log('⚠️ Erro dono:',e);});
-        
+            plano: "LATAO 7 dias",
+            validade: expiraFormatada
+        }).then(function(){
+            console.log('✅ Email DONO enviado!');
+        }).catch(function(err){
+            console.warn('⚠️ Email dono erro:',err);
+        });
+
         // ⭐ EMAIL CLIENTE ⭐
         emailjs.send("service_kqme5zs","template_rlrvpbm",{
             to_email: email,
@@ -364,8 +395,12 @@
             whatsapp: whatsapp,
             terminal_id: terminal,
             validade: expiraFormatada
-        }).then(function(r){console.log('✅ Email CLIENTE OK');}).catch(function(e){console.log('⚠️ Erro cliente:',e);});
-        
+        }).then(function(){
+            console.log('✅ Email CLIENTE enviado!');
+        }).catch(function(err){
+            console.warn('⚠️ Email cliente erro:',err);
+        });
+
         // WhatsApp Cliente
         let nc=whatsapp.replace(/\D/g,'');
         let mc='🎯 *TRADE WINNER PRO - Teste Ativado!*\n\n'+
@@ -383,35 +418,77 @@
                '📞 *Dúvidas?* (41) 99976-5210\n\n'+
                'Bons trades! 📈';
         window.open('https://wa.me/'+nc+'?text='+encodeURIComponent(mc),'_blank');
-        
+
         document.getElementById('formTeste').reset();
-        alert('✅ CADASTRO REALIZADO!\n\n🔰 LATÃO 7 dias GRÁTIS\n👤 '+nome+'\n🔑 '+chave+'\n📅 Até '+expiraFormatada+'\n\n📱 WhatsApp com dados já foi aberto!\n📧 Emails enviados!');
+        alert('✅ CADASTRO REALIZADO!\n\n🔰 LATÃO 7 dias GRÁTIS\n👤 '+nome+'\n🔑 '+chave+'\n📅 Até '+expiraFormatada+'\n\n📧 Email enviado para você e para o cliente!');
     });
 
-    // Comprovante
+    // ⭐ FORMULÁRIO COMPROVANTE ⭐
     document.getElementById('btnComprovante').addEventListener('click',function(e){
         e.preventDefault();
-        let nome=document.getElementById('compNome').value.trim();
-        let whatsapp=document.getElementById('compWhats').value.trim();
-        let email=document.getElementById('compEmail').value.trim();
-        let plano=document.getElementById('compPlano').value.trim();
-        let terminal=document.getElementById('compTerminal').value.trim();
-        let codigo=document.getElementById('compCodigo').value.trim();
-        if(!nome||!whatsapp||!email||!plano||!terminal){alert('⚠️ Preencha todos os campos!');return;}
-        
+
+        let nome      = document.getElementById('compNome').value.trim();
+        let whatsapp  = document.getElementById('compWhats').value.trim();
+        let email     = document.getElementById('compEmail').value.trim();
+        let plano     = document.getElementById('compPlano').value.trim();
+        let terminal  = document.getElementById('compTerminal').value.trim();
+        let codigo    = document.getElementById('compCodigo').value.trim();
+
+        if(!nome||!whatsapp||!email||!plano||!terminal){
+            alert('⚠️ Preencha todos os campos obrigatórios!');return;
+        }
+
+        let btn = document.getElementById('btnComprovante');
+        btn.disabled = true;
+        btn.textContent = '⏳ Enviando...';
+
         emailjs.send("service_kqme5zs","template_4xqebas",{
-            to_email: "tradewinnerpro@gmail.com",
-            nome: nome,
-            whatsapp: whatsapp,
-            email: email,
+            to_email:    "tradewinnerpro@gmail.com",
+            nome:        nome,
+            whatsapp:    whatsapp,
+            email:       email,
             terminal_id: terminal,
-            chave: codigo||'(aguardando)',
-            plano: plano+' - COMPROVANTE',
-            validade: 'Aguardando ativação'
-        }).then(function(r){console.log('✅ Comprovante OK');}).catch(function(e){console.log('⚠️ Erro:',e);});
-        
-        alert('✅ COMPROVANTE ENVIADO!\n\n👤 '+nome+'\n🏷️ Plano: '+plano+'\n📧 Entraremos em contato!');
+            chave:       codigo||'(aguardando geração)',
+            plano:       plano+' — COMPROVANTE',
+            validade:    'Aguardando ativação'
+        }).then(function(){
+            console.log('✅ Comprovante enviado para o DONO!');
+        }).catch(function(err){
+            console.warn('⚠️ EmailJS dono comprovante:',err);
+        });
+
+        emailjs.send("service_kqme5zs","template_rlrvpbm",{
+            to_email: email,
+            to_name:  nome,
+            nome: nome,
+            chave: '⏳ Sua chave será enviada em breve após confirmação do pagamento',
+            expira: 'A definir após ativação',
+            plano: plano,
+            link_ea: LINK_EA,
+            link_pdf: LINK_PDF,
+            whatsapp: whatsapp,
+            terminal_id: terminal,
+            validade: 'A definir após ativação'
+        }).then(function(){
+            console.log('✅ Confirmação enviada para o CLIENTE!');
+        }).catch(function(err){
+            console.warn('⚠️ EmailJS cliente comprovante:',err);
+        });
+
+        let nots=JSON.parse(localStorage.getItem('twpro_notificacoes')||'[]');
+        nots.unshift({
+            id:Date.now(),tipo:'comprovante',nome:nome,whatsapp:whatsapp,
+            email:email,terminal:terminal,chave:codigo||'pendente',
+            plano:plano,data:new Date().toISOString(),lida:false
+        });
+        localStorage.setItem('twpro_notificacoes',JSON.stringify(nots));
+
         document.getElementById('formComprovante').reset();
+        document.getElementById('compSucesso').style.display='block';
+        btn.disabled = false;
+        btn.textContent = '📩 ENVIAR COMPROVANTE';
+
+        alert('✅ COMPROVANTE ENVIADO!\n\n👤 '+nome+'\n🏷️ Plano: '+plano+'\n\n📧 Confirmação enviada para seu email!\nEntraremos em contato em breve para ativar sua licença.');
     });
 })();
 </script>
