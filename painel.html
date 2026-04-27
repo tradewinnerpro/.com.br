@@ -3,16 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>TRADE WINNER PRO · Painel de Controle</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    :root{--bg:#09090d;--bg2:#0f0f15;--surface:#13131a;--border:#1f1f2a;--border2:#2a2a38;--gold:#c9a84c;--gold2:#e8c96a;--text:#e8e8f0;--text2:#8888a8;--green:#3ecf8e;--red:#e05260}
-    *{margin:0;padding:0;box-sizin<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>TRADE WINNER PRO · Gerador de Chaves</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -35,6 +25,36 @@
       font-size: 16px; line-height: 1.6; overflow-x: hidden; min-height: 100vh;
     }
     nav, .main-container, footer { position: relative; z-index: 10; }
+
+    /* ⭐ MODAL DE LOGIN ⭐ */
+    .login-overlay {
+      display: flex; position: fixed; inset: 0;
+      background: rgba(9, 9, 13, 0.95); backdrop-filter: blur(10px);
+      z-index: 999; align-items: center; justify-content: center;
+    }
+    .login-box {
+      background: var(--surface); border: 2px solid var(--gold);
+      border-radius: 20px; padding: 3rem 2.5rem; width: 90%; max-width: 420px;
+      text-align: center; box-shadow: 0 0 60px rgba(201,168,76,0.15);
+    }
+    .login-logo {
+      font-family: 'DM Mono', monospace; font-size: 1.5rem; font-weight: 900;
+      color: var(--gold2); letter-spacing: 3px; margin-bottom: 1.5rem;
+    }
+    .login-icon { font-size: 3.5rem; margin-bottom: 1rem; }
+    .login-box h2 { font-size: 1.3rem; margin-bottom: .5rem; color: var(--text); }
+    .login-box p { color: var(--text2); font-size: .8rem; margin-bottom: 1.5rem; }
+    .login-box input {
+      width: 100%; padding: .9rem 1.2rem; border-radius: 10px;
+      border: 1px solid var(--border2); background: var(--bg);
+      color: var(--text); font-size: 1rem; text-align: center;
+      font-family: 'DM Mono', monospace; letter-spacing: 3px;
+      transition: all .3s; margin-bottom: 1rem;
+    }
+    .login-box input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 20px rgba(201,168,76,0.2); }
+    .login-error { color: var(--red); font-size: .75rem; margin-bottom: .5rem; display: none; }
+    .login-error.show { display: block; animation: shake 0.5s ease; }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
 
     /* ── NAV ── */
     nav {
@@ -76,6 +96,13 @@
       transition: all .2s; font-family: 'DM Sans', sans-serif;
     }
     .btn-voltar:hover { border-color: var(--gold); color: var(--gold2); }
+    .btn-logout {
+      background: transparent; border: 1px solid var(--red);
+      color: var(--red); font-size: .7rem; padding: .4rem .8rem;
+      border-radius: 6px; cursor: pointer; transition: all .2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .btn-logout:hover { background: rgba(224,82,96,0.15); }
     .main-container { max-width: 900px; margin: 2rem auto; padding: 0 clamp(1rem, 3vw, 2rem); }
 
     /* ── HEADER ── */
@@ -136,7 +163,7 @@
     .btn-notif.email:hover { background: rgba(201,168,76,0.15); }
     .sem-notificacoes { text-align: center; padding: 2rem; color: var(--text2); font-size: 0.85rem; }
 
-    /* ⭐ PLANOS - BOTÕES CHAPADOS IGUAIS AO SITE ⭐ */
+    /* ⭐ PLANOS - BOTÕES CHAPADOS ⭐ */
     .planos-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-bottom: 1.5rem; }
     @media (max-width:900px){.planos-grid{grid-template-columns:repeat(3,1fr)}}
     @media(max-width:480px){.planos-grid{grid-template-columns:repeat(2,1fr);gap:4px}}
@@ -154,7 +181,6 @@
     .plano-dias { font-size: 0.7rem; font-weight: 500; margin: 1px 0; }
     .plano-valor { font-size: 0.65rem; font-weight: 600; font-family: 'DM Mono', monospace; }
 
-    /* Cores chapadas iguais aos botões do site */
     .plano-latao { background: #CD7F32; color: #FFF5E0; }
     .plano-latao .plano-nome, .plano-latao .plano-valor, .plano-latao .plano-dias { color: #FFF5E0; }
     .plano-latao.active { border-color: #FFF5E0; box-shadow: 0 0 10px rgba(205,127,50,0.4); }
@@ -224,7 +250,6 @@
     .btn-ghost:hover { border-color: var(--gold); color: var(--gold2); background: rgba(201,168,76,.05); }
     .btn-ghost.active { border-color: var(--gold); color: var(--gold2); background: rgba(201,168,76,0.1); }
 
-    /* Botões WhatsApp */
     .btn-whats-chave { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
     .btn-whats-chave:hover { background: rgba(201,168,76,0.15); }
     .btn-whats-cobranca { background: transparent; border: 1px solid #25d366; color: #25d366; }
@@ -275,7 +300,7 @@
     .btn-icon-delete { border-color: var(--red); color: var(--red); }
     .btn-icon-delete:hover { background: rgba(224,82,96,0.15); }
 
-    /* ⭐ STATUS CARDS - FUNDO SEMPRE IGUAL, SÓ BORDA MUDA ⭐ */
+    /* ⭐ STATUS CARDS ⭐ */
     .status-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 1.5rem; }
     @media(max-width:600px){.status-grid{grid-template-columns:repeat(2,1fr)}}
     .status-card {
@@ -311,6 +336,10 @@
     footer p { font-size: .7rem; color: var(--text2); }
     hr { margin: 20px 0; border-color: var(--border); }
 
+    /* ⭐ CONTEÚDO BLOQUEADO ⭐ */
+    .conteudo-bloqueado { display: none; }
+    .conteudo-bloqueado.desbloqueado { display: block; }
+
     @media(max-width:600px){
       nav{flex-wrap:wrap;height:auto;padding:.5rem 1rem}
       .nav-logo{font-size:.75rem}
@@ -321,6 +350,22 @@
   </style>
 </head>
 <body>
+
+<!-- ⭐⭐⭐ MODAL DE LOGIN ⭐⭐⭐ -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <div class="login-icon">🔐</div>
+    <div class="login-logo">TRADE WINNER PRO</div>
+    <h2>Painel de Gerenciamento</h2>
+    <p>Digite a senha mestra para acessar</p>
+    <input type="password" id="senhaLoginInput" placeholder="••••••••" autofocus onkeypress="if(event.key==='Enter')verificarSenha()">
+    <div class="login-error" id="loginError">⚠️ Senha incorreta! Tente novamente.</div>
+    <button class="btn-primary" onclick="verificarSenha()" style="margin-top:.5rem">🔓 ACESSAR PAINEL</button>
+  </div>
+</div>
+
+<!-- ══ CONTEÚDO PRINCIPAL (BLOQUEADO ATÉ LOGIN) ══ -->
+<div class="conteudo-bloqueado" id="conteudoPrincipal">
 
 <!-- ══ NAV ══ -->
 <nav>
@@ -334,14 +379,17 @@
       <span class="notif-badge" id="notifContador">0</span>
     </li>
   </ul>
-  <a href="index.html" class="btn-voltar">← Voltar ao Site</a>
+  <div style="display:flex;gap:8px;align-items:center">
+    <a href="index.html" class="btn-voltar">← Voltar ao Site</a>
+    <button class="btn-logout" onclick="fazerLogout()">🚪 SAIR</button>
+  </div>
 </nav>
 
 <!-- ══ CONTEÚDO ══ -->
 <div class="main-container">
 
   <div class="page-header" id="gerador">
-    <div class="page-tag"><span class="nav-logo-dot"></span>LICENSE MANAGER V7.91</div>
+    <div class="page-tag"><span class="nav-logo-dot"></span>LICENSE MANAGER V8.0</div>
     <h1 class="page-title">Gerador de <em>Chaves</em></h1>
     <p class="page-desc">Cadastre clientes e gerencie licenças</p>
   </div>
@@ -396,8 +444,6 @@
       <div class="data-box-label">📅 DATA DA COMPRA</div>
       <input type="date" id="dataCompraInput" style="background:rgba(9,9,13,0.8);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:.6rem .9rem;font-family:'DM Sans',sans-serif;font-size:.9rem;width:100%">
     </div>
-
-    <div class="fg"><label>Senha Mestra</label><input type="password" id="senhaMestraInput" placeholder="Digite a senha" value="TWPRO2025"></div>
 
     <button class="btn-primary" onclick="cadastrarCliente()">✨ GERAR CHAVE E CADASTRAR</button>
 
@@ -509,6 +555,8 @@ Suporte: (41) 99976-5210</textarea></div>
 
 <footer><p>© 2025 TRADE WINNER PRO · Gerador de Chaves</p></footer>
 
+</div><!-- FIM conteudo-bloqueado -->
+
 <!-- ══ SCRIPTS ══ -->
 <script>
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'})}})});
@@ -532,6 +580,86 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
     };
     let filtroStatus='todos',periodoAtual='tudo',planoSelecionado='LATAO',diasSelecionados=7,valorSelecionado=0;
     let ultimaChaveGerada='',ultimoClienteGerado=null;
+    let logado=false;
+    let notificacoesProcessadas=new Set();
+
+    // ⭐⭐⭐ SISTEMA DE LOGIN ⭐⭐⭐
+    window.verificarSenha=function(){
+        let senha=document.getElementById('senhaLoginInput').value;
+        if(senha===SENHA_MESTRA){
+            logado=true;
+            document.getElementById('loginOverlay').style.display='none';
+            document.getElementById('conteudoPrincipal').classList.add('desbloqueado');
+            document.getElementById('senhaLoginInput').value='';
+            document.getElementById('loginError').classList.remove('show');
+            carregarDados();
+            verificarNovosCadastros();
+        }else{
+            document.getElementById('loginError').classList.add('show');
+            document.getElementById('senhaLoginInput').value='';
+            setTimeout(()=>document.getElementById('loginError').classList.remove('show'),2000);
+        }
+    };
+
+    window.fazerLogout=function(){
+        logado=false;
+        document.getElementById('loginOverlay').style.display='flex';
+        document.getElementById('conteudoPrincipal').classList.remove('desbloqueado');
+        document.getElementById('senhaLoginInput').focus();
+    };
+
+    function verificarNovosCadastros(){
+        if(!logado)return;
+        let nots=JSON.parse(localStorage.getItem('twpro_notificacoes')||'[]');
+        let novasNotificacoes=nots.filter(n=>!notificacoesProcessadas.has(n.id));
+        
+        if(novasNotificacoes.length>0){
+            console.log('🆕 '+novasNotificacoes.length+' novo(s) cadastro(s) detectado(s)!');
+            
+            novasNotificacoes.forEach(n=>{
+                // Marca como processada
+                notificacoesProcessadas.add(n.id);
+                
+                // Envia email automaticamente para o cliente
+                enviarEmailAutomatico(n);
+            });
+            
+            renderizarNotificacoes();
+            atualizarContadorNotificacoes();
+        }
+    }
+
+    // ⭐ ENVIO AUTOMÁTICO DE EMAIL PARA O CLIENTE ⭐
+    function enviarEmailAutomatico(notificacao){
+        let msg=processarMsg('entrega',{
+            nome:notificacao.nome,
+            chave:notificacao.chave,
+            plano:notificacao.plano||'LATAO',
+            expira:new Date(Date.now()+7*86400000).toISOString()
+        });
+        
+        let fd=new FormData();
+        fd.append('nome',notificacao.nome);
+        fd.append('email',notificacao.email);
+        fd.append('whatsapp',notificacao.whatsapp);
+        fd.append('terminal_id',notificacao.terminal);
+        fd.append('chave_gerada',notificacao.chave);
+        fd.append('link_ea',LINK_EA);
+        fd.append('link_pdf',LINK_PDF);
+        fd.append('plano','LATAO 7 dias GRÁTIS');
+        fd.append('mensagem_completa',msg);
+        fd.append('_subject','🎯 TRADE WINNER PRO - Teste Ativado!');
+        
+        fetch('https://formspree.io/f/xgorqjba',{
+            method:'POST',
+            body:fd
+        })
+        .then(r=>{
+            console.log('✅ Email automático enviado para: '+notificacao.email);
+            console.log('📧 Dados: '+notificacao.nome+' | '+notificacao.chave);
+        })
+        .catch(err=>console.log('⚠️ Erro ao enviar email automático:',err));
+    }
 
     function gerarHashBase(terminal){
         let data=terminal+SALT;let hash=0;
@@ -548,9 +676,15 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         let cfg=localStorage.getItem('twpro_gerador_cfg');
         if(cfg){try{let s=JSON.parse(cfg);config={...config,...s}}catch(e){}}
         carregarInputsConfig();atualizarValoresPlanos();preencherDataHoje();renderizarTudo();atualizarContadorNotificacoes();
+        
+        // Carrega notificações já processadas
+        let proc=localStorage.getItem('twpro_notificacoes_processadas');
+        if(proc){try{notificacoesProcessadas=new Set(JSON.parse(proc))}catch(e){}}
     }
     function salvarDados(){localStorage.setItem('twpro_gerador_db',JSON.stringify(clientes))}
     function salvarConfig(){localStorage.setItem('twpro_gerador_cfg',JSON.stringify(config))}
+    function salvarNotificacoesProcessadas(){localStorage.setItem('twpro_notificacoes_processadas',JSON.stringify([...notificacoesProcessadas]))}
+    
     function carregarInputsConfig(){
         document.getElementById('msgEntregaInput').value=config.mensagens.entrega;
         document.getElementById('msgCobrancaInput').value=config.mensagens.cobranca;
@@ -590,15 +724,14 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
     }
 
     window.cadastrarCliente=function(){
+        if(!logado)return alert('⚠️ Faça login primeiro!');
         let n=document.getElementById('nomeInput').value.trim();
         let w=document.getElementById('whatsInput').value.trim();
         let em=document.getElementById('emailInput').value.trim();
         let t=document.getElementById('terminalInput').value.trim();
         let v=parseFloat(document.getElementById('valorInput').value);
-        let s=document.getElementById('senhaMestraInput').value;
         let dc=document.getElementById('dataCompraInput').value;
         if(!n||!w||!t)return alert('⚠️ Preencha Nome, WhatsApp e ID Terminal!');
-        if(s!==SENHA_MESTRA)return alert('⚠️ Senha incorreta!');
         if(isNaN(v)||v<0)return alert('⚠️ Valor inválido!');
         if(!dc){preencherDataHoje();dc=document.getElementById('dataCompraInput').value}
         let chave=gerarChaveCompleta(t,planoSelecionado);ultimaChaveGerada=chave;
@@ -609,12 +742,39 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         let b=document.getElementById('planoGeradoBadge');b.textContent=planoSelecionado;b.className='badge-plano badge-'+planoSelecionado.toLowerCase();
         document.getElementById('chaveGeradaBox').classList.add('show');
         document.getElementById('nomeInput').value='';document.getElementById('whatsInput').value='';document.getElementById('terminalInput').value='';document.getElementById('emailInput').value='';
+        
+        // Envia email para o cliente
+        enviarEmailClienteGerado(ultimoClienteGerado);
+        
         renderizarTudo();
     };
 
+    // ⭐ ENVIO DE EMAIL PARA CLIENTE (QUANDO CADASTRADO MANUALMENTE) ⭐
+    function enviarEmailClienteGerado(cliente){
+        let msg=processarMsg('entrega',cliente);
+        let fd=new FormData();
+        fd.append('nome',cliente.nome);
+        fd.append('email',cliente.email);
+        fd.append('whatsapp',cliente.whats);
+        fd.append('terminal_id',cliente.terminal);
+        fd.append('chave_gerada',cliente.chave);
+        fd.append('link_ea',LINK_EA);
+        fd.append('link_pdf',LINK_PDF);
+        fd.append('plano',cliente.plano+' '+cliente.dias+' dias');
+        fd.append('validade',new Date(cliente.expira).toLocaleDateString('pt-BR'));
+        fd.append('mensagem_completa',msg);
+        fd.append('_subject','🎯 TRADE WINNER PRO - Licença Ativada!');
+        
+        fetch('https://formspree.io/f/xgorqjba',{
+            method:'POST',
+            body:fd
+        })
+        .then(r=>console.log('✅ Email enviado para: '+cliente.email))
+        .catch(err=>console.log('⚠️ Erro ao enviar email:',err));
+    }
+
     window.copiarChaveGerada=function(){if(ultimaChaveGerada)navigator.clipboard.writeText(ultimaChaveGerada).then(()=>alert('✅ Chave copiada!'))};
 
-    // ⭐ ENVIO WHATSAPP DA CHAVE GERADA ⭐
     window.enviarWhatsAppChaveGerada=function(){
         if(!ultimoClienteGerado)return alert('⚠️ Gere uma chave primeiro!');
         let num=ultimoClienteGerado.whats.replace(/\D/g,'');
@@ -622,12 +782,10 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         window.open('https://wa.me/'+num+'?text='+encodeURIComponent(msg),'_blank');
     };
 
-    // ⭐ ENVIO EMAIL DA CHAVE GERADA ⭐
     window.enviarEmailChaveGerada=function(){
         if(!ultimoClienteGerado)return alert('⚠️ Gere uma chave primeiro!');
-        let msg=processarMsg('entrega',ultimoClienteGerado);
-        let subject='TRADE WINNER PRO - Sua Licença '+(ultimoClienteGerado.plano||'');
-        window.open('mailto:'+(ultimoClienteGerado.email||'')+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(msg),'_blank');
+        enviarEmailClienteGerado(ultimoClienteGerado);
+        alert('✅ Email enviado para: '+ultimoClienteGerado.email);
     };
 
     window.enviarWhatsAppCliente=function(cid,tipo){
@@ -636,7 +794,8 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
     };
     window.enviarEmailCliente=function(cid){
         let c=clientes.find(x=>x.id==cid);if(!c)return;
-        window.open('mailto:'+(c.email||'')+'?subject=TRADE WINNER PRO&body='+encodeURIComponent(processarMsg('entrega',c)),'_blank');
+        enviarEmailClienteGerado(c);
+        alert('✅ Email enviado para: '+c.email);
     };
 
     function renderizarTudo(){renderizarTabela();atualizarContadores();calcularFaturamento()}
@@ -701,9 +860,19 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         c.innerHTML=nots.slice(0,20).map(n=>{
             let ic=n.tipo==='teste'?'🔰':'📩',cl=n.lida?'':'nova';
             let d=new Date(n.data),ds=d.toLocaleDateString('pt-BR')+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-            return `<div class="notif-item ${cl}" onclick="marcarLida('${n.id}')"><div class="notif-icone">${ic}</div><div class="notif-info"><div class="notif-nome">${n.nome}</div><div class="notif-detalhe">📱 ${n.whatsapp||'N/I'} | 📧 ${n.email||'N/I'}</div><div class="notif-detalhe">🖥️ Terminal: ${n.terminal||'N/I'} | 🏷️ ${n.plano||'LATÃO'}</div><div class="notif-data">${ds} ${n.lida?'✅':'🆕'}</div></div><div class="notif-acoes">${n.whatsapp?`<button class="btn-notif whats" onclick="event.stopPropagation();window.open('https://wa.me/${n.whatsapp.replace(/\D/g,'')}','_blank')">📱</button>`:''}${n.email?`<button class="btn-notif email" onclick="event.stopPropagation();window.open('mailto:${n.email}','_blank')">📧</button>`:''}</div></div>`;
+            let processada=notificacoesProcessadas.has(n.id)?'✅':'🔄';
+            return `<div class="notif-item ${cl}" onclick="marcarLida('${n.id}')"><div class="notif-icone">${ic}</div><div class="notif-info"><div class="notif-nome">${n.nome} ${processada}</div><div class="notif-detalhe">📱 ${n.whatsapp||'N/I'} | 📧 ${n.email||'N/I'}</div><div class="notif-detalhe">🖥️ Terminal: ${n.terminal||'N/I'} | 🏷️ ${n.plano||'LATÃO'}</div><div class="notif-data">${ds} ${n.lida?'✅':'🆕'}</div></div><div class="notif-acoes">${n.whatsapp?`<button class="btn-notif whats" onclick="event.stopPropagation();window.open('https://wa.me/${n.whatsapp.replace(/\D/g,'')}','_blank')">📱</button>`:''}${n.email?`<button class="btn-notif email" onclick="event.stopPropagation();reenviarEmailNotificacao('${n.id}')">📧</button>`:''}</div></div>`;
         }).join('');
     }
+    
+    // ⭐ REENVIAR EMAIL DE UMA NOTIFICAÇÃO ⭐
+    window.reenviarEmailNotificacao=function(nid){
+        let nots=carregarNotificacoes(),n=nots.find(x=>x.id==nid);
+        if(!n)return;
+        enviarEmailAutomatico(n);
+        alert('✅ Email reenviado para: '+n.email);
+    };
+    
     window.marcarLida=function(id){let ns=carregarNotificacoes(),f=ns.find(n=>n.id==id);if(f)f.lida=true;salvarNotificacoes(ns);renderizarNotificacoes();atualizarContadorNotificacoes();};
     window.marcarTodasLidas=function(){let ns=carregarNotificacoes();ns.forEach(n=>n.lida=true);salvarNotificacoes(ns);renderizarNotificacoes();atualizarContadorNotificacoes();};
     function atualizarContadorNotificacoes(){
@@ -743,265 +912,28 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         pw.document.write(html);pw.document.close();
     };
 
-    carregarDados();
-    setInterval(atualizarContadorNotificacoes,30000);
-})();
-</script>
-</body>
-</html>
-g:border-box}
-    body{background:#09090d;color:#e8e8f0;font-family:'DM Sans',sans-serif;min-height:100vh}
-    .login-overlay{position:fixed;inset:0;background:rgba(9,9,13,0.95);z-index:999;display:flex;align-items:center;justify-content:center}
-    .login-box{background:#13131a;border:1px solid #c9a84c;border-radius:16px;padding:3rem 2rem;max-width:400px;width:90%;text-align:center}
-    .login-box h1{font-family:'DM Mono',monospace;color:#e8c96a;font-size:1.2rem;margin-bottom:.5rem}
-    .login-box p{color:#8888a8;font-size:.8rem;margin-bottom:1.5rem}
-    .login-box input{width:100%;padding:.8rem;border-radius:8px;border:1px solid #2a2a38;background:#09090d;color:#e8e8f0;font-size:1rem;text-align:center;margin-bottom:1rem}
-    .login-box input:focus{outline:none;border-color:#c9a84c}
-    .login-box button{width:100%;padding:.8rem;border-radius:8px;border:none;background:#c9a84c;color:#09090d;font-weight:700;font-size:.95rem;cursor:pointer}
-    .login-erro{color:#e05260;font-size:.75rem;margin-top:.5rem;display:none}
-    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 1rem;height:60px;background:rgba(9,9,13,0.95);backdrop-filter:blur(16px);border-bottom:1px solid #1f1f2a}
-    .nav-logo{font-family:'DM Mono',monospace;font-size:1rem;color:#e8c96a;letter-spacing:2px}
-    .nav-logo-dot{width:6px;height:6px;border-radius:50%;background:#c9a84c;display:inline-block;margin-right:8px;box-shadow:0 0 8px #c9a84c}
-    .btn-primary{background:#c9a84c;color:#09090d;font-weight:700;padding:.75rem 1.8rem;border-radius:6px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
-    .main-container{max-width:900px;margin:2rem auto;padding:0 1rem}
-    .card{background:#13131a;border:1px solid #2a2a38;border-radius:16px;padding:2rem;margin-bottom:1.5rem}
-    .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid #1f1f2a}
-    .card-title{font-size:1.1rem;font-weight:600}
-    .status-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem}
-    @media(max-width:600px){.status-grid{grid-template-columns:repeat(2,1fr)}}
-    .status-card{background:#13131a;border:1px solid #2a2a38;border-radius:12px;padding:1rem;text-align:center;cursor:pointer}
-    .status-card.active{border-color:#c9a84c}
-    .status-number{font-family:'DM Mono',monospace;font-size:1.8rem;color:#e8c96a}
-    .status-number.green{color:#3ecf8e}.status-number.red{color:#e05260}
-    .status-label{font-size:.7rem;color:#8888a8;text-transform:uppercase;margin-top:4px}
-    .table-wrapper{overflow-x:auto;border-radius:10px;border:1px solid #2a2a38;background:#13131a}
-    table{width:100%;border-collapse:collapse;min-width:700px}
-    th{text-align:left;padding:12px 10px;color:#c9a84c;font-size:.65rem;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid #c9a84c;font-family:'DM Mono',monospace}
-    td{padding:10px;border-bottom:1px solid #1f1f2a;font-size:.8rem}
-    tr:hover td{background:rgba(201,168,76,0.03)}
-    .badge{display:inline-block;padding:3px 8px;border-radius:20px;font-size:.6rem;font-weight:700;color:#fff}
-    .badge-ativo{background:rgba(62,207,142,0.2);color:#3ecf8e}
-    .badge-vencido{background:rgba(224,82,96,0.2);color:#e05260}
-    .chave-texto{font-family:'DM Mono',monospace;font-size:.68rem;color:#e8c96a;background:rgba(201,168,76,0.08);padding:3px 6px;border-radius:4px;cursor:pointer}
-    .btn-icon{width:30px;height:30px;border-radius:6px;border:1px solid #2a2a38;background:transparent;color:#8888a8;cursor:pointer;font-size:.8rem;margin:0 2px}
-    .btn-icon.whats{border-color:#25d366;color:#25d366}
-    .btn-icon.delete{border-color:#e05260;color:#e05260}
-    .busca{width:100%;padding:.65rem;border-radius:8px;border:1px solid #2a2a38;background:#09090d;color:#e8e8f0;margin-bottom:1rem;font-size:.85rem}
-    .busca:focus{outline:none;border-color:#c9a84c}
-    footer{text-align:center;padding:1.5rem;color:#8888a8;font-size:.7rem}
-    .alerta-email{background:rgba(62,207,142,0.1);border:1px solid #3ecf8e;border-radius:8px;padding:.5rem 1rem;margin-bottom:1rem;font-size:.75rem;color:#3ecf8e;text-align:center;display:none}
-  </style>
-</head>
-<body>
-
-<!-- LOGIN -->
-<div class="login-overlay" id="loginOverlay">
-  <div class="login-box">
-    <h1>🔐 TRADE WINNER PRO</h1>
-    <p>Área restrita</p>
-    <input type="password" id="senhaInput" placeholder="Senha">
-    <button onclick="verificarSenha()">ENTRAR</button>
-    <p class="login-erro" id="loginErro">Senha incorreta!</p>
-  </div>
-</div>
-
-<nav>
-  <div class="nav-logo"><span class="nav-logo-dot"></span>TRADE WINNER PRO</div>
-  <div>
-    <a href="index.html" style="color:#8888a8;text-decoration:none;font-size:.75rem;margin-right:1rem">← Site</a>
-    <button class="btn-primary" onclick="sair()" style="padding:.4rem 1rem;font-size:.75rem">SAIR</button>
-  </div>
-</nav>
-
-<div class="main-container">
-
-  <div style="text-align:center;margin-bottom:2rem">
-    <h1 style="font-size:1.5rem;font-weight:700">Painel de <span style="color:#e8c96a">Controle</span></h1>
-  </div>
-
-  <div class="alerta-email" id="alertaEmail">📧 Email enviado automaticamente para o cliente!</div>
-
-  <div class="status-grid">
-    <div class="status-card active" id="statusTodos" onclick="setFiltro('todos')"><span class="status-number" id="countTodos">0</span><span class="status-label">Total</span></div>
-    <div class="status-card" id="statusAtivos" onclick="setFiltro('ativos')"><span class="status-number green" id="countAtivos">0</span><span class="status-label">Ativos</span></div>
-    <div class="status-card" id="statusVencendo" onclick="setFiltro('vencendo')"><span class="status-number" id="countVencendo" style="color:#c9a84c">0</span><span class="status-label">Vence Hoje</span></div>
-    <div class="status-card" id="statusVencidos" onclick="setFiltro('vencidos')"><span class="status-number red" id="countVencidos">0</span><span class="status-label">Vencidos</span></div>
-  </div>
-
-  <input type="text" class="busca" id="buscaInput" placeholder="🔍 Pesquisar..." onkeyup="renderizar()">
-
-  <div class="table-wrapper">
-    <table>
-      <thead><tr><th>Cliente</th><th>Terminal</th><th>Chave</th><th>Plano</th><th>Expira</th><th>Valor</th><th>Ações</th></tr></thead>
-      <tbody id="tabelaBody"></tbody>
-    </table>
-  </div>
-
-  <footer>© 2025 TRADE WINNER PRO</footer>
-</div>
-
-<script>
-(function(){
-  var SENHA = "TWPRO2025";
-  var LINK_EA = "https://comodoro91-oss.github.io/tradewinner-boleta/TRADE_WINNER_PRO_V1.1.ex5";
-  var LINK_PDF = "https://comodoro91-oss.github.io/tradewinner-boleta/Manual_TRADE_WINNER.pdf";
-  var FORM_EMAIL = "https://formspree.io/f/xgorqjba";
-  var clientes = [];
-  var filtro = 'todos';
-  var emailsJaEnviados = JSON.parse(localStorage.getItem('twpro_emails_enviados')||'[]');
-
-  window.verificarSenha = function(){
-    if(document.getElementById('senhaInput').value === SENHA){
-      document.getElementById('loginOverlay').style.display = 'none';
-      sessionStorage.setItem('twpro_logado','1');
-    } else {
-      document.getElementById('loginErro').style.display = 'block';
-    }
-  };
-
-  window.sair = function(){
-    sessionStorage.removeItem('twpro_logado');
-    location.reload();
-  };
-
-  if(sessionStorage.getItem('twpro_logado')==='1'){
-    document.getElementById('loginOverlay').style.display = 'none';
-  }
-
-  function carregar(){
-    var db = localStorage.getItem('twpro_gerador_db');
-    if(db){ try{ clientes = JSON.parse(db); }catch(e){ clientes = []; } }
-    renderizar();
-    enviarEmailsAutomaticos();
-  }
-
-  // ⭐ ENVIA EMAIL AUTOMÁTICO VIA FORMSPREE ⭐
-  function enviarEmailsAutomaticos(){
-    var naoEnviados = JSON.parse(localStorage.getItem('twpro_nao_enviados')||'[]');
-    if(naoEnviados.length === 0) return;
-
-    naoEnviados.forEach(function(c){
-      if(emailsJaEnviados.indexOf(c.chave) !== -1) return;
-
-      var fd = new FormData();
-      fd.append('nome', c.nome);
-      fd.append('email', c.email);
-      fd.append('chave_gerada', c.chave);
-      fd.append('link_ea', LINK_EA);
-      fd.append('link_pdf', LINK_PDF);
-      fd.append('plano', 'LATAO 7 dias GRÁTIS');
-      fd.append('validade', c.expFmt);
-      fd.append('_subject', '🎯 TRADE WINNER PRO - Teste Ativado!');
-
-      fetch(FORM_EMAIL, {method:'POST', body:fd, headers:{'Accept':'application/json'}})
-      .then(function(r){
-        console.log('✅ Email automático enviado para: '+c.email);
-        emailsJaEnviados.push(c.chave);
-        localStorage.setItem('twpro_emails_enviados', JSON.stringify(emailsJaEnviados));
-        limparPendentes(c.chave);
-        document.getElementById('alertaEmail').style.display = 'block';
-        setTimeout(function(){ document.getElementById('alertaEmail').style.display = 'none'; }, 3000);
-      })
-      .catch(function(err){
-        console.log('⚠️ Erro:', err);
-      });
-    });
-  }
-
-  function limparPendentes(chave){
-    var naoEnviados = JSON.parse(localStorage.getItem('twpro_nao_enviados')||'[]');
-    naoEnviados = naoEnviados.filter(function(c){ return c.chave !== chave; });
-    localStorage.setItem('twpro_nao_enviados', JSON.stringify(naoEnviados));
-  }
-
-  function renderizar(){
-    var busca = (document.getElementById('buscaInput').value||'').toLowerCase();
-    var hoje = new Date(); hoje.setHours(0,0,0,0);
-
-    var lista = clientes.filter(function(c){
-      return !busca || c.nome.toLowerCase().includes(busca) || c.whats.includes(busca) || c.terminal.includes(busca);
-    });
-    lista.sort(function(a,b){ return new Date(a.expira) - new Date(b.expira); });
-
-    var t=0, a=0, v=0, vc=0;
-    clientes.forEach(function(c){
-      var exp = new Date(c.expira); exp.setHours(0,0,0,0);
-      var d = Math.ceil((exp - hoje)/86400000);
-      t++; if(d>0) a++; else if(d===0) v++; else vc++;
-    });
-    document.getElementById('countTodos').textContent = t;
-    document.getElementById('countAtivos').textContent = a;
-    document.getElementById('countVencendo').textContent = v;
-    document.getElementById('countVencidos').textContent = vc;
-
-    var tb = document.getElementById('tabelaBody');
-    if(!lista.length){
-      tb.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:#8888a8">Nenhum cliente</td></tr>';
-      return;
+    // Inicialização
+    if(localStorage.getItem('twpro_logado')==='true'){
+        document.getElementById('loginOverlay').style.display='none';
+        document.getElementById('conteudoPrincipal').classList.add('desbloqueado');
+        logado=true;
+        carregarDados();
+        verificarNovosCadastros();
     }
 
-    tb.innerHTML = lista.map(function(c){
-      var exp = new Date(c.expira);
-      var d = Math.ceil((exp - hoje)/86400000);
-      var sc = d < 0 ? 'badge-vencido' : 'badge-ativo';
-      var st = d < 0 ? 'VENCIDO' : 'ATIVO';
-      return '<tr>'+
-        '<td><b>'+c.nome+'</b><br><span style="font-size:.68rem;color:#8888a8">📱 '+c.whats+'<br>📧 '+c.email+'</span></td>'+
-        '<td>'+c.terminal+'</td>'+
-        '<td><span class="chave-texto" onclick="copiar(\''+c.id+'\')">'+c.chave+'</span></td>'+
-        '<td><span class="badge" style="background:'+(c.plano==='LATAO'?'#CD7F32':c.plano==='BRONZE'?'#8B6914':c.plano==='PRATA'?'#7D8794':c.plano==='OURO'?'#DAA520':c.plano==='DIAMANTE'?'#6A5ACD':'#C0392B')+'">'+c.plano+'</span></td>'+
-        '<td>'+exp.toLocaleDateString('pt-BR')+'<br><span class="badge '+sc+'">'+st+'</span></td>'+
-        '<td>R$ '+(c.valor||0).toFixed(2)+'</td>'+
-        '<td>'+
-          '<button class="btn-icon whats" onclick="whats(\''+c.id+'\')">📱</button>'+
-          '<button class="btn-icon delete" onclick="remover(\''+c.id+'\')">🗑️</button>'+
-        '</td>'+
-      '</tr>';
-    }).join('');
-  }
+    // Salva estado de login
+    window.addEventListener('beforeunload',()=>{
+        localStorage.setItem('twpro_logado',logado?'true':'false');
+        salvarNotificacoesProcessadas();
+    });
 
-  window.copiar = function(id){
-    var c = clientes.find(function(x){ return x.id == id; });
-    if(c){ navigator.clipboard.writeText(c.chave).then(function(){ alert('✅ Copiado!'); }); }
-  };
-
-  window.whats = function(id){
-    var c = clientes.find(function(x){ return x.id == id; });
-    if(!c) return;
-    var exp = new Date(c.expira);
-    var m = '🎯 *TRADE WINNER PRO*\n\n✅ Plano *'+c.plano+'* ativo!\n🔑 Chave: '+c.chave+'\n📅 Até: '+exp.toLocaleDateString('pt-BR')+'\n📥 EA: '+LINK_EA+'\n📘 PDF: '+LINK_PDF;
-    window.open('https://wa.me/'+c.whats.replace(/\D/g,'')+'?text='+encodeURIComponent(m),'_blank');
-  };
-
-  window.remover = function(id){
-    if(!confirm('Remover?')) return;
-    clientes = clientes.filter(function(c){ return c.id != id; });
-    localStorage.setItem('twpro_gerador_db', JSON.stringify(clientes));
-    renderizar();
-  };
-
-  window.setFiltro = function(f){
-    filtro = f;
-    document.querySelectorAll('.status-card').forEach(function(c){ c.classList.remove('active'); });
-    document.getElementById('status'+f.charAt(0).toUpperCase()+f.slice(1)).classList.add('active');
-    renderizar();
-  };
-
-  setInterval(function(){
-    var db = localStorage.getItem('twpro_gerador_db');
-    if(db){
-      try{
-        var novos = JSON.parse(db);
-        if(JSON.stringify(novos) !== JSON.stringify(clientes)){
-          clientes = novos;
-          renderizar();
+    // Verifica novos cadastros a cada 10 segundos
+    setInterval(()=>{
+        if(logado){
+            verificarNovosCadastros();
+            atualizarContadorNotificacoes();
         }
-      }catch(e){}
-    }
-    enviarEmailsAutomaticos();
-  }, 5000);
-
-  carregar();
+    },10000);
 })();
 </script>
 </body>
