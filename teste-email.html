@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TESTE EMAIL - Trade Winner Pro</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#09090d;color:#e8e8f0;font-family:'Segoe UI',sans-serif;padding:2rem;min-height:100vh}
+h1{color:#e8c96a;font-size:1.4rem;margin-bottom:1.5rem;text-align:center}
+.card{background:#13131a;border:1px solid #2a2a38;border-radius:12px;padding:1.5rem;margin-bottom:1rem}
+.card h2{font-size:1rem;margin-bottom:1rem;color:#c9a84c}
+.row{display:flex;gap:8px;margin-bottom:8px;align-items:center}
+label{font-size:.8rem;color:#8888a8;min-width:120px}
+input{background:#09090d;border:1px solid #2a2a38;border-radius:6px;color:#e8e8f0;padding:.5rem .8rem;font-size:.85rem;flex:1}
+.btn{display:block;width:100%;padding:1rem;background:#c9a84c;color:#09090d;border:none;border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer;margin-top:1rem}
+.btn:hover{background:#e8c96a}
+.btn:disabled{background:#444;color:#888;cursor:not-allowed}
+.result{border-radius:8px;padding:1rem;margin-top:1rem;font-size:.85rem;line-height:1.8;display:none}
+.result.ok{background:rgba(62,207,142,.1);border:1px solid #3ecf8e;color:#3ecf8e;display:block}
+.result.erro{background:rgba(224,82,96,.1);border:1px solid #e05260;color:#e05260;display:block}
+.result.info{background:rgba(201,168,76,.1);border:1px solid #c9a84c;color:#c9a84c;display:block}
+.log{background:#09090d;border:1px solid #1f1f2a;border-radius:8px;padding:1rem;margin-top:1rem;font-size:.78rem;font-family:monospace;line-height:2;max-height:300px;overflow-y:auto}
+.log .ok{color:#3ecf8e}
+.log .err{color:#e05260}
+.log .info{color:#c9a84c}
+.step{display:flex;align-items:center;gap:10px;padding:.6rem 0;border-bottom:1px solid #1f1f2a;font-size:.85rem}
+.step:last-child{border:none}
+.dot{width:12px;height:12px;border-radius:50%;background:#2a2a38;flex-shrink:0}
+.dot.ok{background:#3ecf8e}
+.dot.err{background:#e05260}
+.dot.spin{background:#c9a84c;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+</style>
+</head>
+<body>
+
+<h1>🔧 DIAGNÓSTICO DE EMAIL — TRADE WINNER PRO</h1>
+
+<div class="card">
+  <h2>⚙️ Configurações (já preenchidas com seus dados)</h2>
+  <div class="row"><label>Public Key</label><input id="pk" value="w0fvMYDTwWsWL5hnS"></div>
+  <div class="row"><label>Service ID</label><input id="sid" value="service_kqme5zs"></div>
+  <div class="row"><label>Template DONO</label><input id="tid_dono" value="template_4xqebas"></div>
+  <div class="row"><label>Template CLIENTE</label><input id="tid_cli" value="COLE_AQUI_TEMPLATE_CLIENTE" placeholder="cole o ID do template do cliente"></div>
+  <div class="row"><label>Seu Email (dono)</label><input id="dono_email" value="tradewinnerpro@gmail.com"></div>
+  <div class="row"><label>Email de teste</label><input id="cli_email" value="" placeholder="seu email para testar envio ao cliente"></div>
+</div>
+
+<div class="card">
+  <h2>🧪 Passos do Teste</h2>
+  <div id="steps">
+    <div class="step"><div class="dot" id="d1"></div><span id="s1">1. Inicializar EmailJS</span></div>
+    <div class="step"><div class="dot" id="d2"></div><span id="s2">2. Enviar email para o DONO</span></div>
+    <div class="step"><div class="dot" id="d3"></div><span id="s3">3. Enviar email para o CLIENTE</span></div>
+    <div class="step"><div class="dot" id="d4"></div><span id="s4">4. Verificar resultado final</span></div>
+  </div>
+  <button class="btn" id="btnTestar" onclick="rodarTeste()">▶️ RODAR TESTE AGORA</button>
+  <div class="log" id="log" style="display:none"></div>
+  <div class="result" id="resultado"></div>
+</div>
+
+<script>
+var log = document.getElementById('log');
+var erros = [];
+
+function addLog(msg, tipo){
+  log.style.display = 'block';
+  var d = new Date().toLocaleTimeString('pt-BR');
+  log.innerHTML += '<div class="'+tipo+'">['+d+'] '+msg+'</div>';
+  log.scrollTop = log.scrollHeight;
+}
+
+function setStep(n, status, msg){
+  document.getElementById('d'+n).className = 'dot '+status;
+  document.getElementById('s'+n).textContent = msg;
+}
+
+async function rodarTeste(){
+  var btn = document.getElementById('btnTestar');
+  btn.disabled = true;
+  btn.textContent = '⏳ Testando...';
+  log.innerHTML = '';
+  erros = [];
+  document.getElementById('resultado').className = 'result';
+
+  var pk      = document.getElementById('pk').value.trim();
+  var sid     = document.getElementById('sid').value.trim();
+  var tid_d   = document.getElementById('tid_dono').value.trim();
+  var tid_c   = document.getElementById('tid_cli').value.trim();
+  var d_email = document.getElementById('dono_email').value.trim();
+  var c_email = document.getElementById('cli_email').value.trim();
+
+  // PASSO 1 — INIT
+  setStep(1,'spin','1. Inicializando EmailJS...');
+  addLog('Inicializando com Public Key: '+pk, 'info');
+  try{
+    emailjs.init(pk);
+    setStep(1,'ok','1. ✅ EmailJS inicializado!');
+    addLog('EmailJS inicializado com sucesso', 'ok');
+  }catch(e){
+    setStep(1,'err','1. ❌ Erro ao inicializar: '+e.message);
+    addLog('ERRO init: '+e.message, 'err');
+    erros.push('Public Key inválida: '+e.message);
+  }
+
+  await new Promise(r=>setTimeout(r,1000));
+
+  // PASSO 2 — EMAIL DONO
+  setStep(2,'spin','2. Enviando email para o DONO...');
+  addLog('Enviando para dono → service:'+sid+' template:'+tid_d, 'info');
+  try{
+    var r2 = await emailjs.send(sid, tid_d, {
+      to_email:    d_email,
+      nome:        'TESTE DIAGNÓSTICO',
+      whatsapp:    '41999999999',
+      email:       d_email,
+      terminal_id: 'TESTE-12345',
+      chave:       'LATAO-TST-0001-001-001',
+      plano:       'LATAO 7 dias',
+      validade:    new Date(Date.now()+7*86400000).toLocaleDateString('pt-BR')
+    });
+    setStep(2,'ok','2. ✅ Email DONO enviado! Status: '+r2.status);
+    addLog('Email dono OK — status '+r2.status+' | text: '+r2.text, 'ok');
+  }catch(e){
+    var msg = typeof e === 'object' ? (e.text||e.message||JSON.stringify(e)) : String(e);
+    setStep(2,'err','2. ❌ Falhou: '+msg);
+    addLog('ERRO email dono: '+msg, 'err');
+    erros.push('Email dono: '+msg);
+  }
+
+  await new Promise(r=>setTimeout(r,1500));
+
+  // PASSO 3 — EMAIL CLIENTE
+  if(!c_email || c_email === ''){
+    setStep(3,'err','3. ⚠️ Email de teste do cliente não preenchido!');
+    addLog('Preencha o campo "Email de teste" acima para testar envio ao cliente', 'err');
+    erros.push('Campo "Email de teste" vazio — preencha e rode novamente');
+  } else if(tid_c.includes('COLE_AQUI') || tid_c === ''){
+    setStep(3,'err','3. ⚠️ Template do CLIENTE não configurado!');
+    addLog('Cole o Template ID do cliente no campo acima', 'err');
+    erros.push('Template do cliente não preenchido — crie o template no EmailJS e cole o ID');
+  } else {
+    setStep(3,'spin','3. Enviando email para o CLIENTE...');
+    addLog('Enviando para cliente → template:'+tid_c+' → '+c_email, 'info');
+    try{
+      var r3 = await emailjs.send(sid, tid_c, {
+        to_email: c_email,
+        to_name:  'CLIENTE TESTE',
+        chave:    'LATAO-TST-0001-001-001',
+        expira:   new Date(Date.now()+7*86400000).toLocaleDateString('pt-BR'),
+        link_ea:  'https://comodoro91-oss.github.io/tradewinner-boleta/TRADE_WINNER_PRO_V1.1.ex5',
+        link_pdf: 'https://comodoro91-oss.github.io/tradewinner-boleta/Manual_TRADE_WINNER.pdf'
+      });
+      setStep(3,'ok','3. ✅ Email CLIENTE enviado! Status: '+r3.status);
+      addLog('Email cliente OK — status '+r3.status, 'ok');
+    }catch(e){
+      var msg2 = typeof e === 'object' ? (e.text||e.message||JSON.stringify(e)) : String(e);
+      setStep(3,'err','3. ❌ Falhou: '+msg2);
+      addLog('ERRO email cliente: '+msg2, 'err');
+      erros.push('Email cliente: '+msg2);
+    }
+  }
+
+  await new Promise(r=>setTimeout(r,500));
+
+  // PASSO 4 — RESULTADO
+  var res = document.getElementById('resultado');
+  if(erros.length === 0){
+    setStep(4,'ok','4. ✅ TUDO FUNCIONANDO!');
+    res.className = 'result ok';
+    res.innerHTML = '✅ <b>TUDO CERTO!</b><br><br>'+
+      '📧 Email do dono: enviado para '+d_email+'<br>'+
+      '📧 Email do cliente: enviado para '+c_email+'<br><br>'+
+      'Verifique sua caixa de entrada (e o spam)!';
+  } else {
+    setStep(4,'err','4. ❌ Encontrados '+erros.length+' problema(s)');
+    res.className = 'result erro';
+    res.innerHTML = '❌ <b>PROBLEMAS ENCONTRADOS:</b><br><br>'+
+      erros.map((e,i)=>''+(i+1)+'. '+e).join('<br>')+
+      '<br><br>📸 Tire um print desta tela e me mande para eu corrigir!';
+  }
+
+  btn.disabled = false;
+  btn.textContent = '🔄 RODAR TESTE NOVAMENTE';
+}
+</script>
+</body>
+</html>
