@@ -290,8 +290,8 @@
     emailjs.init("w0fvMYDTwWsWL5hnS");
     
     const SALT="TWPRO-SALT-2025";
-    const LINK_EA="https://https://tradewinnerpro.github.io/.com.br/TRADE_WINNER_PRO_V1.1.ex5";
-    const LINK_PDF="https://https://tradewinnerpro.github.io/.com.br//Manual_TRADE_WINNER.pdf";
+    const LINK_EA="https://comodoro91-oss.github.io/tradewinner-boleta/TRADE_WINNER_PRO_V1.1.ex5";
+    const LINK_PDF="https://comodoro91-oss.github.io/tradewinner-boleta/Manual_TRADE_WINNER.pdf";
     const SEU_WATS="5541999765210";
     const SEU_EMAIL="tradewinnerpro@gmail.com";
 
@@ -344,6 +344,7 @@
         let hoje=new Date();
         let expira=new Date(hoje);expira.setDate(hoje.getDate()+7);
         let expiraFormatada=expira.toLocaleDateString('pt-BR');
+        let dataAgora=hoje.toLocaleDateString('pt-BR')+' '+hoje.toLocaleTimeString('pt-BR');
         
         let clientes=JSON.parse(localStorage.getItem('twpro_gerador_db')||'[]');
         clientes.push({
@@ -366,27 +367,29 @@
         testes[terminal].testeAtivo=true;
         localStorage.setItem('twpro_testes_db',JSON.stringify(testes));
         
-                // ⭐ EMAIL DONO ⭐
-        emailjs.send("service_kqme5zs","template_4xqebas",{
+        // ⭐ EMAIL DONO - CORRIGIDO ⭐
+        var templateParamsDono = {
             to_email: "tradewinnerpro@gmail.com",
             nome: nome,
             whatsapp: whatsapp,
-            email: email,
+            email_cliente: email,
             terminal_id: terminal,
             chave: chave,
-            plano: "LATAO 7 dias",
+            plano: "LATAO 7 dias GRÁTIS",
             validade: expiraFormatada,
-            data_cadastro: hoje.toLocaleDateString('pt-BR') + ' ' + hoje.toLocaleTimeString('pt-BR'),
-            link_ea: LINK_EA,
-            link_pdf: LINK_PDF
-        }).then(function(response){
+            data_cadastro: dataAgora
+        };
+        console.log('Enviando email DONO:', templateParamsDono);
+        
+        emailjs.send("service_kqme5zs","template_4xqebas", templateParamsDono)
+        .then(function(response){
             console.log('✅ Email DONO enviado! Status: '+response.status);
         }).catch(function(err){
             console.warn('⚠️ Email dono erro:', err);
         });
 
-        // ⭐ EMAIL CLIENTE ⭐
-        emailjs.send("service_kqme5zs","template_rlrvpbm",{
+        // ⭐ EMAIL CLIENTE - CORRIGIDO ⭐
+        var templateParamsCliente = {
             to_email: email,
             to_name: nome,
             nome: nome,
@@ -398,10 +401,14 @@
             whatsapp: whatsapp,
             terminal_id: terminal,
             validade: expiraFormatada
-        }).then(function(){
-            console.log('✅ Email CLIENTE enviado!');
+        };
+        console.log('Enviando email CLIENTE:', templateParamsCliente);
+        
+        emailjs.send("service_kqme5zs","template_rlrvpbm", templateParamsCliente)
+        .then(function(response){
+            console.log('✅ Email CLIENTE enviado! Status: '+response.status);
         }).catch(function(err){
-            console.warn('⚠️ Email cliente erro:',err);
+            console.warn('⚠️ Email cliente erro:', err);
         });
 
         // WhatsApp Cliente
@@ -444,28 +451,33 @@
         let btn = document.getElementById('btnComprovante');
         btn.disabled = true;
         btn.textContent = '⏳ Enviando...';
+        
+        let dataAgora=new Date().toLocaleDateString('pt-BR')+' '+new Date().toLocaleTimeString('pt-BR');
 
-                emailjs.send("service_kqme5zs","template_4xqebas",{
+        // Email DONO - Comprovante
+        var templateParamsDonoComp = {
             to_email: "tradewinnerpro@gmail.com",
             nome: nome,
             whatsapp: whatsapp,
-            email: email,
+            email_cliente: email,
             terminal_id: terminal,
-            chave: codigo || 'Não informado',
-            plano: plano + ' — COMPROVANTE',
+            chave: codigo||'Não informado',
+            plano: plano+' — COMPROVANTE',
             validade: 'Aguardando ativação',
-            data_cadastro: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR'),
-            link_ea: LINK_EA,
-            link_pdf: LINK_PDF
-        }).then(function(response){
-            console.log('✅ Comprovante enviado! Status: '+response.status);
+            data_cadastro: dataAgora
+        };
+        
+        emailjs.send("service_kqme5zs","template_4xqebas", templateParamsDonoComp)
+        .then(function(response){
+            console.log('✅ Comprovante DONO enviado!');
         }).catch(function(err){
-            console.warn('⚠️ Erro comprovante:', err);
+            console.warn('⚠️ Erro comprovante dono:', err);
         });
 
-        emailjs.send("service_kqme5zs","template_rlrvpbm",{
+        // Email CLIENTE - Confirmação
+        var templateParamsCliComp = {
             to_email: email,
-            to_name:  nome,
+            to_name: nome,
             nome: nome,
             chave: '⏳ Sua chave será enviada em breve após confirmação do pagamento',
             expira: 'A definir após ativação',
@@ -475,10 +487,13 @@
             whatsapp: whatsapp,
             terminal_id: terminal,
             validade: 'A definir após ativação'
-        }).then(function(){
-            console.log('✅ Confirmação enviada para o CLIENTE!');
+        };
+        
+        emailjs.send("service_kqme5zs","template_rlrvpbm", templateParamsCliComp)
+        .then(function(response){
+            console.log('✅ Confirmação CLIENTE enviada!');
         }).catch(function(err){
-            console.warn('⚠️ EmailJS cliente comprovante:',err);
+            console.warn('⚠️ Erro comprovante cliente:', err);
         });
 
         let nots=JSON.parse(localStorage.getItem('twpro_notificacoes')||'[]');
