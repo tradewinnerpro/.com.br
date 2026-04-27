@@ -518,8 +518,8 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
     
     const SENHA_MESTRA="TWPRO2025";
     const SALT="TWPRO-SALT-2025";
-    const LINK_EA="https://comodoro91-oss.github.io/tradewinner-boleta/TRADE_WINNER_PRO_V1.1.ex5";
-    const LINK_PDF="https://comodoro91-oss.github.io/tradewinner-boleta/Manual_TRADE_WINNER.pdf";
+    const LINK_EA="https://tradewinnerpro.github.io/.com.br/TRADE_WINNER_PRO_V1.1.ex5";
+    const LINK_PDF="https://tradewinnerpro.github.io/.com.br/Manual_TRADE_WINNER.pdf";
     const SEU_WATS="5541999765210";
     
     let clientes=[];
@@ -546,11 +546,13 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
             document.getElementById('conteudoPrincipal').classList.add('desbloqueado');
             document.getElementById('senhaLoginInput').value='';
             document.getElementById('loginError').classList.remove('show');
+            
+            // ⭐ CARREGA TUDO E VERIFICA IMEDIATAMENTE ⭐
             carregarDados();
-            // Verifica imediatamente após login
-            setTimeout(function(){
-                verificarNovosCadastros();
-            }, 500);
+            importarClientesDoSite();
+            verificarNovosCadastros();
+            renderizarTudo();
+            
         }else{
             document.getElementById('loginError').classList.add('show');
             document.getElementById('senhaLoginInput').value='';
@@ -566,15 +568,45 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         document.getElementById('senhaLoginInput').focus();
     };
 
+    // ⭐ IMPORTA CLIENTES DO SITE ⭐
+    function importarClientesDoSite(){
+        console.log('🔍 Verificando clientes do site...');
+        let clientesSite = JSON.parse(localStorage.getItem('twpro_gerador_db')||'[]');
+        console.log('📋 Clientes encontrados no localStorage:', clientesSite.length);
+        
+        if(clientesSite.length > 0){
+            let idsAtuais = clientes.map(c => c.id);
+            let novos = clientesSite.filter(c => !idsAtuais.includes(c.id));
+            
+            if(novos.length > 0){
+                console.log('✅ Importando ' + novos.length + ' novo(s) cliente(s)!');
+                clientes = [...clientes, ...novos];
+                // Remove duplicados
+                clientes = clientes.filter((c, index, self) => 
+                    index === self.findIndex(t => t.id === c.id)
+                );
+                salvarDados();
+                console.log('📊 Total de clientes após importação:', clientes.length);
+            } else {
+                console.log('ℹ️ Nenhum cliente novo para importar');
+            }
+        }
+        renderizarTudo();
+    }
+
     // ⭐ VERIFICA NOVOS CADASTROS ⭐
     function verificarNovosCadastros(){
         if(!logado)return;
         
+        // Primeiro importa clientes
+        importarClientesDoSite();
+        
+        // Depois verifica notificações
         let nots = JSON.parse(localStorage.getItem('twpro_notificacoes')||'[]');
         let novasNotificacoes = nots.filter(n => !notificacoesProcessadas.has(n.id));
         
         if(novasNotificacoes.length > 0){
-            console.log('🆕 ' + novasNotificacoes.length + ' novo(s) cadastro(s) detectado(s)!');
+            console.log('🆕 ' + novasNotificacoes.length + ' nova(s) notificação(ões)!');
             
             novasNotificacoes.forEach(n => {
                 notificacoesProcessadas.add(n.id);
@@ -634,15 +666,27 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
     function gerarChaveCompleta(t,p){return p+"-"+gerarHashBase(t)}
 
     function carregarDados(){
-        let db=localStorage.getItem('twpro_gerador_db');
-        if(db){try{clientes=JSON.parse(db)}catch(e){clientes=[]}}
+        // ⭐ PRIMEIRO CARREGA DO SITE ⭐
+        let dbSite = localStorage.getItem('twpro_gerador_db');
+        if(dbSite){
+            try{
+                clientes = JSON.parse(dbSite);
+                console.log('📋 Carregados ' + clientes.length + ' clientes do twpro_gerador_db');
+            }catch(e){
+                clientes = [];
+            }
+        }
+        
         let cfg=localStorage.getItem('twpro_gerador_cfg');
         if(cfg){try{let s=JSON.parse(cfg);config={...config,...s}}catch(e){}}
         carregarInputsConfig();atualizarValoresPlanos();preencherDataHoje();renderizarTudo();atualizarContadorNotificacoes();
         let proc=localStorage.getItem('twpro_notificacoes_processadas');
         if(proc){try{notificacoesProcessadas=new Set(JSON.parse(proc))}catch(e){}}
     }
-    function salvarDados(){localStorage.setItem('twpro_gerador_db',JSON.stringify(clientes))}
+    function salvarDados(){
+        localStorage.setItem('twpro_gerador_db',JSON.stringify(clientes));
+        console.log('💾 Dados salvos: ' + clientes.length + ' clientes');
+    }
     function salvarConfig(){localStorage.setItem('twpro_gerador_cfg',JSON.stringify(config))}
     function salvarNotificacoesProcessadas(){localStorage.setItem('twpro_notificacoes_processadas',JSON.stringify([...notificacoesProcessadas]))}
     
@@ -711,17 +755,9 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         if(em){
             let expiraFormatada=exp.toLocaleDateString('pt-BR');
             emailjs.send("service_kqme5zs","template_rlrvpbm",{
-                to_email: em,
-                to_name: n,
-                nome: n,
-                chave: chave,
-                expira: expiraFormatada,
-                plano: planoSelecionado+' '+diasSelecionados+' dias',
-                link_ea: LINK_EA,
-                link_pdf: LINK_PDF,
-                whatsapp: w,
-                terminal_id: t,
-                validade: expiraFormatada
+                to_email: em, to_name: n, nome: n, chave: chave,
+                expira: expiraFormatada, plano: planoSelecionado+' '+diasSelecionados+' dias',
+                link_ea: LINK_EA, link_pdf: LINK_PDF, whatsapp: w, terminal_id: t, validade: expiraFormatada
             }).then(function(r){console.log('✅ Email enviado!');}).catch(function(e){console.log('⚠️ Erro:',e);});
         }
         
@@ -733,27 +769,19 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
     window.enviarWhatsAppChaveGerada=function(){
         if(!ultimoClienteGerado)return alert('⚠️ Gere uma chave primeiro!');
         let num=ultimoClienteGerado.whats.replace(/\D/g,'');
-        let msg=processarMsg('entrega',ultimoClienteGerado);
-        window.open('https://wa.me/'+num+'?text='+encodeURIComponent(msg),'_blank');
+        window.open('https://wa.me/'+num+'?text='+encodeURIComponent(processarMsg('entrega',ultimoClienteGerado)),'_blank');
     };
 
     window.enviarEmailChaveGerada=function(){
-        if(!ultimoClienteGerado)return alert('⚠️ Gere uma chave primeiro!');
-        if(!ultimoClienteGerado.email)return alert('⚠️ Cliente sem email!');
+        if(!ultimoClienteGerado||!ultimoClienteGerado.email)return;
         let expiraFormatada=new Date(ultimoClienteGerado.expira).toLocaleDateString('pt-BR');
         emailjs.send("service_kqme5zs","template_rlrvpbm",{
-            to_email: ultimoClienteGerado.email,
-            to_name: ultimoClienteGerado.nome,
-            nome: ultimoClienteGerado.nome,
-            chave: ultimoClienteGerado.chave,
-            expira: expiraFormatada,
-            plano: ultimoClienteGerado.plano,
-            link_ea: LINK_EA,
-            link_pdf: LINK_PDF,
-            whatsapp: ultimoClienteGerado.whats,
-            terminal_id: ultimoClienteGerado.terminal,
-            validade: expiraFormatada
-        }).then(function(r){alert('✅ Email enviado!');}).catch(function(e){alert('⚠️ Erro ao enviar email');});
+            to_email: ultimoClienteGerado.email, to_name: ultimoClienteGerado.nome,
+            nome: ultimoClienteGerado.nome, chave: ultimoClienteGerado.chave,
+            expira: expiraFormatada, plano: ultimoClienteGerado.plano,
+            link_ea: LINK_EA, link_pdf: LINK_PDF,
+            whatsapp: ultimoClienteGerado.whats, terminal_id: ultimoClienteGerado.terminal, validade: expiraFormatada
+        }).then(function(r){alert('✅ Email enviado!');}).catch(function(e){alert('⚠️ Erro');});
     };
 
     window.enviarWhatsAppCliente=function(cid,tipo){
@@ -764,17 +792,10 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         let c=clientes.find(x=>x.id==cid);if(!c||!c.email)return;
         let expiraFormatada=new Date(c.expira).toLocaleDateString('pt-BR');
         emailjs.send("service_kqme5zs","template_rlrvpbm",{
-            to_email: c.email,
-            to_name: c.nome,
-            nome: c.nome,
-            chave: c.chave,
-            expira: expiraFormatada,
-            plano: c.plano,
-            link_ea: LINK_EA,
-            link_pdf: LINK_PDF,
-            whatsapp: c.whats,
-            terminal_id: c.terminal,
-            validade: expiraFormatada
+            to_email: c.email, to_name: c.nome, nome: c.nome, chave: c.chave,
+            expira: expiraFormatada, plano: c.plano,
+            link_ea: LINK_EA, link_pdf: LINK_PDF,
+            whatsapp: c.whats, terminal_id: c.terminal, validade: expiraFormatada
         }).then(function(r){alert('✅ Email enviado!');}).catch(function(e){alert('⚠️ Erro');});
     };
 
@@ -794,7 +815,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         });
         lista.sort((a,b)=>new Date(a.expira)-new Date(b.expira));
         let tb=document.getElementById('tabelaBody');
-        if(!lista.length){tb.innerHTML='<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--text2)">Nenhum cliente</td></tr>';return}
+        if(!lista.length){tb.innerHTML='<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--text2)">Nenhum cliente cadastrado</td></tr>';return}
         tb.innerHTML=lista.map(c=>{
             let exp=new Date(c.expira),d=Math.ceil((exp-hoje)/86400000),sc,st;
             if(d<0){sc='status-vencido';st='VENCIDO'}else if(d===0){sc='status-vencendo';st='VENCE HOJE'}else{sc='status-ativo';st='ATIVO'}
