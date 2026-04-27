@@ -7,6 +7,93 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
+        /* MODAL DE AJUDA TERMINAL */
+    .modal-terminal-overlay {
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.9);
+        z-index: 999;
+        align-items: center;
+        justify-content: center;
+    }
+    .modal-terminal-overlay.show {
+        display: flex;
+    }
+    .modal-terminal-box {
+        background: #13131a;
+        border: 2px solid #c9a84c;
+        border-radius: 20px;
+        padding: 2rem;
+        max-width: 500px;
+        width: 90%;
+        text-align: center;
+        box-shadow: 0 0 50px rgba(201,168,76,0.2);
+    }
+    .modal-terminal-box h3 {
+        color: #e8c96a;
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+    }
+    .modal-terminal-box .passos {
+        text-align: left;
+        background: #0a0a10;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        line-height: 2.2;
+    }
+    .modal-terminal-box .passos p {
+        color: #e8e8f0;
+        font-size: .9rem;
+    }
+    .modal-terminal-box .passos span {
+        color: #c9a84c;
+        font-weight: 700;
+    }
+    .modal-terminal-box .exemplo {
+        background: rgba(62,207,142,0.1);
+        border: 1px solid rgba(62,207,142,0.3);
+        border-radius: 8px;
+        padding: .8rem;
+        margin: 1rem 0;
+        color: #3ecf8e;
+        font-family: 'DM Mono', monospace;
+        font-size: .9rem;
+    }
+    .btn-fechar-modal {
+        background: #c9a84c;
+        color: #09090d;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 8px;
+        font-weight: 700;
+        cursor: pointer;
+        width: 100%;
+        font-size: 1rem;
+        font-family: 'DM Sans', sans-serif;
+        transition: all .2s;
+    }
+    .btn-fechar-modal:hover {
+        background: #e8c96a;
+    }
+    .btn-ajuda-terminal {
+        background: transparent;
+        border: 1px dashed #c9a84c;
+        color: #c9a84c;
+        padding: .6rem 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: .78rem;
+        font-family: 'DM Sans', sans-serif;
+        transition: all .2s;
+        width: 100%;
+    }
+    .btn-ajuda-terminal:hover {
+        background: rgba(201,168,76,0.1);
+        border-style: solid;
+    }
     :root{--bg:#09090d;--bg2:#0f0f15;--surface:#13131a;--border:#1f1f2a;--border2:#2a2a38;--gold:#c9a84c;--gold2:#e8c96a;--text:#e8e8f0;--text2:#8888a8;--green:#3ecf8e;--red:#e05260;--radius:12px}
     *{margin:0;padding:0;box-sizing:border-box}
     html{scroll-behavior:smooth}
@@ -199,41 +286,7 @@
     <h2 class="sec-title">Comece a mudar seus resultados hoje</h2>
     <p class="sec-desc">Sem cartão. Sem compromisso. Apenas seus dados para receber a Boleta.</p>
   </div>
-<!-- BOTÃO: COMO ENCONTRAR MEU ID -->
-<div style="text-align:center; margin: 1rem 0;">
-    <button onclick="mostrarAjudaTerminal()" style="background:transparent; border:1px solid #c9a84c; color:#c9a84c; padding:.5rem 1rem; border-radius:6px; cursor:pointer; font-size:.8rem;">
-        🔍 COMO ENCONTRAR MEU ID TERMINAL MT5
-    </button>
-</div>
 
-<!-- MODAL DE AJUDA -->
-<div id="modalTerminal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:999; align-items:center; justify-content:center;">
-    <div style="background:#13131a; border:2px solid #c9a84c; border-radius:16px; padding:2rem; max-width:500px; width:90%; text-align:center;">
-        <h3 style="color:#e8c96a; margin-bottom:1rem;">🔍 Como encontrar seu ID Terminal</h3>
-        
-        <div style="text-align:left; background:#0f0f15; border-radius:12px; padding:1.5rem; margin:1rem 0; line-height:2.2; color:#e8e8f0;">
-            <p>📌 <strong style="color:#c9a84c;">Passo 1:</strong> Abra seu <strong>MetaTrader 5</strong></p>
-            <p>📌 <strong style="color:#c9a84c;">Passo 2:</strong> Clique no menu <strong>Ajuda</strong></p>
-            <p>📌 <strong style="color:#c9a84c;">Passo 3:</strong> Clique em <strong>Sobre</strong></p>
-            <p>📌 <strong style="color:#c9a84c;">Passo 4:</strong> Copie o número do <strong>Terminal</strong></p>
-        </div>
-        
-        <p style="color:#8888a8; font-size:.85rem;">O ID Terminal é um número como: <strong style="color:#3ecf8e;">12345678</strong></p>
-        
-        <button onclick="fecharModalTerminal()" style="background:#c9a84c; color:#09090d; border:none; padding:12px 30px; border-radius:8px; font-weight:bold; cursor:pointer; margin-top:10px; width:100%;">
-            ✅ ENTENDI, JÁ TENHO MEU ID
-        </button>
-    </div>
-</div>
-
-<script>
-function mostrarAjudaTerminal() {
-    document.getElementById('modalTerminal').style.display = 'flex';
-}
-function fecharModalTerminal() {
-    document.getElementById('modalTerminal').style.display = 'none';
-}
-</script>
   <div class="signup-box">
     <form id="formTeste" onsubmit="return false;">
       <input type="hidden" name="tipo" value="TESTE_GRATIS">
@@ -243,6 +296,13 @@ function fecharModalTerminal() {
       </div>
       <div class="fg"><label>E-mail *</label><input type="email" name="email" id="testeEmail" required></div>
       <div class="fg"><label>ID Terminal MT5 *</label><input type="text" name="terminal_id" id="testeTerminal" required placeholder="MT5 → Ajuda → Sobre"></div>
+            <!-- ⭐ BOTÃO DE AJUDA DO TERMINAL ⭐ -->
+      <div style="text-align:center; margin-bottom:.8rem;">
+          <button type="button" onclick="mostrarAjudaTerminal()" class="btn-ajuda-terminal">
+              🔍 NÃO SEI MEU ID TERMINAL MT5 - CLIQUE AQUI
+          </button>
+      </div>
+      
       <button type="submit" class="btn-primary" id="btnTeste" style="width:100%;padding:.9rem;font-size:.95rem">🎯 QUERO TESTAR 7 DIAS GRÁTIS</button>
     </form>
     <div class="notice-green" style="margin-top:1rem">✅ Chave enviada por WhatsApp e Email</div>
@@ -317,7 +377,35 @@ function fecharModalTerminal() {
     <p style="font-size:.68rem;color:var(--text2);line-height:1.5;font-weight:300">⚠️ <strong style="color:#fff">Aviso de Risco:</strong> Trading é uma atividade de alto risco.</p>
   </div>
 </footer>
+<!-- ⭐ MODAL AJUDA TERMINAL ⭐ -->
+<div class="modal-terminal-overlay" id="modalAjudaTerminal">
+    <div class="modal-terminal-box">
+        <h3>🔍 Como encontrar seu ID Terminal</h3>
+        
+        <div class="passos">
+            <p><span>1.</span> Abra seu <strong>MetaTrader 5</strong></p>
+            <p><span>2.</span> No menu superior, clique em <strong>Ajuda</strong></p>
+            <p><span>3.</span> Depois clique em <strong>Sobre</strong></p>
+            <p><span>4.</span> Procure por <strong>Terminal</strong> ou <strong>ID</strong></p>
+            <p><span>5.</span> Copie o número que aparece</p>
+        </div>
+        
+        <div class="exemplo">
+            Exemplo: 503129841
+        </div>
+        
+        <p style="color:#8888a8; font-size:.75rem; margin:1rem 0;">
+            ⚠️ Se não tiver MT5 instalado, acesse:<br>
+            <a href="meu-terminal.html" target="_blank" style="color:#3ecf8e;">Clique aqui para gerar um ID</a>
+        </p>
+        
+        <button class="btn-fechar-modal" onclick="fecharAjudaTerminal()">
+            ✅ ENTENDI! JÁ TENHO MEU ID
+        </button>
+    </div>
+</div>
 
+  
 <!-- ⭐⭐⭐ SCRIPTS ⭐⭐⭐ -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>
@@ -547,6 +635,20 @@ function fecharModalTerminal() {
         alert('✅ COMPROVANTE ENVIADO!\n\n👤 '+nome+'\n🏷️ Plano: '+plano+'\n\n📧 Confirmação enviada para seu email!\nEntraremos em contato em breve para ativar sua licença.');
     });
 })();
+</script>
+  <script>
+    function mostrarAjudaTerminal() {
+        document.getElementById('modalAjudaTerminal').classList.add('show');
+    }
+    function fecharAjudaTerminal() {
+        document.getElementById('modalAjudaTerminal').classList.remove('show');
+    }
+    // Fecha o modal clicando fora dele
+    document.getElementById('modalAjudaTerminal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            fecharAjudaTerminal();
+        }
+    });
 </script>
 </body>
 </html>
