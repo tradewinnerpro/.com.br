@@ -231,7 +231,6 @@
     <div>
       <div style="font-family:'DM Mono',monospace;font-size:.8rem;color:var(--gold);letter-spacing:3px;margin-bottom:.8rem"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--gold);margin-right:8px;box-shadow:0 0 8px var(--gold)"></span>TRADE WINNER PRO</div>
       <p style="font-size:.82rem;color:var(--text2);line-height:1.7;font-weight:300;margin-bottom:1rem">Boleta inteligente para MetaTrader 5.</p>
-      <div style="display:flex;align-items:center;gap:.4rem;font-size:.7rem;font-family:'DM Mono',monospace"><span style="width:8px;height:8px;border-radius:50%;background:var(--green)"></span><span>ONLINE · Suporte ativo</span></div>
     </div>
     <div>
       <h4 style="font-size:.78rem;font-weight:600;color:#fff;letter-spacing:1px;margin-bottom:1rem;text-transform:uppercase">Links Rápidos</h4>
@@ -245,22 +244,13 @@
     <div>
       <h4 style="font-size:.78rem;font-weight:600;color:#fff;letter-spacing:1px;margin-bottom:1rem;text-transform:uppercase">Fale Conosco</h4>
       <div style="display:flex;flex-direction:column;gap:.7rem">
-        <a href="mailto:tradewinnerpro@gmail.com" style="display:flex;align-items:center;gap:.6rem;color:var(--text2);text-decoration:none;font-size:.82rem">✉️ tradewinnerpro@gmail.com</a>
-        <a href="https://wa.me/5541999765210" target="_blank" style="display:flex;align-items:center;gap:.6rem;color:var(--text2);text-decoration:none;font-size:.82rem">📲 (41) 99976-5210</a>
-      </div>
-    </div>
-    <div>
-      <h4 style="font-size:.78rem;font-weight:600;color:#fff;letter-spacing:1px;margin-bottom:1rem;text-transform:uppercase">Selo de Confiança</h4>
-      <div style="display:flex;flex-direction:column;gap:.6rem;font-size:.78rem;color:var(--text2)">
-        <div>✓ 7 dias de teste grátis</div><div>✓ Suporte via WhatsApp</div><div>✓ Sem fidelidade</div>
+        <a href="mailto:tradewinnerpro@gmail.com" style="color:var(--text2);text-decoration:none;font-size:.82rem">✉️ tradewinnerpro@gmail.com</a>
+        <a href="https://wa.me/5541999765210" target="_blank" style="color:var(--text2);text-decoration:none;font-size:.82rem">📲 (41) 99976-5210</a>
       </div>
     </div>
   </div>
   <div style="border-top:1px solid var(--border);padding-top:1.5rem;max-width:1200px;margin:0 auto;text-align:center">
     <div style="font-size:.7rem;color:var(--text2)">© 2025 TRADE WINNER PRO · Todos os direitos reservados</div>
-  </div>
-  <div style="max-width:1200px;margin:1.2rem auto 0;padding:.8rem 1rem;background:rgba(224,82,96,.05);border:1px solid rgba(224,82,96,.1);border-radius:8px;text-align:center">
-    <p style="font-size:.68rem;color:var(--text2);line-height:1.5;font-weight:300">⚠️ <strong style="color:#fff">Aviso de Risco:</strong> Trading é uma atividade de alto risco.</p>
   </div>
 </footer>
 
@@ -268,18 +258,12 @@
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'})}})});
 </script>
 
-<!-- SMTPjs -->
-<script src="https://smtpjs.com/v3/smtp.js"></script>
-
 <script>
 (function(){
-  // ⚠️ COLOQUE A SENHA DE APP AQUI
-  var SENHA_APP = "SENHA_DE_APP_AQUI";
-  
-  var SALT     = "TWPRO-SALT-2025";
-  var LINK_EA  = "https://comodoro91-oss.github.io/tradewinner-boleta/TRADE_WINNER_PRO_V1.1.ex5";
-  var LINK_PDF = "https://comodoro91-oss.github.io/tradewinner-boleta/Manual_TRADE_WINNER.pdf";
-  var SEU_WATS = "5541999765210";
+  var SALT="TWPRO-SALT-2025";
+  var LINK_EA="https://comodoro91-oss.github.io/tradewinner-boleta/TRADE_WINNER_PRO_V1.1.ex5";
+  var LINK_PDF="https://comodoro91-oss.github.io/tradewinner-boleta/Manual_TRADE_WINNER.pdf";
+  var SEU_WATS="5541999765210";
 
   function gerarChave(terminal){
     var d=terminal+SALT,h=0;
@@ -297,36 +281,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
       if(t[terminal].totalTestes>=2) return {ok:false,msg:'⚠️ Limite de 2 testes atingido!'};
     }
     return {ok:true};
-  }
-
-  function enviarEmailCliente(nome, email, chave, expFmt){
-    Email.send({
-      SecureToken: undefined,
-      Host: "smtp.gmail.com",
-      Username: "tradewinnerpro@gmail.com",
-      Password: SENHA_APP,
-      To: email,
-      From: "tradewinnerpro@gmail.com",
-      Subject: "🎯 TRADE WINNER PRO - Teste Ativado!",
-      Body: "Olá "+nome+"!\n\n"+
-            "✅ Seu teste LATÃO 7 dias GRÁTIS foi ativado!\n\n"+
-            "🏷️ Plano: LATÃO 7 dias GRÁTIS\n"+
-            "🔑 Chave: "+chave+"\n"+
-            "📅 Válido até: "+expFmt+"\n\n"+
-            "📥 Baixe o EA:\n"+LINK_EA+"\n\n"+
-            "📘 Manual PDF:\n"+LINK_PDF+"\n\n"+
-            "⚙️ Como ativar:\n"+
-            "1. Instale o EA no MT5\n"+
-            "2. No painel, clique em ATIVAR LICENÇA\n"+
-            "3. Cole a chave acima\n\n"+
-            "📞 Dúvidas? (41) 99976-5210\n\n"+
-            "Bons trades! 📈\n\n"+
-            "Equipe TRADE WINNER PRO"
-    }).then(function(m){
-      console.log('✅ Email enviado para cliente: '+email);
-    }).catch(function(err){
-      console.error('❌ Erro ao enviar email:', err);
-    });
   }
 
   document.getElementById('btnTeste').addEventListener('click',function(e){
@@ -347,37 +301,65 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
     var expira=new Date(hoje);expira.setDate(hoje.getDate()+7);
     var expFmt=expira.toLocaleDateString('pt-BR');
 
-    // Salva localStorage
+    // ⭐ SALVA NO LOCALSTORAGE (PAINEL VAI LER)
     var clientes=JSON.parse(localStorage.getItem('twpro_gerador_db')||'[]');
-    clientes.push({id:Date.now(),nome:nome,whats:whatsapp,email:email,terminal:terminal,chave:chave,plano:'LATAO',dias:7,valor:0,dataCompra:hoje.toISOString().split('T')[0],dataCadastro:hoje.toISOString(),expira:expira.toISOString()});
+    clientes.push({
+      id:Date.now(),
+      nome:nome,
+      whats:whatsapp,
+      email:email,
+      terminal:terminal,
+      chave:chave,
+      plano:'LATAO',
+      dias:7,
+      valor:0,
+      dataCompra:hoje.toISOString().split('T')[0],
+      dataCadastro:hoje.toISOString(),
+      expira:expira.toISOString()
+    });
     localStorage.setItem('twpro_gerador_db',JSON.stringify(clientes));
 
+    // ⭐ MARCA COMO PENDENTE DE ENVIO DE EMAIL
+    var naoEnviados=JSON.parse(localStorage.getItem('twpro_nao_enviados')||'[]');
+    naoEnviados.push({
+      nome:nome,
+      email:email,
+      whatsapp:whatsapp,
+      terminal:terminal,
+      chave:chave,
+      expFmt:expFmt
+    });
+    localStorage.setItem('twpro_nao_enviados',JSON.stringify(naoEnviados));
+
+    // ⭐ NOTIFICAÇÕES
     var nots=JSON.parse(localStorage.getItem('twpro_notificacoes')||'[]');
     nots.unshift({id:Date.now(),tipo:'teste',nome:nome,whatsapp:whatsapp,email:email,terminal:terminal,chave:chave,plano:'LATAO 7 dias',data:hoje.toISOString(),lida:false});
     localStorage.setItem('twpro_notificacoes',JSON.stringify(nots));
 
+    // ⭐ ANTI-ABUSO
     var testes=JSON.parse(localStorage.getItem('twpro_testes_db')||'{}');
     if(!testes[terminal]) testes[terminal]={totalTestes:0,historico:[]};
     testes[terminal].totalTestes++;testes[terminal].dataSolicitacao=hoje.toISOString();
     localStorage.setItem('twpro_testes_db',JSON.stringify(testes));
 
-    // 1. Email para o cliente
-    enviarEmailCliente(nome, email, chave, expFmt);
-
-    // 2. WhatsApp para o cliente
+    // ⭐ WHATSAPP PARA O CLIENTE
     var nc=whatsapp.replace(/\D/g,'');
     var mc='🎯 *TRADE WINNER PRO - Teste Ativado!*\n\n'+
            'Olá *'+nome+'*!\n\n'+
-           '✅ Seu teste LATÃO 7 dias foi ativado!\n\n'+
+           '✅ Seu teste LATÃO 7 dias GRÁTIS foi ativado!\n\n'+
            '🔑 *Chave:* '+chave+'\n'+
            '📅 *Válido até:* '+expFmt+'\n\n'+
-           '📥 *EA:* '+LINK_EA+'\n\n'+
-           '📘 *PDF:* '+LINK_PDF+'\n\n'+
+           '📥 *Baixe o EA:*\n'+LINK_EA+'\n\n'+
+           '📘 *Manual PDF:*\n'+LINK_PDF+'\n\n'+
+           '⚙️ *Como ativar:*\n'+
+           '1. Instale o EA no MT5\n'+
+           '2. No painel, clique em ATIVAR LICENÇA\n'+
+           '3. Cole a chave acima\n\n'+
            '📞 Dúvidas? (41) 99976-5210\n\n'+
            'Bons trades! 📈';
     window.open('https://wa.me/'+nc+'?text='+encodeURIComponent(mc),'_blank');
 
-    // 3. WhatsApp para você
+    // ⭐ WHATSAPP PARA VOCÊ
     var mp='🔔 *NOVO TESTE LATÃO*\n\n'+
            '👤 '+nome+'\n'+
            '📱 '+whatsapp+'\n'+
@@ -388,7 +370,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
     window.open('https://wa.me/'+SEU_WATS+'?text='+encodeURIComponent(mp),'_blank');
 
     document.getElementById('formTeste').reset();
-    alert('✅ PRONTO!\n\n🔑 '+chave+'\n👤 '+nome+'\n📅 Até '+expFmt+'\n\n📱 WhatsApp aberto!\n📧 Email enviado!');
+    alert('✅ CADASTRO REALIZADO!\n\n🔑 '+chave+'\n👤 '+nome+'\n📅 Até '+expFmt+'\n\n📱 WhatsApp aberto!\n📧 Acesse o painel para enviar o email.');
   });
 })();
 </script>
