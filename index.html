@@ -4,22 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>TRADE WINNER PRO · Boleta inteligente MT5</title>
-  
-  <!-- ═══════════════════════════════════════════ -->
-  <!-- ⭐ FONTES ⭐ -->
-  <!-- ═══════════════════════════════════════════ -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-  
   <style>
-    /* ═══════════════════════════════════════════ */
-    /* ⭐ VARIÁVEIS DE CORES ⭐ */
-    /* ═══════════════════════════════════════════ */
     :root{--bg:#09090d;--bg2:#0f0f15;--surface:#13131a;--border:#1f1f2a;--border2:#2a2a38;--gold:#c9a84c;--gold2:#e8c96a;--text:#e8e8f0;--text2:#8888a8;--green:#3ecf8e;--red:#e05260;--radius:12px}
-    
-    /* ═══════════════════════════════════════════ */
-    /* ⭐ RESET GERAL ⭐ */
-    /* ═══════════════════════════════════════════ */
     *{margin:0;padding:0;box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{background-color:#09090d;background-image:url('gettyimages.png');background-size:cover;background-position:center 20%;background-repeat:no-repeat;background-attachment:fixed;color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden;position:relative}
@@ -27,10 +15,6 @@
     body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:0.04;pointer-events:none;z-index:0}
     .grid-overlay{position:fixed;inset:0;background-image:linear-gradient(rgba(201,168,76,0.05)1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,0.05)1px,transparent 1px);background-size:80px 80px;pointer-events:none;z-index:0}
     section,nav,.hero,.features,.boleta-sec,.markets,.signup,.ticker-wrap{position:relative;z-index:2}
-    
-    /* ═══════════════════════════════════════════ */
-    /* ⭐ NAVEGAÇÃO ⭐ */
-    /* ═══════════════════════════════════════════ */
     nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,2vw,2rem);height:60px;background:rgba(9,9,13,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);gap:0.8rem}
     .nav-logo{font-family:'DM Mono',monospace;font-size:1.1rem;font-weight:900;color:var(--gold2);letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:7px;white-space:nowrap;flex-shrink:0}
     .nav-logo-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold);animation:blink 2s ease infinite}
@@ -49,10 +33,6 @@
     .btn-elite{background:#C0392B;color:#FFF}.btn-elite:hover{background:#D44637;box-shadow:0 0 12px rgba(192,57,43,0.4)}
     @media(max-width:1050px){nav{flex-wrap:wrap;height:auto;padding:0.4rem 1rem;gap:0.3rem}.planos-row{order:3;width:100%;justify-content:flex-start;padding-bottom:0.3rem}.btn-plano{width:80px;height:28px;font-size:.6rem}}
     @media(max-width:600px){nav{padding:0.3rem 0.5rem;gap:0.2rem}.nav-logo{font-size:.65rem;letter-spacing:1px}.nav-links{gap:0.5rem}.nav-links a{font-size:.6rem}.btn-plano{width:52px;height:22px;font-size:.5rem;letter-spacing:0;border-radius:3px}.planos-row{gap:3px;overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;padding:2px 0}}
-    
-    /* ═══════════════════════════════════════════ */
-    /* ⭐ HERO ⭐ */
-    /* ═══════════════════════════════════════════ */
     .hero{min-height:92vh;display:flex;align-items:center;padding:0 clamp(1.5rem,6vw,5rem)}
     .hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;width:100%;max-width:1280px;margin:0 auto}
     @media(max-width:900px){.hero-inner{grid-template-columns:1fr;gap:2.5rem;padding-top:3rem}}
@@ -72,19 +52,11 @@
     .hero-right{display:flex;justify-content:center;align-items:center}
     .boleta-frame{max-width:340px;width:100%;display:flex;justify-content:center;align-items:center}
     .boleta-frame img{width:80%;display:block;margin:0 auto;border-radius:16px}
-    
-    /* ═══════════════════════════════════════════ */
-    /* ⭐ SEÇÕES ⭐ */
-    /* ═══════════════════════════════════════════ */
     .sec-pad{padding:6rem clamp(1.5rem,6vw,5rem)}
     .sec-center{text-align:center;max-width:600px;margin:0 auto 3.5rem}
     .sec-label{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:.8rem;display:block}
     .sec-title{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700;letter-spacing:-.5px;line-height:1.2}
     .sec-desc{color:var(--text2);margin-top:.8rem;font-weight:300}
-    
-    /* ═══════════════════════════════════════════ */
-    /* ⭐ FEATURES ⭐ */
-    /* ═══════════════════════════════════════════ */
     .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:1000px;margin:0 auto}
     @media(max-width:768px){.features-grid{grid-template-columns:repeat(2,1fr)}}
     @media(max-width:480px){.features-grid{grid-template-columns:1fr}}
@@ -93,10 +65,6 @@
     .feat-icon{font-size:2rem;margin-bottom:.8rem}
     .feat-title{font-weight:600;font-size:.95rem;color:var(--text);margin-bottom:.4rem}
     .feat-desc{font-size:.78rem;color:var(--text2);line-height:1.5}
-    
-    /* ═══════════════════════════════════════════ */
-    /* ⭐ MERCADOS ⭐ */
-    /* ═══════════════════════════════════════════ */
     .markets-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;max-width:1000px;margin:0 auto}
     @media(max-width:768px){.markets-grid{grid-template-columns:repeat(2,1fr)}}
     @media(max-width:480px){.markets-grid{grid-template-columns:1fr}}
@@ -109,10 +77,6 @@
     .mc-badge.blue{background:rgba(59,158,255,0.15);color:#3b9eff}
     .mc-badge.red{background:rgba(224,82,96,0.15);color:var(--red)}
     .mc-trend{font-size:.75rem;font-weight:500;margin-top:.5rem}
-    
-    /* ═══════════════════════════════════════════ */
-    /* ⭐ FORMULÁRIOS ⭐ */
-    /* ═══════════════════════════════════════════ */
     .signup{background:rgba(15,15,21,0.8)}
     .signup-box{max-width:580px;margin:0 auto;background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:2.5rem 2rem}
     .form-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
@@ -123,129 +87,11 @@
     .fg input:focus,.fg select:focus{outline:none;border-color:var(--gold)}
     .notice-green{font-size:.75rem;color:var(--green);background:rgba(62,207,142,.05);border:1px solid rgba(62,207,142,.15);border-radius:6px;padding:.7rem .9rem;margin-top:.5rem;text-align:center}
     .ticker-wrap{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(15,15,21,0.9);overflow:hidden;padding:.4rem 0}
-    .alerta-whatsapp{background:rgba(37,211,102,0.08);border:2px solid #25d366;border-radius:12px;padding:1.2rem;text-align:center;margin-top:1.2rem;display:none}
-    .alerta-whatsapp.show{display:block}
-    .alerta-whatsapp a{display:inline-block;background:#25d366;color:#fff;padding:.7rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:.85rem;margin-top:.5rem}
-
-    /* ═══════════════════════════════════════════ */
-    /* ⭐ MODAL DE AJUDA DO TERMINAL ⭐ */
-    /* ═══════════════════════════════════════════ */
-    .modal-terminal-overlay {
-        display: none;
-        position: fixed;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        background: rgba(0,0,0,0.9);
-        z-index: 999;
-        align-items: center;
-        justify-content: center;
-    }
-    .modal-terminal-overlay.show {
-        display: flex;
-    }
-    .modal-terminal-box {
-        background: #13131a;
-        border: 2px solid #c9a84c;
-        border-radius: 20px;
-        padding: 2rem;
-        max-width: 520px;
-        width: 90%;
-        text-align: center;
-        box-shadow: 0 0 50px rgba(201,168,76,0.2);
-    }
-    .modal-terminal-box h3 {
-        color: #e8c96a;
-        font-size: 1.3rem;
-        margin-bottom: 1rem;
-    }
-    .modal-terminal-box .info-box {
-        text-align: left;
-        background: #0a0a10;
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin: 1rem 0;
-        line-height: 2;
-    }
-    .modal-terminal-box .info-box p {
-        color: #e8e8f0;
-        font-size: .9rem;
-    }
-    .modal-terminal-box .info-box .destaque {
-        color: #3ecf8e;
-        font-weight: 700;
-    }
-    .modal-terminal-box .exemplo {
-        background: rgba(62,207,142,0.1);
-        border: 1px solid rgba(62,207,142,0.3);
-        border-radius: 8px;
-        padding: .8rem;
-        margin: 1rem 0;
-        color: #3ecf8e;
-        font-family: 'DM Mono', monospace;
-        font-size: .9rem;
-    }
-    .btn-fechar-modal {
-        background: #c9a84c;
-        color: #09090d;
-        border: none;
-        padding: 12px 30px;
-        border-radius: 8px;
-        font-weight: 700;
-        cursor: pointer;
-        width: 100%;
-        font-size: 1rem;
-        font-family: 'DM Sans', sans-serif;
-        transition: all .2s;
-    }
-    .btn-fechar-modal:hover {
-        background: #e8c96a;
-    }
-    
-    /* ═══════════════════════════════════════════ */
-    /* ⭐ BOTÃO DE AJUDA DO TERMINAL ⭐ */
-    /* ═══════════════════════════════════════════ */
-    .btn-ajuda-terminal {
-        background: transparent;
-        border: 1px dashed #c9a84c;
-        color: #c9a84c;
-        padding: .6rem 1rem;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: .78rem;
-        font-family: 'DM Sans', sans-serif;
-        transition: all .2s;
-        width: 100%;
-    }
-    .btn-ajuda-terminal:hover {
-        background: rgba(201,168,76,0.1);
-        border-style: solid;
-    }
-    
-    /* ═══════════════════════════════════════════ */
-    /* ⭐ AVISO CELULAR ⭐ */
-    /* ═══════════════════════════════════════════ */
-    .aviso-celular {
-        color: #c9a84c;
-        font-size: .7rem;
-        margin-top: .3rem;
-        display: none;
-        text-align: center;
-        background: rgba(201,168,76,0.05);
-        padding: .5rem;
-        border-radius: 6px;
-        border: 1px solid rgba(201,168,76,0.2);
-    }
-    .aviso-celular.show {
-        display: block;
-    }
   </style>
 </head>
 <body>
 <div class="grid-overlay"></div>
 
-<!-- ═══════════════════════════════════════════ -->
-<!-- ⭐ NAVEGAÇÃO ⭐ -->
-<!-- ═══════════════════════════════════════════ -->
 <nav>
   <div class="nav-logo"><span class="nav-logo-dot"></span>TRADE WINNER PRO</div>
   <ul class="nav-links">
@@ -271,9 +117,6 @@
   </div>
 </nav>
 
-<!-- ═══════════════════════════════════════════ -->
-<!-- ⭐ HERO ⭐ -->
-<!-- ═══════════════════════════════════════════ -->
 <section class="hero">
   <div class="hero-inner">
     <div class="hero-left">
@@ -298,9 +141,6 @@
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════ -->
-<!-- ⭐ TICKER TRADINGVIEW ⭐ -->
-<!-- ═══════════════════════════════════════════ -->
 <div class="ticker-wrap">
   <div class="tradingview-widget-container" style="width:100%">
     <div class="tradingview-widget-container__widget"></div>
@@ -310,9 +150,6 @@
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════ -->
-<!-- ⭐ FUNCIONALIDADES ⭐ -->
-<!-- ═══════════════════════════════════════════ -->
 <section class="sec-pad" id="funcoes">
   <div class="sec-center"><span class="sec-label">Funcionalidades</span><h2 class="sec-title">Tudo que você precisa numa só boleta</h2></div>
   <div class="features-grid">
@@ -325,9 +162,6 @@
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════ -->
-<!-- ⭐ MERCADOS ⭐ -->
-<!-- ═══════════════════════════════════════════ -->
 <section class="sec-pad" id="mercados" style="background:rgba(15,15,21,0.6)">
   <div class="sec-center"><span class="sec-label">Mercados</span><h2 class="sec-title">Opere os maiores mercados do mundo</h2></div>
   <div class="markets-grid">
@@ -338,9 +172,6 @@
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════ -->
-<!-- ⭐ BOLETA ⭐ -->
-<!-- ═══════════════════════════════════════════ -->
 <section class="sec-pad boleta-sec" id="boleta">
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;max-width:1100px;margin:0 auto">
     <div style="border-radius:16px;overflow:hidden;border:1px solid var(--border2)"><img src="boleta.png" alt="Boleta MT5" style="width:100%;display:block"></div>
@@ -358,16 +189,13 @@
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════ -->
-<!-- ⭐ FORMULÁRIO TESTE GRÁTIS ⭐ -->
-<!-- ═══════════════════════════════════════════ -->
+<!-- FORMULÁRIO TESTE GRÁTIS -->
 <section class="sec-pad signup" id="cadastro-teste">
   <div class="sec-center">
     <span class="sec-label">Teste Grátis</span>
     <h2 class="sec-title">Comece a mudar seus resultados hoje</h2>
     <p class="sec-desc">Sem cartão. Sem compromisso. Apenas seus dados para receber a Boleta.</p>
   </div>
-
   <div class="signup-box">
     <form id="formTeste" onsubmit="return false;">
       <input type="hidden" name="tipo" value="TESTE_GRATIS">
@@ -376,41 +204,17 @@
         <div class="fg"><label>WhatsApp *</label><input type="tel" name="whatsapp" id="testeWhats" required placeholder="+55 41 99999-9999"></div>
       </div>
       <div class="fg"><label>E-mail *</label><input type="email" name="email" id="testeEmail" required></div>
-      <div class="fg">
-        <label>ID Terminal MT5 *</label>
-        <input type="text" name="terminal_id" id="testeTerminal" required placeholder="Para teste, digite CELULAR se não souber">
-        <div class="aviso-celular" id="avisoCelular">
-          📱 <strong>Não sabe seu ID?</strong> Digite <strong>"CELULAR"</strong> no campo acima.<br>
-          Após instalar a Boleta, o ID aparecerá no rodapé do painel para futuras assinaturas.
-        </div>
-      </div>
-      
-      <!-- ⭐ BOTÃO DE AJUDA DO TERMINAL ⭐ -->
-      <div style="text-align:center; margin-bottom:.8rem;">
-          <button type="button" onclick="mostrarAjudaTerminal()" class="btn-ajuda-terminal">
-              🔍 NÃO SEI MEU ID TERMINAL - CLIQUE AQUI
-          </button>
-      </div>
-      
+      <div class="fg"><label>ID Terminal MT5 *</label><input type="text" name="terminal_id" id="testeTerminal" required placeholder="Para teste, digite CELULAR se não souber"></div>
       <button type="submit" class="btn-primary" id="btnTeste" style="width:100%;padding:.9rem;font-size:.95rem">🎯 QUERO TESTAR 7 DIAS GRÁTIS</button>
     </form>
     <div class="notice-green" style="margin-top:1rem">✅ Chave enviada por WhatsApp e Email</div>
-
-    <!-- ⭐ ALERTA WHATSAPP DO DONO ⭐ -->
-    <div class="alerta-whatsapp" id="alertaDono">
-      <p style="color:#25d366;font-weight:600;margin-bottom:.3rem">📱 CLIQUE NO BOTÃO ABAIXO</p>
-      <p style="font-size:.75rem;color:var(--text2);margin-bottom:.5rem">Para receber os dados deste cadastro no seu WhatsApp</p>
-      <a href="#" id="linkDonoWhats" target="_blank" rel="noopener">📲 RECEBER DADOS NO WHATSAPP</a>
-    </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════ -->
-<!-- ⭐ FORMULÁRIO COMPROVANTE ⭐ -->
-<!-- ═══════════════════════════════════════════ -->
+<!-- FORMULÁRIO COMPROVANTE -->
 <section class="sec-pad signup" id="cadastro-comprovante" style="background:rgba(15,15,21,0.9)">
- <div class="sec-center">
-     <span class="sec-label">Ativação de Licença</span>
+  <div class="sec-center">
+    <span class="sec-label">Ativação de Licença</span>
     <h2 class="sec-title">Já fez sua assinatura?</h2>
     <p class="sec-desc">Envie o comprovante para liberarmos sua licença em minutos.</p>
   </div>
@@ -422,23 +226,13 @@
       </div>
       <div class="fg"><label>E-mail *</label><input type="email" id="compEmail" required></div>
       <div class="fg"><label>Plano *</label><select id="compPlano" required><option value="">Selecione...</option><option>BRONZE</option><option>PRATA</option><option>OURO</option><option>DIAMANTE</option><option>ELITE</option></select></div>
-      <div class="fg">
-        <label>ID Terminal *</label>
-        <input type="text" id="compTerminal" required placeholder="Após instalar a Boleta, o ID aparece no rodapé do painel">
-        <small style="color:#8888a8; font-size:.7rem; margin-top:.3rem;">
-          💡 O ID do Terminal aparece no <strong>rodapé da Boleta</strong> após a instalação.
-        </small>
-      </div>
+      <div class="fg"><label>ID Terminal *</label><input type="text" id="compTerminal" required></div>
       <div class="fg"><label>Comprovante (código ou link)</label><input type="text" id="compCodigo" placeholder="Código da transação ou link"></div>
       <button type="submit" class="btn-primary" id="btnComprovante" style="width:100%;padding:.9rem">📩 ENVIAR COMPROVANTE</button>
     </form>
-    <div class="notice-green" id="compSucesso" style="margin-top:1rem;display:none">✅ Comprovante enviado! Em breve entraremos em contato.</div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════ -->
-<!-- ⭐ FOOTER ⭐ -->
-<!-- ═══════════════════════════════════════════ -->
 <footer style="border-top:1px solid var(--border);background:#0a0a10;padding:3rem clamp(1.5rem,6vw,5rem) 1.5rem;position:relative;z-index:10">
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2.5rem;max-width:1200px;margin:0 auto 2rem">
     <div>
@@ -477,61 +271,44 @@
   </div>
 </footer>
 
-<!-- ═══════════════════════════════════════════ -->
-<!-- ⭐ MODAL AJUDA TERMINAL ⭐ -->
-<!-- ═══════════════════════════════════════════ -->
-<div class="modal-terminal-overlay" id="modalAjudaTerminal">
-    <div class="modal-terminal-box">
-        <h3>🔍 Sobre o ID do Terminal</h3>
-        
-        <div class="info-box">
-            <p><strong style="color:#c9a84c;">📌 Para o TESTE GRÁTIS:</strong></p>
-            <p>Não se preocupe! Digite <span class="destaque">"CELULAR"</span> no campo ID Terminal.</p>
-            <p>O teste vai funcionar normalmente!</p>
-            
-            <p style="margin-top:15px;"><strong style="color:#c9a84c;">📌 Para a ASSINATURA:</strong></p>
-            <p>Após instalar a <strong>Boleta Trade Winner Pro</strong> no MT5, o <span class="destaque">ID do Terminal</span> aparecerá no <strong>rodapé do painel</strong> da Boleta.</p>
-            <p>Use esse ID para ativar sua licença.</p>
-        </div>
-        
-        <div class="exemplo">
-            💡 Exemplo de ID: <strong>503129841</strong>
-        </div>
-        
-        <p style="color:#8888a8; font-size:.78rem; margin:1rem 0; line-height:1.6; text-align:left;">
-            <strong style="color:#e8c96a;">⚠️ Importante:</strong><br>
-            • O ID do Terminal é <strong>único por computador</strong><br>
-            • Mesmo tendo várias contas (demo/real), o ID é o <strong>mesmo</strong><br>
-            • O MT5 só funciona no computador (Windows/Mac)<br>
-            • <strong>No celular, digite "CELULAR" para o teste</strong>
-        </p>
-        
-        <button class="btn-fechar-modal" onclick="fecharAjudaTerminal()">
-            ✅ ENTENDI!
-        </button>
-    </div>
-</div>
-
-<!-- ═══════════════════════════════════════════ -->
-<!-- ⭐ EmailJS (Biblioteca de envio de emails) ⭐ -->
-<!-- ═══════════════════════════════════════════ -->
+<!-- EmailJS + Script -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-
-<!-- ═══════════════════════════════════════════ -->
-<!-- ⭐ SCRIPT PRINCIPAL ⭐ -->
-<!-- ═══════════════════════════════════════════ -->
 <script>
 (function(){
-    // ⭐ INICIALIZAÇÃO DO EMAILJS
     emailjs.init("w0fvMYDTwWsWL5hnS");
     
-    // ⭐ CONSTANTES
+    // ⭐ CONFIGURAÇÃO JSONbin ⭐
+    const JSONBIN_ID = "69f0013c36566621a8fc2b6e";
+    const JSONBIN_KEY = "$2a$10$Tt3s6mjKmpz2gcZEtM9G7.Y.EEUV.rvuOTZSaNHRZxsGNPqKKhjEC";
+    
     const SALT="TWPRO-SALT-2025";
     const LINK_EA="https://tradewinnerpro.github.io/.com.br/TRADE_WINNER_PRO_V1.1.ex5";
     const LINK_PDF="https://tradewinnerpro.github.io/.com.br/Manual_TRADE_WINNER.pdf";
-    const SEU_WATS="5541999765210";
 
-    // ⭐ FUNÇÃO: GERAR CHAVE
+    // ⭐ ENVIAR DADOS PARA JSONbin ⭐
+    async function enviarParaServidor(dados) {
+        try {
+            let response = await fetch('https://api.jsonbin.io/v3/b/' + JSONBIN_ID + '/latest', {
+                headers: { 'X-Master-Key': JSONBIN_KEY }
+            });
+            let data = await response.json();
+            let clientes = data.record.clientes || [];
+            clientes.push(dados);
+            
+            await fetch('https://api.jsonbin.io/v3/b/' + JSONBIN_ID, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Master-Key': JSONBIN_KEY
+                },
+                body: JSON.stringify({ clientes: clientes })
+            });
+            console.log('✅ Enviado para JSONbin!');
+        } catch(err) {
+            console.log('⚠️ Erro JSONbin:', err);
+        }
+    }
+
     function gerarChave(terminal){
         let d=terminal+SALT,h=0;
         for(let i=0;i<d.length;i++){let c=d.charCodeAt(i);h=((h<<5)-h)+c;h=h&0x7FFFFFFF}
@@ -540,26 +317,8 @@
         return "LATAO-"+l.charAt(p1%l.length)+l.charAt(p2%l.length)+l.charAt(p3%l.length)+"-"+String(p1).padStart(4,'0')+"-"+String(p2%1000).padStart(3,'0')+"-"+String(p3%1000).padStart(3,'0');
     }
 
-    // ⭐ FUNÇÃO: VERIFICAR TESTE
-    function verificaTeste(terminal){
-        let db=localStorage.getItem('twpro_testes_db');
-        let t=db?JSON.parse(db):{};
-        if(t[terminal]){
-            let d=new Date(t[terminal].dataSolicitacao);
-            let h=new Date();
-            let diff=Math.ceil((h-d)/86400000);
-            if(diff<=7 && t[terminal].testeAtivo) return {ok:false,msg:'⚠️ Terminal já tem teste ativo! Dias restantes: '+(7-diff)};
-            if(t[terminal].totalTestes>=2) return {ok:false,msg:'⚠️ Limite de 2 testes atingido!'};
-            t[terminal].testeAtivo=false;
-            localStorage.setItem('twpro_testes_db',JSON.stringify(t));
-        }
-        return {ok:true};
-    }
-
-    // ⭐ EVENTO: BOTÃO TESTE GRÁTIS
     document.getElementById('btnTeste').addEventListener('click',function(e){
         e.preventDefault();
-        
         let nome=document.getElementById('testeNome').value.trim();
         let whatsapp=document.getElementById('testeWhats').value.trim();
         let email=document.getElementById('testeEmail').value.trim();
@@ -567,61 +326,41 @@
         
         if(!nome||!whatsapp||!email||!terminal){alert('⚠️ Preencha todos os campos!');return;}
         
-        // ⭐ SE O USUÁRIO DIGITOU "CELULAR"
-        if(terminal.toUpperCase() === 'CELULAR'){
-            terminal = 'CELULAR-' + Date.now();
-            alert('📱 Tudo bem! Cadastro realizado com sucesso!\n\nQuando instalar a Boleta no MT5, o ID do Terminal aparecerá no rodapé do painel.\n\nUse esse ID para futuras assinaturas.');
-        }
-        
-        let v=verificaTeste(terminal);
-        if(!v.ok){alert(v.msg);return;}
+        if(terminal.toUpperCase()==='CELULAR') terminal='CELULAR-'+Date.now();
         
         let chave=gerarChave(terminal);
         let hoje=new Date();
         let expira=new Date(hoje);expira.setDate(hoje.getDate()+7);
         let expiraFormatada=expira.toLocaleDateString('pt-BR');
-        let dataAgora=hoje.toLocaleDateString('pt-BR')+' '+hoje.toLocaleTimeString('pt-BR');
         
         // Salvar no localStorage
         let clientes=JSON.parse(localStorage.getItem('twpro_gerador_db')||'[]');
-        clientes.push({
+        let novoCliente={
             id:Date.now(),nome:nome,whats:whatsapp,email:email,terminal:terminal,
             chave:chave,plano:'LATAO',dias:7,valor:0,
             dataCompra:hoje.toISOString().split('T')[0],
             dataCadastro:hoje.toISOString(),expira:expira.toISOString()
-        });
+        };
+        clientes.push(novoCliente);
         localStorage.setItem('twpro_gerador_db',JSON.stringify(clientes));
         
-        // Notificação para o painel
-        let nots=JSON.parse(localStorage.getItem('twpro_notificacoes')||'[]');
-        nots.unshift({id:Date.now(),tipo:'teste',nome:nome,whatsapp:whatsapp,email:email,terminal:terminal,chave:chave,plano:'LATAO 7 dias',data:new Date().toISOString(),lida:false});
-        localStorage.setItem('twpro_notificacoes',JSON.stringify(nots));
-        
-        // Anti-abuso
-        let db=localStorage.getItem('twpro_testes_db');
-        let testes=db?JSON.parse(db):{};
-        if(!testes[terminal]) testes[terminal]={totalTestes:0,historico:[],testeAtivo:false};
-        testes[terminal].totalTestes++;
-        testes[terminal].dataSolicitacao=hoje.toISOString();
-        testes[terminal].testeAtivo=true;
-        localStorage.setItem('twpro_testes_db',JSON.stringify(testes));
+        // ⭐ ENVIAR PARA JSONbin ⭐
+        enviarParaServidor(novoCliente);
         
         // Email DONO
         emailjs.send("service_kqme5zs","template_4xqebas",{
-            to_email: "tradewinnerpro@gmail.com",
-            nome: nome, whatsapp: whatsapp, email_cliente: email,
-            terminal_id: terminal, chave: chave,
-            plano: "LATAO 7 dias GRÁTIS", validade: expiraFormatada,
-            data_cadastro: dataAgora
+            to_email:"tradewinnerpro@gmail.com",nome:nome,whatsapp:whatsapp,
+            email_cliente:email,terminal_id:terminal,chave:chave,
+            plano:"LATAO 7 dias GRÁTIS",validade:expiraFormatada,
+            data_cadastro:hoje.toLocaleDateString('pt-BR')+' '+hoje.toLocaleTimeString('pt-BR')
         }).then(function(r){console.log('✅ Email DONO OK');}).catch(function(e){console.log('⚠️ Erro dono:',e);});
 
         // Email CLIENTE
         emailjs.send("service_kqme5zs","template_rlrvpbm",{
-            to_email: email, to_name: nome, nome: nome,
-            chave: chave, expira: expiraFormatada,
-            plano: "LATAO 7 dias GRÁTIS",
-            link_ea: LINK_EA, link_pdf: LINK_PDF,
-            whatsapp: whatsapp, terminal_id: terminal, validade: expiraFormatada
+            to_email:email,to_name:nome,nome:nome,chave:chave,
+            expira:expiraFormatada,plano:"LATAO 7 dias GRÁTIS",
+            link_ea:LINK_EA,link_pdf:LINK_PDF,whatsapp:whatsapp,
+            terminal_id:terminal,validade:expiraFormatada
         }).then(function(r){console.log('✅ Email CLIENTE OK');}).catch(function(e){console.log('⚠️ Erro cliente:',e);});
 
         // WhatsApp Cliente
@@ -629,102 +368,21 @@
         let mc='🎯 *TRADE WINNER PRO - Teste Ativado!*\n\n'+
                'Olá *'+nome+'*!\n\n'+
                '✅ Seu teste gratuito LATÃO foi ativado!\n\n'+
-               '🏷️ *Plano:* LATÃO 7 dias GRÁTIS\n'+
                '🔑 *Chave:* '+chave+'\n'+
                '📅 *Válido até:* '+expiraFormatada+'\n\n'+
                '📥 *Baixe o EA:*\n'+LINK_EA+'\n\n'+
                '📘 *Manual PDF:*\n'+LINK_PDF+'\n\n'+
                '⚙️ *Como ativar:*\n'+
                '1. Instale o EA no MT5\n'+
-               '2. No painel, clique em ATIVAR LICENÇA\n'+
-               '3. Cole a chave acima\n\n'+
-               '💡 *Importante:* O ID do Terminal aparece no rodapé da Boleta após instalação.\n'+
-               'Use esse ID para futuras assinaturas.\n\n'+
+               '2. No campo "Chave de Ativação" cole: '+chave+'\n\n'+
                '📞 *Dúvidas?* (41) 99976-5210\n\n'+
                'Bons trades! 📈';
         window.open('https://wa.me/'+nc+'?text='+encodeURIComponent(mc),'_blank');
 
         document.getElementById('formTeste').reset();
-        alert('✅ CADASTRO REALIZADO!\n\n🔰 LATÃO 7 dias GRÁTIS\n👤 '+nome+'\n🔑 '+chave+'\n📅 Até '+expiraFormatada+'\n\n📱 WhatsApp com dados enviado!\n📧 Emails enviados!');
-    });
-
-    // ⭐ EVENTO: BOTÃO COMPROVANTE
-    document.getElementById('btnComprovante').addEventListener('click',function(e){
-        e.preventDefault();
-
-        let nome=document.getElementById('compNome').value.trim();
-        let whatsapp=document.getElementById('compWhats').value.trim();
-        let email=document.getElementById('compEmail').value.trim();
-        let plano=document.getElementById('compPlano').value.trim();
-        let terminal=document.getElementById('compTerminal').value.trim();
-        let codigo=document.getElementById('compCodigo').value.trim();
-
-        if(!nome||!whatsapp||!email||!plano||!terminal){
-            alert('⚠️ Preencha todos os campos obrigatórios!');return;
-        }
-
-        let btn=document.getElementById('btnComprovante');
-        btn.disabled=true;
-        btn.textContent='⏳ Enviando...';
-        let dataAgora=new Date().toLocaleDateString('pt-BR')+' '+new Date().toLocaleTimeString('pt-BR');
-
-        emailjs.send("service_kqme5zs","template_4xqebas",{
-            to_email:"tradewinnerpro@gmail.com", nome:nome, whatsapp:whatsapp,
-            email_cliente:email, terminal_id:terminal,
-            chave:codigo||'Não informado', plano:plano+' — COMPROVANTE',
-            validade:'Aguardando ativação', data_cadastro:dataAgora
-        }).then(function(r){console.log('✅ Comprovante OK');}).catch(function(e){console.log('⚠️ Erro:',e);});
-
-        emailjs.send("service_kqme5zs","template_rlrvpbm",{
-            to_email:email, to_name:nome, nome:nome,
-            chave:'⏳ Sua chave será enviada após confirmação do pagamento',
-            expira:'A definir após ativação', plano:plano,
-            link_ea:LINK_EA, link_pdf:LINK_PDF,
-            whatsapp:whatsapp, terminal_id:terminal, validade:'A definir após ativação'
-        }).then(function(r){console.log('✅ Confirmação OK');}).catch(function(e){console.log('⚠️ Erro:',e);});
-
-        let nots=JSON.parse(localStorage.getItem('twpro_notificacoes')||'[]');
-        nots.unshift({id:Date.now(),tipo:'comprovante',nome:nome,whatsapp:whatsapp,email:email,terminal:terminal,chave:codigo||'pendente',plano:plano,data:new Date().toISOString(),lida:false});
-        localStorage.setItem('twpro_notificacoes',JSON.stringify(nots));
-
-        document.getElementById('formComprovante').reset();
-        document.getElementById('compSucesso').style.display='block';
-        btn.disabled=false;
-        btn.textContent='📩 ENVIAR COMPROVANTE';
-        alert('✅ COMPROVANTE ENVIADO!\n\n👤 '+nome+'\n🏷️ Plano: '+plano+'\n\n📧 Confirmação enviada!\nEntraremos em contato para ativar sua licença.');
+        alert('✅ CADASTRO REALIZADO!\n\n🔰 LATÃO 7 dias GRÁTIS\n👤 '+nome+'\n🔑 '+chave+'\n📅 Até '+expiraFormatada);
     });
 })();
-</script>
-
-<!-- ═══════════════════════════════════════════ -->
-<!-- ⭐ SCRIPT DO MODAL DE AJUDA ⭐ -->
-<!-- ═══════════════════════════════════════════ -->
-<script>
-    // Detectar se é celular e mostrar aviso
-    function isMobile() {
-        return /Android|iPhone|iPad|iPod|webOS/i.test(navigator.userAgent);
-    }
-    if (isMobile()) {
-        document.getElementById('avisoCelular').classList.add('show');
-        document.getElementById('testeTerminal').placeholder = 'Digite "CELULAR" aqui';
-    }
-    
-    // Abrir modal de ajuda
-    function mostrarAjudaTerminal() {
-        document.getElementById('modalAjudaTerminal').classList.add('show');
-    }
-    
-    // Fechar modal de ajuda
-    function fecharAjudaTerminal() {
-        document.getElementById('modalAjudaTerminal').classList.remove('show');
-    }
-    
-    // Fechar modal clicando fora
-    document.getElementById('modalAjudaTerminal').addEventListener('click', function(e) {
-        if (e.target === this) {
-            fecharAjudaTerminal();
-        }
-    });
 </script>
 </body>
 </html>
