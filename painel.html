@@ -261,6 +261,8 @@
     .btn-icon-delete:hover { background: rgba(224,82,96,0.15); }
     .btn-icon-edit { border-color: #c9a84c; color: #c9a84c; }
     .btn-icon-edit:hover { background: rgba(201,168,76,0.15); }
+    .btn-icon-email { border-color: #e67e22; color: #e67e22; }
+    .btn-icon-email:hover { background: rgba(230,126,34,0.15); }
 
     .status-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 1.5rem; }
     @media(max-width:600px){.status-grid{grid-template-columns:repeat(2,1fr)}}
@@ -280,7 +282,9 @@
     .finance-total { font-family: 'DM Mono', monospace; font-size: 2rem; font-weight: 500; color: #fff; margin: .3rem 0; }
 
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); z-index: 200; }
+    .modal-overlay.show { display: block; }
     .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 201; width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; background: var(--surface); border: 1px solid var(--border2); border-radius: 16px; padding: 2rem; }
+    .modal.show { display: block; }
     .modal-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 1.5rem; color: var(--gold2); }
     .preco-config-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
     .preco-config-row label { min-width: 180px; font-size: .85rem; }
@@ -341,12 +345,11 @@
 <div class="main-container">
 
   <div class="page-header" id="gerador">
-    <div class="page-tag"><span class="nav-logo-dot"></span>LICENSE MANAGER V8.0</div>
+    <div class="page-tag"><span class="nav-logo-dot"></span>LICENSE MANAGER V9.0</div>
     <h1 class="page-title">Gerador de <em>Chaves</em></h1>
     <p class="page-desc">Cadastre clientes e gerencie licenças</p>
   </div>
 
-  <!-- PAINEL NOTIFICAÇÕES -->
   <div class="notificacoes-panel" id="painelNotificacoes">
     <div class="card-header">
       <span class="card-title">🔔 Últimos Cadastros do Site</span>
@@ -368,11 +371,11 @@
     <label style="font-size:.78rem;font-weight:500;color:var(--text2);margin-bottom:.5rem;display:block">Plano *</label>
     <div class="planos-grid" id="planosGrid">
       <div class="plano-card plano-latao active" data-plano="LATAO" data-dias="7" data-valor="0" onclick="selecionarPlano('LATAO',7,0,this)"><div class="plano-icone">🔰</div><div class="plano-nome">Latão</div><div class="plano-dias">7 dias</div><div class="plano-valor">GRÁTIS</div></div>
-      <div class="plano-card plano-bronze" data-plano="BRONZE" data-dias="30" data-valor="49.90" onclick="selecionarPlano('BRONZE',30,49.90,this)"><div class="plano-icone">🥉</div><div class="plano-nome">Bronze</div><div class="plano-dias">30 dias</div><div class="plano-valor">R$ 49,90</div></div>
-      <div class="plano-card plano-prata" data-plano="PRATA" data-dias="90" data-valor="129.90" onclick="selecionarPlano('PRATA',90,129.90,this)"><div class="plano-icone">🥈</div><div class="plano-nome">Prata</div><div class="plano-dias">90 dias</div><div class="plano-valor">R$ 129,90</div></div>
-      <div class="plano-card plano-ouro" data-plano="OURO" data-dias="180" data-valor="199.90" onclick="selecionarPlano('OURO',180,199.90,this)"><div class="plano-icone">🥇</div><div class="plano-nome">Ouro</div><div class="plano-dias">180 dias</div><div class="plano-valor">R$ 199,90</div></div>
-      <div class="plano-card plano-diamante" data-plano="DIAMANTE" data-dias="270" data-valor="299.90" onclick="selecionarPlano('DIAMANTE',270,299.90,this)"><div class="plano-icone">💎</div><div class="plano-nome">Diamante</div><div class="plano-dias">270 dias</div><div class="plano-valor">R$ 299,90</div></div>
-      <div class="plano-card plano-elite" data-plano="ELITE" data-dias="365" data-valor="399.90" onclick="selecionarPlano('ELITE',365,399.90,this)"><div class="plano-icone">👑</div><div class="plano-nome">Elite</div><div class="plano-dias">365 dias</div><div class="plano-valor">R$ 399,90</div></div>
+      <div class="plano-card plano-bronze" data-plano="BRONZE" data-dias="30" data-valor="47" onclick="selecionarPlano('BRONZE',30,47,this)"><div class="plano-icone">🥉</div><div class="plano-nome">Bronze</div><div class="plano-dias">30 dias</div><div class="plano-valor">R$ 47</div></div>
+      <div class="plano-card plano-prata" data-plano="PRATA" data-dias="90" data-valor="127" onclick="selecionarPlano('PRATA',90,127,this)"><div class="plano-icone">🥈</div><div class="plano-nome">Prata</div><div class="plano-dias">90 dias</div><div class="plano-valor">R$ 127</div></div>
+      <div class="plano-card plano-ouro" data-plano="OURO" data-dias="180" data-valor="227" onclick="selecionarPlano('OURO',180,227,this)"><div class="plano-icone">🥇</div><div class="plano-nome">Ouro</div><div class="plano-dias">180 dias</div><div class="plano-valor">R$ 227</div></div>
+      <div class="plano-card plano-diamante" data-plano="DIAMANTE" data-dias="270" data-valor="307" onclick="selecionarPlano('DIAMANTE',270,307,this)"><div class="plano-icone">💎</div><div class="plano-nome">Diamante</div><div class="plano-dias">270 dias</div><div class="plano-valor">R$ 307</div></div>
+      <div class="plano-card plano-elite" data-plano="ELITE" data-dias="365" data-valor="367" onclick="selecionarPlano('ELITE',365,367,this)"><div class="plano-icone">👑</div><div class="plano-nome">Elite</div><div class="plano-dias">365 dias</div><div class="plano-valor">R$ 367</div></div>
     </div>
 
     <div class="input-group">
@@ -445,6 +448,8 @@
 </div>
 
 <!-- MODAIS -->
+<div class="modal-overlay" id="modalOverlay" onclick="fecharModais()"></div>
+
 <div class="modal" id="modalMensagens">
   <div class="modal-title">📝 CONFIGURAR MENSAGENS</div>
   <p style="color:var(--text2);margin-bottom:15px;font-size:.8rem">Use {nome}, {chave}, {dias}, {plano}, {link_ea}, {link_pdf}</p>
@@ -470,11 +475,11 @@ Suporte: (41) 99976-5210</textarea></div>
 <div class="modal" id="modalPrecos">
   <div class="modal-title">💰 CONFIGURAR VALORES</div>
   <div class="preco-config-row"><label>🔰 LATÃO (7 dias):</label><span style="color:#CD7F32">R$</span><input type="number" id="precoLataoInput" step="0.01" value="0"></div>
-  <div class="preco-config-row"><label>🥉 BRONZE (30 dias):</label><span style="color:#8B6914">R$</span><input type="number" id="precoBronzeInput" step="0.01" value="49.90"></div>
-  <div class="preco-config-row"><label>🥈 PRATA (90 dias):</label><span style="color:#7D8794">R$</span><input type="number" id="precoPrataInput" step="0.01" value="129.90"></div>
-  <div class="preco-config-row"><label>🥇 OURO (180 dias):</label><span style="color:#DAA520">R$</span><input type="number" id="precoOuroInput" step="0.01" value="199.90"></div>
-  <div class="preco-config-row"><label>💎 DIAMANTE (270 dias):</label><span style="color:#6A5ACD">R$</span><input type="number" id="precoDiamanteInput" step="0.01" value="299.90"></div>
-  <div class="preco-config-row"><label>👑 ELITE (365 dias):</label><span style="color:#C0392B">R$</span><input type="number" id="precoEliteInput" step="0.01" value="399.90"></div>
+  <div class="preco-config-row"><label>🥉 BRONZE (30 dias):</label><span style="color:#8B6914">R$</span><input type="number" id="precoBronzeInput" step="0.01" value="47"></div>
+  <div class="preco-config-row"><label>🥈 PRATA (90 dias):</label><span style="color:#7D8794">R$</span><input type="number" id="precoPrataInput" step="0.01" value="127"></div>
+  <div class="preco-config-row"><label>🥇 OURO (180 dias):</label><span style="color:#DAA520">R$</span><input type="number" id="precoOuroInput" step="0.01" value="227"></div>
+  <div class="preco-config-row"><label>💎 DIAMANTE (270 dias):</label><span style="color:#6A5ACD">R$</span><input type="number" id="precoDiamanteInput" step="0.01" value="307"></div>
+  <div class="preco-config-row"><label>👑 ELITE (365 dias):</label><span style="color:#C0392B">R$</span><input type="number" id="precoEliteInput" step="0.01" value="367"></div>
   <button class="btn-primary" onclick="salvarConfiguracoes()">💾 SALVAR VALORES</button>
 </div>
 
@@ -501,7 +506,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
 (function(){
     emailjs.init("w0fvMYDTwWsWL5hnS");
     
-    // ⭐ CONFIGURAÇÃO JSONbin ⭐
     const JSONBIN_ID = "69f0013c36566621a8fc2b6e";
     const JSONBIN_KEY = "$2a$10$Tt3s6mjKmpz2gcZEtM9G7.Y.EEUV.rvuOTZSaNHRZxsGNPqKKhjEC";
     
@@ -514,43 +518,50 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
     let clientes = [];
     let config = {
         mensagens: {
-            entrega: '🎯 TRADE WINNER PRO - Licença Ativada!\n\nOlá {nome}!\n\n✅ Seu plano {plano} foi ativado!\n🔑 Chave: {chave}\n📅 Válida por: {dias} dias\n\n📥 Baixe o EA: {link_ea}\n📘 Manual PDF: {link_pdf}\n\nSuporte: (41) 99976-5210'
+            entrega: '🎯 TRADE WINNER PRO - Licença Ativada!\n\nOlá {nome}!\n\n✅ Seu plano {plano} foi ativado!\n🔑 Chave: {chave}\n📅 Válida por: {dias} dias\n\n📥 Baixe o EA: {link_ea}\n📘 Manual PDF: {link_pdf}\n\nSuporte: (41) 99976-5210',
+            cobranca: '⚠️ {nome}, sua licença expira em {dias} dias. Renove agora!',
+            teste: '🎯 {nome}, seu TESTE GRATUITO LATÃO de 7 dias foi ativado! 🔑 Chave: {chave} 📥 Link: {link_ea}',
+            outro: 'Olá {nome}! Como posso ajudar?'
         },
-        precos: {latao:0, bronze:49.90, prata:129.90, ouro:199.90, diamante:299.90, elite:399.90}
+        precos: {latao:0, bronze:47, prata:127, ouro:227, diamante:307, elite:367}
     };
     let filtroStatus = 'todos', periodoAtual = 'tudo', planoSelecionado = 'LATAO', diasSelecionados = 7, valorSelecionado = 0;
     let ultimaChaveGerada = '', ultimoClienteGerado = null;
     let logado = false;
-    let clientesProcessados = new Set(); // ⭐ EVITA EMAIL DUPLICADO
+    let clientesProcessados = new Set();
+
+    // ⭐ SALVAR/CARREGAR PROCESSADOS ⭐
+    function salvarProcessados() { 
+        localStorage.setItem('twpro_clientes_processados', JSON.stringify([...clientesProcessados])); 
+    }
+    function carregarProcessados() {
+        let proc = localStorage.getItem('twpro_clientes_processados');
+        if(proc) { try { clientesProcessados = new Set(JSON.parse(proc)); } catch(e) {} }
+    }
 
     // ⭐ BUSCAR DADOS DO JSONbin ⭐
     async function buscarDadosServidor() {
         try {
-            console.log('🔍 Buscando dados do servidor...');
             let response = await fetch('https://api.jsonbin.io/v3/b/' + JSONBIN_ID + '/latest', {
                 headers: { 'X-Master-Key': JSONBIN_KEY }
             });
             let data = await response.json();
             let clientesServidor = data.record.clientes || [];
-            console.log('📋 Clientes no servidor:', clientesServidor.length);
             
             let idsLocais = clientes.map(c => c.id);
             let novos = clientesServidor.filter(c => !idsLocais.includes(c.id) && !clientesProcessados.has(c.id));
             
             if(novos.length > 0) {
-                console.log('🆕 ' + novos.length + ' novo(s) cliente(s) do servidor!');
-                
                 clientes = [...clientes, ...novos];
                 salvarDados();
                 
                 novos.forEach(n => {
                     clientesProcessados.add(n.id);
+                    salvarProcessados();
                     processarNovoCadastro(n);
                 });
                 
                 renderizarTudo();
-                atualizarContadores();
-                calcularFaturamento();
             }
         } catch(err) {
             console.log('⚠️ Erro ao buscar servidor:', err);
@@ -559,7 +570,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
     
     // ⭐ PROCESSAR NOVO CADASTRO ⭐
     function processarNovoCadastro(n) {
-        console.log('📱 Enviando WhatsApp para o dono...');
         let msgDono = '🔔 *NOVO CADASTRO*\n\n' +
             '👤 *Cliente:* ' + n.nome + '\n' +
             '📱 *WhatsApp:* ' + n.whats + '\n' +
@@ -570,7 +580,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         window.open('https://wa.me/' + SEU_WATS + '?text=' + encodeURIComponent(msgDono), '_blank');
         
         if(n.email) {
-            console.log('📧 Enviando email para o cliente...');
             let expiraFormatada = new Date(n.expira).toLocaleDateString('pt-BR');
             emailjs.send("service_kqme5zs", "template_rlrvpbm", {
                 to_email: n.email, to_name: n.nome, nome: n.nome,
@@ -578,15 +587,10 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
                 plano: n.plano + ' ' + n.dias + ' dias',
                 link_ea: LINK_EA, link_pdf: LINK_PDF,
                 whatsapp: n.whats, terminal_id: n.terminal, validade: expiraFormatada
-            }).then(function(r) {
-                console.log('✅ Email enviado!');
-            }).catch(function(e) {
-                console.log('⚠️ Erro email:', e);
-            });
+            }).catch(function(e) { console.log('⚠️ Erro email:', e); });
         }
     }
 
-    // ⭐ LOGIN ⭐
     window.verificarSenha = function() {
         let senha = document.getElementById('senhaLoginInput').value;
         if(senha === SENHA_MESTRA) {
@@ -608,7 +612,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         location.reload();
     };
 
-    // ⭐ GERAR CHAVE ⭐
     function gerarHashBase(terminal) {
         let data = terminal + SALT, hash = 0;
         for(let i = 0; i < data.length; i++) { let c = data.charCodeAt(i); hash = ((hash << 5) - hash) + c; hash = hash & 0x7FFFFFFF; }
@@ -623,13 +626,17 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         if(db) { try { clientes = JSON.parse(db); } catch(e) { clientes = []; } }
         let cfg = localStorage.getItem('twpro_gerador_cfg');
         if(cfg) { try { let s = JSON.parse(cfg); config = { ...config, ...s }; } catch(e) {} }
-        carregarInputsConfig(); atualizarValoresPlanos(); preencherDataHoje(); renderizarTudo(); atualizarContadores(); calcularFaturamento();
+        carregarProcessados();
+        carregarInputsConfig(); atualizarValoresPlanos(); preencherDataHoje(); renderizarTudo();
     }
     function salvarDados() { localStorage.setItem('twpro_gerador_db', JSON.stringify(clientes)); }
     function salvarConfig() { localStorage.setItem('twpro_gerador_cfg', JSON.stringify(config)); }
     
     function carregarInputsConfig() {
         document.getElementById('msgEntregaInput').value = config.mensagens.entrega;
+        document.getElementById('msgCobrancaInput').value = config.mensagens.cobranca;
+        document.getElementById('msgTesteInput').value = config.mensagens.teste;
+        document.getElementById('msgOutroInput').value = config.mensagens.outro;
         document.getElementById('precoLataoInput').value = config.precos.latao;
         document.getElementById('precoBronzeInput').value = config.precos.bronze;
         document.getElementById('precoPrataInput').value = config.precos.prata;
@@ -740,7 +747,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         }).then(function(r) { alert('✅ Email enviado!'); }).catch(function(e) { alert('⚠️ Erro'); });
     };
 
-    // ⭐ FUNÇÃO: EDITAR CLIENTE ⭐
+    // ⭐ EDITAR CLIENTE ⭐
     window.editarCliente = function(id) {
         let c = clientes.find(x => x.id == id);
         if(!c) return alert('⚠️ Cliente não encontrado!');
@@ -759,15 +766,15 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
                     <p style="color:#3ecf8e;">📅 Dias Restantes: <strong>${diasRestantes} dias</strong></p>
                     <p style="color:#3ecf8e;">🔑 Chave Atual: <strong style="font-size:.8rem;">${c.chave}</strong></p>
                     <hr style="border-color:#2a2a38;margin:15px 0;">
-                    <label style="color:#8888a8;display:block;margin-bottom:.5rem;">Novo Plano:</label>
-                    <select id="editarPlano" style="background:#09090d;border:1px solid #2a2a38;border-radius:8px;color:#e8e8f0;padding:.65rem;width:100%;font-size:.9rem;margin-bottom:1rem;">
+                    <label style="color:#8888a8;display:block;margin-bottom:.5rem;">Novo Plano (já com valor):</label>
+                    <select id="editarPlano" onchange="atualizarValorEdicao()" style="background:#09090d;border:1px solid #2a2a38;border-radius:8px;color:#e8e8f0;padding:.65rem;width:100%;font-size:.9rem;margin-bottom:1rem;">
                         <option value="">Selecione...</option>
-                        <option value="LATAO">🔰 LATÃO (7 dias)</option>
-                        <option value="BRONZE">🥉 BRONZE (30 dias)</option>
-                        <option value="PRATA">🥈 PRATA (90 dias)</option>
-                        <option value="OURO">🥇 OURO (180 dias)</option>
-                        <option value="DIAMANTE">💎 DIAMANTE (270 dias)</option>
-                        <option value="ELITE">👑 ELITE (365 dias)</option>
+                        <option value="LATAO" data-valor="0">🔰 LATÃO (7 dias) - GRÁTIS</option>
+                        <option value="BRONZE" data-valor="47">🥉 BRONZE (30 dias) - R$ 47</option>
+                        <option value="PRATA" data-valor="127">🥈 PRATA (90 dias) - R$ 127</option>
+                        <option value="OURO" data-valor="227">🥇 OURO (180 dias) - R$ 227</option>
+                        <option value="DIAMANTE" data-valor="307">💎 DIAMANTE (270 dias) - R$ 307</option>
+                        <option value="ELITE" data-valor="367">👑 ELITE (365 dias) - R$ 367</option>
                     </select>
                     <label style="color:#8888a8;display:block;margin-bottom:.5rem;">Valor Pago (R$):</label>
                     <input type="number" id="editarValor" step="0.01" value="0" style="background:#09090d;border:1px solid #2a2a38;border-radius:8px;color:#e8e8f0;padding:.65rem;width:100%;font-size:.9rem;margin-bottom:1rem;">
@@ -780,7 +787,15 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         document.body.insertAdjacentHTML('beforeend', html);
     };
     
-    // ⭐ FUNÇÃO: CONFIRMAR EDIÇÃO ⭐
+    // ⭐ ATUALIZAR VALOR NA EDIÇÃO ⭐
+    window.atualizarValorEdicao = function() {
+        let select = document.getElementById('editarPlano');
+        let option = select.options[select.selectedIndex];
+        let valor = option.getAttribute('data-valor') || 0;
+        document.getElementById('editarValor').value = valor;
+    };
+    
+    // ⭐ CONFIRMAR EDIÇÃO ⭐
     window.confirmarEdicao = function(id, diasRestantes) {
         let c = clientes.find(x => x.id == id);
         if(!c) return;
@@ -850,7 +865,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
             else if(d === 0) { sc = 'status-vencendo'; st = 'VENCE HOJE'; }
             else { sc = 'status-ativo'; st = 'ATIVO'; }
             let bc = 'badge-' + (c.plano || 'LATAO').toLowerCase();
-            return `<tr><td><div class="client-name">${c.nome}</div><div class="client-detail">${c.whats}${c.email?' | '+c.email:''}</div></td><td>${c.terminal}</td><td><span class="chave-display">${c.chave}</span></td><td><span class="badge-plano ${bc}">${c.plano}</span></td><td>${exp.toLocaleDateString('pt-BR')}<br><span class="status-badge ${sc}">${st}</span></td><td>R$ ${c.valor.toFixed(2)}</td><td><div class="action-btns"><button class="btn-icon btn-icon-chave" onclick="enviarWhatsAppCliente('${c.id}','entrega')">🔑</button><button class="btn-icon btn-icon-edit" onclick="editarCliente('${c.id}')" title="Editar">✏️</button><button class="btn-icon" style="border-color:#e67e22;color:#e67e22" onclick="enviarEmailCliente('${c.id}')">📧</button><button class="btn-icon btn-icon-delete" onclick="removerCliente('${c.id}')">🗑️</button></div></td></tr>`;
+            return `<tr><td><div class="client-name">${c.nome}</div><div class="client-detail">${c.whats}${c.email?' | '+c.email:''}</div></td><td>${c.terminal}</td><td><span class="chave-display">${c.chave}</span></td><td><span class="badge-plano ${bc}">${c.plano}</span></td><td>${exp.toLocaleDateString('pt-BR')}<br><span class="status-badge ${sc}">${st}</span></td><td>R$ ${c.valor.toFixed(2)}</td><td><div class="action-btns"><button class="btn-icon btn-icon-chave" onclick="enviarWhatsAppCliente('${c.id}','entrega')">🔑</button><button class="btn-icon btn-icon-edit" onclick="editarCliente('${c.id}')" title="Editar">✏️</button><button class="btn-icon btn-icon-email" onclick="enviarEmailCliente('${c.id}')">📧</button><button class="btn-icon btn-icon-delete" onclick="removerCliente('${c.id}')">🗑️</button></div></td></tr>`;
         }).join('');
     };
     window.removerCliente = function(id) { if(!confirm('🗑️ Remover?')) return; clientes = clientes.filter(c => c.id != id); salvarDados(); renderizarTudo(); };
@@ -860,10 +875,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         clientes.forEach(c => {
             let e = new Date(c.expira); e.setHours(0, 0, 0, 0);
             let d = Math.ceil((e - h) / 86400000);
-            t++;
-            if(d > 0) a++;
-            else if(d === 0) v++;
-            else vc++;
+            t++; if(d > 0) a++; else if(d === 0) v++; else vc++;
         });
         document.getElementById('countTodos').textContent = t;
         document.getElementById('countAtivos').textContent = a;
@@ -890,21 +902,24 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
 
     window.abrirModal = function(id) {
         if(id === 'modalMensagens' || id === 'modalPrecos') carregarInputsConfig();
-        document.getElementById(id).style.display = 'block';
-        document.getElementById('modalOverlay').style.display = 'block';
+        document.getElementById(id).classList.add('show');
+        document.getElementById('modalOverlay').classList.add('show');
     };
     window.fecharModais = function() {
-        document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
-        document.getElementById('modalOverlay').style.display = 'none';
+        document.querySelectorAll('.modal').forEach(m => m.classList.remove('show'));
+        document.getElementById('modalOverlay').classList.remove('show');
     };
     window.salvarConfiguracoes = function() {
         config.mensagens.entrega = document.getElementById('msgEntregaInput').value;
+        config.mensagens.cobranca = document.getElementById('msgCobrancaInput').value;
+        config.mensagens.teste = document.getElementById('msgTesteInput').value;
+        config.mensagens.outro = document.getElementById('msgOutroInput').value;
         config.precos.latao = parseFloat(document.getElementById('precoLataoInput').value) || 0;
-        config.precos.bronze = parseFloat(document.getElementById('precoBronzeInput').value) || 49.90;
-        config.precos.prata = parseFloat(document.getElementById('precoPrataInput').value) || 129.90;
-        config.precos.ouro = parseFloat(document.getElementById('precoOuroInput').value) || 199.90;
-        config.precos.diamante = parseFloat(document.getElementById('precoDiamanteInput').value) || 299.90;
-        config.precos.elite = parseFloat(document.getElementById('precoEliteInput').value) || 399.90;
+        config.precos.bronze = parseFloat(document.getElementById('precoBronzeInput').value) || 47;
+        config.precos.prata = parseFloat(document.getElementById('precoPrataInput').value) || 127;
+        config.precos.ouro = parseFloat(document.getElementById('precoOuroInput').value) || 227;
+        config.precos.diamante = parseFloat(document.getElementById('precoDiamanteInput').value) || 307;
+        config.precos.elite = parseFloat(document.getElementById('precoEliteInput').value) || 367;
         salvarConfig();
         atualizarValoresPlanos();
         fecharModais();
@@ -922,7 +937,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         pw.document.close();
     };
 
-    // ⭐ Inicialização ⭐
     if(localStorage.getItem('twpro_logado') === 'true') {
         document.getElementById('loginOverlay').style.display = 'none';
         document.getElementById('conteudoPrincipal').classList.add('desbloqueado');
@@ -936,9 +950,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
     });
 
     setInterval(() => {
-        if(logado) {
-            buscarDadosServidor();
-        }
+        if(logado) buscarDadosServidor();
     }, 10000);
 })();
 </script>
