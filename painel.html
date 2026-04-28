@@ -445,8 +445,6 @@
 </div>
 
 <!-- MODAIS -->
-<div class="modal-overlay" id="modalOverlay" onclick="fecharModais()"></div>
-
 <div class="modal" id="modalMensagens">
   <div class="modal-title">📝 CONFIGURAR MENSAGENS</div>
   <p style="color:var(--text2);margin-bottom:15px;font-size:.8rem">Use {nome}, {chave}, {dias}, {plano}, {link_ea}, {link_pdf}</p>
@@ -462,6 +460,9 @@ Olá {nome}!
 📘 Manual PDF: {link_pdf}
 
 Suporte: (41) 99976-5210</textarea></div>
+  <div class="fg"><label>📱 Mensagem de Cobrança</label><textarea id="msgCobrancaInput" rows="2">⚠️ {nome}, sua licença expira em {dias} dias. Renove agora!</textarea></div>
+  <div class="fg"><label>🔰 Mensagem de Teste (Latão 7 dias)</label><textarea id="msgTesteInput" rows="2">🎯 {nome}, seu TESTE GRATUITO LATÃO de 7 dias foi ativado! 🔑 Chave: {chave} 📥 Link: {link_ea}</textarea></div>
+  <div class="fg"><label>📢 Mensagem Outros</label><textarea id="msgOutroInput" rows="2">Olá {nome}! Como posso ajudar?</textarea></div>
   <button class="btn-primary" onclick="salvarConfiguracoes()">💾 SALVAR MENSAGENS</button>
   <button class="btn-ghost" onclick="fecharModais()" style="margin-top:.5rem">❌ CANCELAR</button>
 </div>
