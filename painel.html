@@ -143,19 +143,6 @@
     .notif-nome { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     .notif-detalhe { font-size: 0.7rem; color: var(--text2); margin-top: 2px; }
     .notif-data { font-size: 0.65rem; color: var(--text2); margin-top: 4px; }
-    .notif-acoes { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
-    .btn-notif { 
-      padding: 6px 12px; border-radius: 6px; font-size: 0.65rem; 
-      font-weight: 600; border: 1px solid var(--border2);
-      background: transparent; color: var(--text2);
-      cursor: pointer; transition: all 0.2s; white-space: nowrap;
-      font-family: 'DM Sans', sans-serif;
-    }
-    .btn-notif:hover { border-color: var(--gold); color: var(--gold2); }
-    .btn-notif.whats { border-color: #25d366; color: #25d366; }
-    .btn-notif.whats:hover { background: rgba(37,211,102,0.15); }
-    .btn-notif.email { border-color: var(--gold); color: var(--gold); }
-    .btn-notif.email:hover { background: rgba(201,168,76,0.15); }
     .sem-notificacoes { text-align: center; padding: 2rem; color: var(--text2); font-size: 0.85rem; }
 
     .planos-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-bottom: 1.5rem; }
@@ -473,23 +460,19 @@ Olá {nome}!
 📘 Manual PDF: {link_pdf}
 
 Suporte: (41) 99976-5210</textarea></div>
-  <div class="fg"><label>📱 Mensagem de Cobrança</label><textarea id="msgCobrancaInput" rows="2">⚠️ {nome}, sua licença expira em {dias} dias. Renove agora!</textarea></div>
-  <div class="fg"><label>🔰 Mensagem de Teste (Latão 7 dias)</label><textarea id="msgTesteInput" rows="2">🎯 {nome}, seu TESTE GRATUITO LATÃO de 7 dias foi ativado! 🔑 Chave: {chave} 📥 Link: {link_ea}</textarea></div>
-  <div class="fg"><label>📢 Mensagem Outros</label><textarea id="msgOutroInput" rows="2">Olá {nome}! Como posso ajudar?</textarea></div>
   <button class="btn-primary" onclick="salvarConfiguracoes()">💾 SALVAR MENSAGENS</button>
   <button class="btn-ghost" onclick="fecharModais()" style="margin-top:.5rem">❌ CANCELAR</button>
 </div>
 
 <div class="modal" id="modalPrecos">
   <div class="modal-title">💰 CONFIGURAR VALORES</div>
-  <div class="preco-config-row"><label>🔰 LATÃO (7 dias):</label><span style="color:#CD7F32">R$</span><input type="number" id="precoLataoInput" step="0.01" value="0" style="background:rgba(9,9,13,0.8);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:.5rem;font-family:'DM Sans',sans-serif"></div>
-  <div class="preco-config-row"><label>🥉 BRONZE (30 dias):</label><span style="color:#8B6914">R$</span><input type="number" id="precoBronzeInput" step="0.01" value="49.90" style="background:rgba(9,9,13,0.8);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:.5rem;font-family:'DM Sans',sans-serif"></div>
-  <div class="preco-config-row"><label>🥈 PRATA (90 dias):</label><span style="color:#7D8794">R$</span><input type="number" id="precoPrataInput" step="0.01" value="129.90" style="background:rgba(9,9,13,0.8);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:.5rem;font-family:'DM Sans',sans-serif"></div>
-  <div class="preco-config-row"><label>🥇 OURO (180 dias):</label><span style="color:#DAA520">R$</span><input type="number" id="precoOuroInput" step="0.01" value="199.90" style="background:rgba(9,9,13,0.8);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:.5rem;font-family:'DM Sans',sans-serif"></div>
-  <div class="preco-config-row"><label>💎 DIAMANTE (270 dias):</label><span style="color:#6A5ACD">R$</span><input type="number" id="precoDiamanteInput" step="0.01" value="299.90" style="background:rgba(9,9,13,0.8);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:.5rem;font-family:'DM Sans',sans-serif"></div>
-  <div class="preco-config-row"><label>👑 ELITE (365 dias):</label><span style="color:#C0392B">R$</span><input type="number" id="precoEliteInput" step="0.01" value="399.90" style="background:rgba(9,9,13,0.8);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:.5rem;font-family:'DM Sans',sans-serif"></div>
+  <div class="preco-config-row"><label>🔰 LATÃO (7 dias):</label><span style="color:#CD7F32">R$</span><input type="number" id="precoLataoInput" step="0.01" value="0"></div>
+  <div class="preco-config-row"><label>🥉 BRONZE (30 dias):</label><span style="color:#8B6914">R$</span><input type="number" id="precoBronzeInput" step="0.01" value="49.90"></div>
+  <div class="preco-config-row"><label>🥈 PRATA (90 dias):</label><span style="color:#7D8794">R$</span><input type="number" id="precoPrataInput" step="0.01" value="129.90"></div>
+  <div class="preco-config-row"><label>🥇 OURO (180 dias):</label><span style="color:#DAA520">R$</span><input type="number" id="precoOuroInput" step="0.01" value="199.90"></div>
+  <div class="preco-config-row"><label>💎 DIAMANTE (270 dias):</label><span style="color:#6A5ACD">R$</span><input type="number" id="precoDiamanteInput" step="0.01" value="299.90"></div>
+  <div class="preco-config-row"><label>👑 ELITE (365 dias):</label><span style="color:#C0392B">R$</span><input type="number" id="precoEliteInput" step="0.01" value="399.90"></div>
   <button class="btn-primary" onclick="salvarConfiguracoes()">💾 SALVAR VALORES</button>
-  <button class="btn-ghost" onclick="fecharModais()" style="margin-top:.5rem">❌ CANCELAR</button>
 </div>
 
 <div class="modal" id="modalRelatorios">
@@ -500,7 +483,6 @@ Suporte: (41) 99976-5210</textarea></div>
     <div class="report-option" onclick="gerarRelatorio('vencidos')"><div style="font-size:2.5rem">⚠️</div><h4>VENCIDOS</h4></div>
     <div class="report-option" onclick="gerarRelatorio('financeiro')"><div style="font-size:2.5rem">💰</div><h4>FINANCEIRO</h4></div>
   </div>
-  <button class="btn-ghost" onclick="fecharModais()" style="margin-top:1.5rem">❌ CANCELAR</button>
 </div>
 
 <footer><p>© 2025 TRADE WINNER PRO · Gerador de Chaves</p></footer>
@@ -516,421 +498,366 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
 (function(){
     emailjs.init("w0fvMYDTwWsWL5hnS");
     
-    const SENHA_MESTRA="TWPRO2025";
-    const SALT="TWPRO-SALT-2025";
-    const LINK_EA="https://tradewinnerpro.github.io/.com.br/TRADE_WINNER_PRO_V1.1.ex5";
-    const LINK_PDF="https://tradewinnerpro.github.io/.com.br/Manual_TRADE_WINNER.pdf";
-    const SEU_WATS="5541999765210";
+    // ⭐ CONFIGURAÇÃO JSONbin ⭐
+    const JSONBIN_ID = "69f0013c36566621a8fc2b6e";
+    const JSONBIN_KEY = "$2a$10$Tt3s6mjKmpz2gcZEtM9G7.Y.EEUV.rvuOTZSaNHRZxsGNPqKKhjEC";
     
-    let clientes=[];
-    let config={
-        mensagens:{
-            entrega:'🎯 TRADE WINNER PRO - Licença Ativada!\n\nOlá {nome}!\n\n✅ Seu plano {plano} foi ativado!\n🔑 Chave: {chave}\n📅 Válida por: {dias} dias\n\n📥 Baixe o EA: {link_ea}\n📘 Manual PDF: {link_pdf}\n\nSuporte: (41) 99976-5210',
-            cobranca:'⚠️ {nome}, sua licença expira em {dias} dias. Renove agora!',
-            teste:'🎯 {nome}, seu TESTE GRATUITO LATÃO de 7 dias foi ativado!\n🔑 Chave: {chave}\n📥 Link: {link_ea}',
-            outro:'Olá {nome}! Como posso ajudar?'
+    const SENHA_MESTRA = "TWPRO2025";
+    const SALT = "TWPRO-SALT-2025";
+    const LINK_EA = "https://tradewinnerpro.github.io/.com.br/TRADE_WINNER_PRO_V1.1.ex5";
+    const LINK_PDF = "https://tradewinnerpro.github.io/.com.br/Manual_TRADE_WINNER.pdf";
+    const SEU_WATS = "5541999765210";
+    
+    let clientes = [];
+    let config = {
+        mensagens: {
+            entrega: '🎯 TRADE WINNER PRO - Licença Ativada!\n\nOlá {nome}!\n\n✅ Seu plano {plano} foi ativado!\n🔑 Chave: {chave}\n📅 Válida por: {dias} dias\n\n📥 Baixe o EA: {link_ea}\n📘 Manual PDF: {link_pdf}\n\nSuporte: (41) 99976-5210'
         },
-        precos:{latao:0,bronze:49.90,prata:129.90,ouro:199.90,diamante:299.90,elite:399.90}
+        precos: {latao:0, bronze:49.90, prata:129.90, ouro:199.90, diamante:299.90, elite:399.90}
     };
-    let filtroStatus='todos',periodoAtual='tudo',planoSelecionado='LATAO',diasSelecionados=7,valorSelecionado=0;
-    let ultimaChaveGerada='',ultimoClienteGerado=null;
-    let logado=false;
-    let notificacoesProcessadas=new Set();
+    let filtroStatus = 'todos', periodoAtual = 'tudo', planoSelecionado = 'LATAO', diasSelecionados = 7, valorSelecionado = 0;
+    let ultimaChaveGerada = '', ultimoClienteGerado = null;
+    let logado = false;
+
+    // ⭐ BUSCAR DADOS DO JSONbin ⭐
+    async function buscarDadosServidor() {
+        try {
+            console.log('🔍 Buscando dados do servidor...');
+            let response = await fetch('https://api.jsonbin.io/v3/b/' + JSONBIN_ID + '/latest', {
+                headers: { 'X-Master-Key': JSONBIN_KEY }
+            });
+            let data = await response.json();
+            let clientesServidor = data.record.clientes || [];
+            console.log('📋 Clientes no servidor:', clientesServidor.length);
+            
+            // Pega os IDs dos clientes locais
+            let idsLocais = clientes.map(c => c.id);
+            
+            // Filtra os novos (que não estão no local)
+            let novos = clientesServidor.filter(c => !idsLocais.includes(c.id));
+            
+            if(novos.length > 0) {
+                console.log('🆕 ' + novos.length + ' novo(s) cliente(s) do servidor!');
+                
+                // Adiciona ao array local
+                clientes = [...clientes, ...novos];
+                salvarDados();
+                
+                // WhatsApp e Email para cada novo
+                novos.forEach(n => {
+                    processarNovoCadastro(n);
+                });
+                
+                // Atualiza interface
+                renderizarTudo();
+                atualizarContadores();
+                calcularFaturamento();
+            }
+        } catch(err) {
+            console.log('⚠️ Erro ao buscar servidor:', err);
+        }
+    }
+    
+    // ⭐ PROCESSAR NOVO CADASTRO ⭐
+    function processarNovoCadastro(n) {
+        console.log('📱 Enviando WhatsApp para o dono...');
+        let msgDono = '🔔 *NOVO CADASTRO*\n\n' +
+            '👤 *Cliente:* ' + n.nome + '\n' +
+            '📱 *WhatsApp:* ' + n.whats + '\n' +
+            '📧 *Email:* ' + n.email + '\n' +
+            '🖥️ *Terminal:* ' + n.terminal + '\n' +
+            '🔑 *Chave:* ' + n.chave + '\n' +
+            '📅 *Data:* ' + new Date().toLocaleString('pt-BR');
+        window.open('https://wa.me/' + SEU_WATS + '?text=' + encodeURIComponent(msgDono), '_blank');
+        
+        // Email para o cliente
+        if(n.email) {
+            console.log('📧 Enviando email para o cliente...');
+            let expiraFormatada = new Date(n.expira).toLocaleDateString('pt-BR');
+            emailjs.send("service_kqme5zs", "template_rlrvpbm", {
+                to_email: n.email, to_name: n.nome, nome: n.nome,
+                chave: n.chave, expira: expiraFormatada,
+                plano: n.plano + ' ' + n.dias + ' dias',
+                link_ea: LINK_EA, link_pdf: LINK_PDF,
+                whatsapp: n.whats, terminal_id: n.terminal, validade: expiraFormatada
+            }).then(function(r) {
+                console.log('✅ Email enviado!');
+            }).catch(function(e) {
+                console.log('⚠️ Erro email:', e);
+            });
+        }
+    }
 
     // ⭐ LOGIN ⭐
-    window.verificarSenha=function(){
-        let senha=document.getElementById('senhaLoginInput').value;
-        if(senha===SENHA_MESTRA){
-            logado=true;
-            document.getElementById('loginOverlay').style.display='none';
+    window.verificarSenha = function() {
+        let senha = document.getElementById('senhaLoginInput').value;
+        if(senha === SENHA_MESTRA) {
+            logado = true;
+            document.getElementById('loginOverlay').style.display = 'none';
             document.getElementById('conteudoPrincipal').classList.add('desbloqueado');
-            document.getElementById('senhaLoginInput').value='';
-            document.getElementById('loginError').classList.remove('show');
-            
-            // ⭐ CARREGA TUDO E VERIFICA IMEDIATAMENTE ⭐
+            document.getElementById('senhaLoginInput').value = '';
             carregarDados();
-            importarClientesDoSite();
-            verificarNovosCadastros();
-            renderizarTudo();
-            
-        }else{
+            buscarDadosServidor(); // ⭐ BUSCA DADOS DO SERVIDOR
+        } else {
             document.getElementById('loginError').classList.add('show');
-            document.getElementById('senhaLoginInput').value='';
-            setTimeout(()=>document.getElementById('loginError').classList.remove('show'),2000);
+            setTimeout(() => document.getElementById('loginError').classList.remove('show'), 2000);
         }
     };
 
-    window.fazerLogout=function(){
-        logado=false;
-        localStorage.setItem('twpro_logado','false');
-        document.getElementById('loginOverlay').style.display='flex';
-        document.getElementById('conteudoPrincipal').classList.remove('desbloqueado');
-        document.getElementById('senhaLoginInput').focus();
+    window.fazerLogout = function() {
+        logado = false;
+        localStorage.setItem('twpro_logado', 'false');
+        location.reload();
     };
 
-    // ⭐ IMPORTA CLIENTES DO SITE ⭐
-    function importarClientesDoSite(){
-        console.log('🔍 Verificando clientes do site...');
-        let clientesSite = JSON.parse(localStorage.getItem('twpro_gerador_db')||'[]');
-        console.log('📋 Clientes encontrados no localStorage:', clientesSite.length);
-        
-        if(clientesSite.length > 0){
-            let idsAtuais = clientes.map(c => c.id);
-            let novos = clientesSite.filter(c => !idsAtuais.includes(c.id));
-            
-            if(novos.length > 0){
-                console.log('✅ Importando ' + novos.length + ' novo(s) cliente(s)!');
-                clientes = [...clientes, ...novos];
-                // Remove duplicados
-                clientes = clientes.filter((c, index, self) => 
-                    index === self.findIndex(t => t.id === c.id)
-                );
-                salvarDados();
-                console.log('📊 Total de clientes após importação:', clientes.length);
-            } else {
-                console.log('ℹ️ Nenhum cliente novo para importar');
-            }
-        }
-        renderizarTudo();
+    // ⭐ GERAR CHAVE ⭐
+    function gerarHashBase(terminal) {
+        let data = terminal + SALT, hash = 0;
+        for(let i = 0; i < data.length; i++) { let c = data.charCodeAt(i); hash = ((hash << 5) - hash) + c; hash = hash & 0x7FFFFFFF; }
+        let a = Math.abs(hash), p1 = a % 10000, p2 = Math.floor(a / 10000) % 10000, p3 = Math.floor(a / 100000000) % 10000;
+        const l = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+        return l.charAt(p1 % l.length) + l.charAt(p2 % l.length) + l.charAt(p3 % l.length) + "-" + String(p1).padStart(4, '0') + "-" + String(p2 % 1000).padStart(3, '0') + "-" + String(p3 % 1000).padStart(3, '0');
     }
+    function gerarChaveCompleta(t, p) { return p + "-" + gerarHashBase(t); }
 
-    // ⭐ VERIFICA NOVOS CADASTROS ⭐
-    function verificarNovosCadastros(){
-        if(!logado)return;
-        
-        // Primeiro importa clientes
-        importarClientesDoSite();
-        
-        // Depois verifica notificações
-        let nots = JSON.parse(localStorage.getItem('twpro_notificacoes')||'[]');
-        let novasNotificacoes = nots.filter(n => !notificacoesProcessadas.has(n.id));
-        
-        if(novasNotificacoes.length > 0){
-            console.log('🆕 ' + novasNotificacoes.length + ' nova(s) notificação(ões)!');
-            
-            novasNotificacoes.forEach(n => {
-                notificacoesProcessadas.add(n.id);
-                
-                // WhatsApp para o DONO
-                let msgDono = '🔔 *NOVO CADASTRO* - ' + n.plano + '\n\n' +
-                    '👤 *Cliente:* ' + n.nome + '\n' +
-                    '📱 *WhatsApp:* ' + n.whatsapp + '\n' +
-                    '📧 *Email:* ' + n.email + '\n' +
-                    '🖥️ *Terminal:* ' + n.terminal + '\n' +
-                    '🔑 *Chave:* ' + n.chave + '\n' +
-                    '📅 *Data:* ' + new Date().toLocaleString('pt-BR');
-                
-                window.open('https://wa.me/' + SEU_WATS + '?text=' + encodeURIComponent(msgDono), '_blank');
-                
-                // Email para o CLIENTE
-                enviarEmailAutomatico(n);
-            });
-            
-            salvarNotificacoesProcessadas();
-            renderizarNotificacoes();
-            atualizarContadorNotificacoes();
-        }
+    function carregarDados() {
+        let db = localStorage.getItem('twpro_gerador_db');
+        if(db) { try { clientes = JSON.parse(db); } catch(e) { clientes = []; } }
+        let cfg = localStorage.getItem('twpro_gerador_cfg');
+        if(cfg) { try { let s = JSON.parse(cfg); config = { ...config, ...s }; } catch(e) {} }
+        carregarInputsConfig(); atualizarValoresPlanos(); preencherDataHoje(); renderizarTudo(); atualizarContadores(); calcularFaturamento();
     }
-
-    // ⭐ ENVIO AUTOMÁTICO DE EMAIL ⭐
-    function enviarEmailAutomatico(notificacao){
-        console.log('📧 Enviando email para cliente: '+notificacao.email);
-        let expiraFormatada = new Date(Date.now()+7*86400000).toLocaleDateString('pt-BR');
-        
-        emailjs.send("service_kqme5zs","template_rlrvpbm",{
-            to_email: notificacao.email,
-            to_name: notificacao.nome,
-            nome: notificacao.nome,
-            chave: notificacao.chave,
-            expira: expiraFormatada,
-            plano: notificacao.plano || 'LATAO 7 dias GRÁTIS',
-            link_ea: LINK_EA,
-            link_pdf: LINK_PDF,
-            whatsapp: notificacao.whatsapp || '',
-            terminal_id: notificacao.terminal || '',
-            validade: expiraFormatada
-        }).then(function(response){
-            console.log('✅ Email CLIENTE enviado! '+notificacao.email);
-        }).catch(function(err){
-            console.log('⚠️ Erro email cliente:', err);
-        });
-    }
-
-    function gerarHashBase(terminal){
-        let data=terminal+SALT;let hash=0;
-        for(let i=0;i<data.length;i++){let c=data.charCodeAt(i);hash=((hash<<5)-hash)+c;hash=hash&0x7FFFFFFF}
-        let a=Math.abs(hash),p1=a%10000,p2=Math.floor(a/10000)%10000,p3=Math.floor(a/100000000)%10000;
-        const l="ABCDEFGHJKLMNPQRSTUVWXYZ";
-        return l.charAt(p1%l.length)+l.charAt(p2%l.length)+l.charAt(p3%l.length)+"-"+String(p1).padStart(4,'0')+"-"+String(p2%1000).padStart(3,'0')+"-"+String(p3%1000).padStart(3,'0');
-    }
-    function gerarChaveCompleta(t,p){return p+"-"+gerarHashBase(t)}
-
-    function carregarDados(){
-        // ⭐ PRIMEIRO CARREGA DO SITE ⭐
-        let dbSite = localStorage.getItem('twpro_gerador_db');
-        if(dbSite){
-            try{
-                clientes = JSON.parse(dbSite);
-                console.log('📋 Carregados ' + clientes.length + ' clientes do twpro_gerador_db');
-            }catch(e){
-                clientes = [];
-            }
-        }
-        
-        let cfg=localStorage.getItem('twpro_gerador_cfg');
-        if(cfg){try{let s=JSON.parse(cfg);config={...config,...s}}catch(e){}}
-        carregarInputsConfig();atualizarValoresPlanos();preencherDataHoje();renderizarTudo();atualizarContadorNotificacoes();
-        let proc=localStorage.getItem('twpro_notificacoes_processadas');
-        if(proc){try{notificacoesProcessadas=new Set(JSON.parse(proc))}catch(e){}}
-    }
-    function salvarDados(){
-        localStorage.setItem('twpro_gerador_db',JSON.stringify(clientes));
-        console.log('💾 Dados salvos: ' + clientes.length + ' clientes');
-    }
-    function salvarConfig(){localStorage.setItem('twpro_gerador_cfg',JSON.stringify(config))}
-    function salvarNotificacoesProcessadas(){localStorage.setItem('twpro_notificacoes_processadas',JSON.stringify([...notificacoesProcessadas]))}
+    function salvarDados() { localStorage.setItem('twpro_gerador_db', JSON.stringify(clientes)); }
+    function salvarConfig() { localStorage.setItem('twpro_gerador_cfg', JSON.stringify(config)); }
     
-    function carregarInputsConfig(){
-        document.getElementById('msgEntregaInput').value=config.mensagens.entrega;
-        document.getElementById('msgCobrancaInput').value=config.mensagens.cobranca;
-        document.getElementById('msgTesteInput').value=config.mensagens.teste;
-        document.getElementById('msgOutroInput').value=config.mensagens.outro;
-        document.getElementById('precoLataoInput').value=config.precos.latao;
-        document.getElementById('precoBronzeInput').value=config.precos.bronze;
-        document.getElementById('precoPrataInput').value=config.precos.prata;
-        document.getElementById('precoOuroInput').value=config.precos.ouro;
-        document.getElementById('precoDiamanteInput').value=config.precos.diamante;
-        document.getElementById('precoEliteInput').value=config.precos.elite;
+    function carregarInputsConfig() {
+        document.getElementById('msgEntregaInput').value = config.mensagens.entrega;
+        document.getElementById('precoLataoInput').value = config.precos.latao;
+        document.getElementById('precoBronzeInput').value = config.precos.bronze;
+        document.getElementById('precoPrataInput').value = config.precos.prata;
+        document.getElementById('precoOuroInput').value = config.precos.ouro;
+        document.getElementById('precoDiamanteInput').value = config.precos.diamante;
+        document.getElementById('precoEliteInput').value = config.precos.elite;
     }
-    function atualizarValoresPlanos(){
-        document.querySelector('.plano-latao .plano-valor').textContent='GRÁTIS';
-        document.querySelector('.plano-bronze .plano-valor').textContent='R$ '+config.precos.bronze.toFixed(2);
-        document.querySelector('.plano-prata .plano-valor').textContent='R$ '+config.precos.prata.toFixed(2);
-        document.querySelector('.plano-ouro .plano-valor').textContent='R$ '+config.precos.ouro.toFixed(2);
-        document.querySelector('.plano-diamante .plano-valor').textContent='R$ '+config.precos.diamante.toFixed(2);
-        document.querySelector('.plano-elite .plano-valor').textContent='R$ '+config.precos.elite.toFixed(2);
+    function atualizarValoresPlanos() {
+        document.querySelector('.plano-bronze .plano-valor').textContent = 'R$ ' + config.precos.bronze.toFixed(2);
+        document.querySelector('.plano-prata .plano-valor').textContent = 'R$ ' + config.precos.prata.toFixed(2);
+        document.querySelector('.plano-ouro .plano-valor').textContent = 'R$ ' + config.precos.ouro.toFixed(2);
+        document.querySelector('.plano-diamante .plano-valor').textContent = 'R$ ' + config.precos.diamante.toFixed(2);
+        document.querySelector('.plano-elite .plano-valor').textContent = 'R$ ' + config.precos.elite.toFixed(2);
     }
-    function preencherDataHoje(){
-        let h=new Date();
-        document.getElementById('dataCompraInput').value=h.getFullYear()+'-'+String(h.getMonth()+1).padStart(2,'0')+'-'+String(h.getDate()).padStart(2,'0');
+    function preencherDataHoje() {
+        let h = new Date();
+        document.getElementById('dataCompraInput').value = h.getFullYear() + '-' + String(h.getMonth() + 1).padStart(2, '0') + '-' + String(h.getDate()).padStart(2, '0');
     }
 
-    window.selecionarPlano=function(p,d,v,e){
-        planoSelecionado=p;diasSelecionados=d;valorSelecionado=v;
-        document.querySelectorAll('.plano-card').forEach(c=>c.classList.remove('active'));
+    window.selecionarPlano = function(p, d, v, e) {
+        planoSelecionado = p; diasSelecionados = d; valorSelecionado = v;
+        document.querySelectorAll('.plano-card').forEach(c => c.classList.remove('active'));
         e.classList.add('active');
-        document.getElementById('valorInput').value=v.toFixed(2);
+        document.getElementById('valorInput').value = v.toFixed(2);
     };
 
-    function processarMsg(tipo,cliente){
-        let m=config.mensagens[tipo]||config.mensagens.outro;
-        let exp=new Date(cliente.expira),dias=Math.max(0,Math.ceil((exp-new Date())/(86400000)));
-        return m.replace(/{nome}/g,cliente.nome).replace(/{chave}/g,cliente.chave).replace(/{dias}/g,dias).replace(/{plano}/g,cliente.plano).replace(/{link_ea}/g,LINK_EA).replace(/{link_pdf}/g,LINK_PDF);
+    function processarMsg(tipo, cliente) {
+        let m = config.mensagens[tipo] || config.mensagens.entrega;
+        let exp = new Date(cliente.expira), dias = Math.max(0, Math.ceil((exp - new Date()) / (86400000)));
+        return m.replace(/{nome}/g, cliente.nome).replace(/{chave}/g, cliente.chave).replace(/{dias}/g, dias).replace(/{plano}/g, cliente.plano).replace(/{link_ea}/g, LINK_EA).replace(/{link_pdf}/g, LINK_PDF);
     }
 
-    window.cadastrarCliente=function(){
-        if(!logado)return alert('⚠️ Faça login primeiro!');
-        let n=document.getElementById('nomeInput').value.trim();
-        let w=document.getElementById('whatsInput').value.trim();
-        let em=document.getElementById('emailInput').value.trim();
-        let t=document.getElementById('terminalInput').value.trim();
-        let v=parseFloat(document.getElementById('valorInput').value);
-        let dc=document.getElementById('dataCompraInput').value;
-        if(!n||!w||!t)return alert('⚠️ Preencha Nome, WhatsApp e ID Terminal!');
-        if(isNaN(v)||v<0)return alert('⚠️ Valor inválido!');
-        if(!dc){preencherDataHoje();dc=document.getElementById('dataCompraInput').value}
-        let chave=gerarChaveCompleta(t,planoSelecionado);ultimaChaveGerada=chave;
-        let h=new Date(),exp=new Date(h);exp.setDate(h.getDate()+diasSelecionados);
-        ultimoClienteGerado={id:Date.now()+''+Math.random(),nome:n,whats:w,email:em,terminal:t,valor:v,chave,dataCadastro:h.toISOString(),expira:exp.toISOString(),plano:planoSelecionado,dias:diasSelecionados,dataCompra:dc};
-        clientes.push(ultimoClienteGerado);salvarDados();
-        document.getElementById('chaveGeradaDisplay').textContent=chave;
-        let b=document.getElementById('planoGeradoBadge');b.textContent=planoSelecionado;b.className='badge-plano badge-'+planoSelecionado.toLowerCase();
+    window.cadastrarCliente = function() {
+        if(!logado) return alert('⚠️ Faça login primeiro!');
+        let n = document.getElementById('nomeInput').value.trim();
+        let w = document.getElementById('whatsInput').value.trim();
+        let em = document.getElementById('emailInput').value.trim();
+        let t = document.getElementById('terminalInput').value.trim();
+        let v = parseFloat(document.getElementById('valorInput').value);
+        let dc = document.getElementById('dataCompraInput').value;
+        if(!n || !w || !t) return alert('⚠️ Preencha Nome, WhatsApp e ID Terminal!');
+        if(isNaN(v) || v < 0) return alert('⚠️ Valor inválido!');
+        if(!dc) { preencherDataHoje(); dc = document.getElementById('dataCompraInput').value; }
+        let chave = gerarChaveCompleta(t, planoSelecionado);
+        ultimaChaveGerada = chave;
+        let h = new Date(), exp = new Date(h);
+        exp.setDate(h.getDate() + diasSelecionados);
+        ultimoClienteGerado = {
+            id: Date.now() + '' + Math.random(), nome: n, whats: w, email: em, terminal: t,
+            valor: v, chave: chave, dataCadastro: h.toISOString(), expira: exp.toISOString(),
+            plano: planoSelecionado, dias: diasSelecionados, dataCompra: dc
+        };
+        clientes.push(ultimoClienteGerado);
+        salvarDados();
+        document.getElementById('chaveGeradaDisplay').textContent = chave;
+        document.getElementById('planoGeradoBadge').textContent = planoSelecionado;
+        document.getElementById('planoGeradoBadge').className = 'badge-plano badge-' + planoSelecionado.toLowerCase();
         document.getElementById('chaveGeradaBox').classList.add('show');
-        document.getElementById('nomeInput').value='';document.getElementById('whatsInput').value='';document.getElementById('terminalInput').value='';document.getElementById('emailInput').value='';
+        document.getElementById('nomeInput').value = '';
+        document.getElementById('whatsInput').value = '';
+        document.getElementById('terminalInput').value = '';
+        document.getElementById('emailInput').value = '';
         
         // WhatsApp dono
-        window.open('https://wa.me/'+SEU_WATS+'?text='+encodeURIComponent('🔔 NOVA CHAVE\n👤 '+n+'\n🔑 '+chave+'\n📱 '+w+'\n🏷️ '+planoSelecionado),'_blank');
+        window.open('https://wa.me/' + SEU_WATS + '?text=' + encodeURIComponent('🔔 NOVA CHAVE\n👤 ' + n + '\n🔑 ' + chave + '\n📱 ' + w + '\n🏷️ ' + planoSelecionado), '_blank');
         
         // Email cliente
-        if(em){
-            let expiraFormatada=exp.toLocaleDateString('pt-BR');
-            emailjs.send("service_kqme5zs","template_rlrvpbm",{
+        if(em) {
+            let expiraFormatada = exp.toLocaleDateString('pt-BR');
+            emailjs.send("service_kqme5zs", "template_rlrvpbm", {
                 to_email: em, to_name: n, nome: n, chave: chave,
-                expira: expiraFormatada, plano: planoSelecionado+' '+diasSelecionados+' dias',
+                expira: expiraFormatada, plano: planoSelecionado + ' ' + diasSelecionados + ' dias',
                 link_ea: LINK_EA, link_pdf: LINK_PDF, whatsapp: w, terminal_id: t, validade: expiraFormatada
-            }).then(function(r){console.log('✅ Email enviado!');}).catch(function(e){console.log('⚠️ Erro:',e);});
+            }).catch(function(e) { console.log('⚠️ Erro:', e); });
         }
-        
         renderizarTudo();
     };
 
-    window.copiarChaveGerada=function(){if(ultimaChaveGerada)navigator.clipboard.writeText(ultimaChaveGerada).then(()=>alert('✅ Chave copiada!'))};
-
-    window.enviarWhatsAppChaveGerada=function(){
-        if(!ultimoClienteGerado)return alert('⚠️ Gere uma chave primeiro!');
-        let num=ultimoClienteGerado.whats.replace(/\D/g,'');
-        window.open('https://wa.me/'+num+'?text='+encodeURIComponent(processarMsg('entrega',ultimoClienteGerado)),'_blank');
+    window.copiarChaveGerada = function() { if(ultimaChaveGerada) navigator.clipboard.writeText(ultimaChaveGerada).then(() => alert('✅ Chave copiada!')); };
+    window.enviarWhatsAppChaveGerada = function() {
+        if(!ultimoClienteGerado) return alert('⚠️ Gere uma chave primeiro!');
+        window.open('https://wa.me/' + ultimoClienteGerado.whats.replace(/\D/g, '') + '?text=' + encodeURIComponent(processarMsg('entrega', ultimoClienteGerado)), '_blank');
     };
-
-    window.enviarEmailChaveGerada=function(){
-        if(!ultimoClienteGerado||!ultimoClienteGerado.email)return;
-        let expiraFormatada=new Date(ultimoClienteGerado.expira).toLocaleDateString('pt-BR');
-        emailjs.send("service_kqme5zs","template_rlrvpbm",{
+    window.enviarEmailChaveGerada = function() {
+        if(!ultimoClienteGerado || !ultimoClienteGerado.email) return;
+        let expiraFormatada = new Date(ultimoClienteGerado.expira).toLocaleDateString('pt-BR');
+        emailjs.send("service_kqme5zs", "template_rlrvpbm", {
             to_email: ultimoClienteGerado.email, to_name: ultimoClienteGerado.nome,
             nome: ultimoClienteGerado.nome, chave: ultimoClienteGerado.chave,
             expira: expiraFormatada, plano: ultimoClienteGerado.plano,
             link_ea: LINK_EA, link_pdf: LINK_PDF,
             whatsapp: ultimoClienteGerado.whats, terminal_id: ultimoClienteGerado.terminal, validade: expiraFormatada
-        }).then(function(r){alert('✅ Email enviado!');}).catch(function(e){alert('⚠️ Erro');});
+        }).then(function(r) { alert('✅ Email enviado!'); }).catch(function(e) { alert('⚠️ Erro'); });
     };
 
-    window.enviarWhatsAppCliente=function(cid,tipo){
-        let c=clientes.find(x=>x.id==cid);if(!c)return;
-        window.open('https://wa.me/'+c.whats.replace(/\D/g,'')+'?text='+encodeURIComponent(processarMsg(tipo,c)),'_blank');
+    window.enviarWhatsAppCliente = function(cid, tipo) {
+        let c = clientes.find(x => x.id == cid);
+        if(!c) return;
+        window.open('https://wa.me/' + c.whats.replace(/\D/g, '') + '?text=' + encodeURIComponent(processarMsg(tipo, c)), '_blank');
     };
-    window.enviarEmailCliente=function(cid){
-        let c=clientes.find(x=>x.id==cid);if(!c||!c.email)return;
-        let expiraFormatada=new Date(c.expira).toLocaleDateString('pt-BR');
-        emailjs.send("service_kqme5zs","template_rlrvpbm",{
+    window.enviarEmailCliente = function(cid) {
+        let c = clientes.find(x => x.id == cid);
+        if(!c || !c.email) return;
+        let expiraFormatada = new Date(c.expira).toLocaleDateString('pt-BR');
+        emailjs.send("service_kqme5zs", "template_rlrvpbm", {
             to_email: c.email, to_name: c.nome, nome: c.nome, chave: c.chave,
             expira: expiraFormatada, plano: c.plano,
             link_ea: LINK_EA, link_pdf: LINK_PDF,
             whatsapp: c.whats, terminal_id: c.terminal, validade: expiraFormatada
-        }).then(function(r){alert('✅ Email enviado!');}).catch(function(e){alert('⚠️ Erro');});
+        }).then(function(r) { alert('✅ Email enviado!'); }).catch(function(e) { alert('⚠️ Erro'); });
     };
 
-    function renderizarTudo(){renderizarTabela();atualizarContadores();calcularFaturamento()}
-    window.renderizarTabela=function(){
-        let busca=document.getElementById('buscaInput').value.toLowerCase();
-        let hoje=new Date();hoje.setHours(0,0,0,0);
-        let lista=clientes.filter(c=>{
-            let m=!busca||c.nome.toLowerCase().includes(busca)||c.whats.includes(busca)||c.terminal.toLowerCase().includes(busca)||c.chave.toLowerCase().includes(busca);
-            if(!m)return false;
-            let exp=new Date(c.expira);exp.setHours(0,0,0,0);
-            let d=Math.ceil((exp-hoje)/86400000);
-            if(filtroStatus==='ativos')return d>0;
-            if(filtroStatus==='vencendo')return d===0;
-            if(filtroStatus==='vencidos')return d<0;
+    function renderizarTudo() { renderizarTabela(); atualizarContadores(); calcularFaturamento(); }
+    window.renderizarTabela = function() {
+        let busca = document.getElementById('buscaInput').value.toLowerCase();
+        let hoje = new Date(); hoje.setHours(0, 0, 0, 0);
+        let lista = clientes.filter(c => {
+            let m = !busca || c.nome.toLowerCase().includes(busca) || c.whats.includes(busca) || c.terminal.toLowerCase().includes(busca) || c.chave.toLowerCase().includes(busca);
+            if(!m) return false;
+            let exp = new Date(c.expira); exp.setHours(0, 0, 0, 0);
+            let d = Math.ceil((exp - hoje) / 86400000);
+            if(filtroStatus === 'ativos') return d > 0;
+            if(filtroStatus === 'vencendo') return d === 0;
+            if(filtroStatus === 'vencidos') return d < 0;
             return true;
         });
-        lista.sort((a,b)=>new Date(a.expira)-new Date(b.expira));
-        let tb=document.getElementById('tabelaBody');
-        if(!lista.length){tb.innerHTML='<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--text2)">Nenhum cliente cadastrado</td></tr>';return}
-        tb.innerHTML=lista.map(c=>{
-            let exp=new Date(c.expira),d=Math.ceil((exp-hoje)/86400000),sc,st;
-            if(d<0){sc='status-vencido';st='VENCIDO'}else if(d===0){sc='status-vencendo';st='VENCE HOJE'}else{sc='status-ativo';st='ATIVO'}
-            let bc='badge-'+(c.plano||'LATAO').toLowerCase();
-            return `<tr><td><div class="client-name">${c.nome}</div><div class="client-detail">${c.whats}${c.email?' | '+c.email:''}</div></td><td><code style="color:var(--gold);font-family:'DM Mono',monospace;font-size:.75rem">${c.terminal}</code></td><td><span class="chave-display" title="${c.chave}">${c.chave}</span></td><td><span class="badge-plano ${bc}">${c.plano}</span></td><td>${exp.toLocaleDateString('pt-BR')}<br><span class="status-badge ${sc}">${st}</span></td><td style="color:var(--green);font-family:'DM Mono',monospace">R$ ${c.valor.toFixed(2)}</td><td><div class="action-btns"><button class="btn-icon btn-icon-chave" onclick="enviarWhatsAppCliente('${c.id}','entrega')" title="WhatsApp">🔑</button><button class="btn-icon" style="border-color:#e67e22;color:#e67e22" onclick="enviarEmailCliente('${c.id}')" title="Email">📧</button><button class="btn-icon btn-icon-delete" onclick="removerCliente('${c.id}')" title="Remover">🗑️</button></div></td></tr>`;
+        lista.sort((a, b) => new Date(a.expira) - new Date(b.expira));
+        let tb = document.getElementById('tabelaBody');
+        if(!lista.length) { tb.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--text2)">Nenhum cliente cadastrado</td></tr>'; return; }
+        tb.innerHTML = lista.map(c => {
+            let exp = new Date(c.expira), d = Math.ceil((exp - new Date()) / 86400000), sc, st;
+            if(d < 0) { sc = 'status-vencido'; st = 'VENCIDO'; }
+            else if(d === 0) { sc = 'status-vencendo'; st = 'VENCE HOJE'; }
+            else { sc = 'status-ativo'; st = 'ATIVO'; }
+            let bc = 'badge-' + (c.plano || 'LATAO').toLowerCase();
+            return `<tr><td><div class="client-name">${c.nome}</div><div class="client-detail">${c.whats}${c.email?' | '+c.email:''}</div></td><td>${c.terminal}</td><td><span class="chave-display">${c.chave}</span></td><td><span class="badge-plano ${bc}">${c.plano}</span></td><td>${exp.toLocaleDateString('pt-BR')}<br><span class="status-badge ${sc}">${st}</span></td><td>R$ ${c.valor.toFixed(2)}</td><td><div class="action-btns"><button class="btn-icon btn-icon-chave" onclick="enviarWhatsAppCliente('${c.id}','entrega')">🔑</button><button class="btn-icon" style="border-color:#e67e22;color:#e67e22" onclick="enviarEmailCliente('${c.id}')">📧</button><button class="btn-icon btn-icon-delete" onclick="removerCliente('${c.id}')">🗑️</button></div></td></tr>`;
         }).join('');
     };
-    window.removerCliente=function(id){if(!confirm('🗑️ Remover?'))return;clientes=clientes.filter(c=>c.id!=id);salvarDados();renderizarTudo()};
-    function atualizarContadores(){
-        let h=new Date();h.setHours(0,0,0,0);let t=0,a=0,v=0,vc=0;
-        clientes.forEach(c=>{let e=new Date(c.expira);e.setHours(0,0,0,0);let d=Math.ceil((e-h)/86400000);t++;if(d>0)a++;else if(d===0)v++;else vc++;});
-        document.getElementById('countTodos').textContent=t;document.getElementById('countAtivos').textContent=a;document.getElementById('countVencendo').textContent=v;document.getElementById('countVencidos').textContent=vc;
+    window.removerCliente = function(id) { if(!confirm('🗑️ Remover?')) return; clientes = clientes.filter(c => c.id != id); salvarDados(); renderizarTudo(); };
+    function atualizarContadores() {
+        let h = new Date(); h.setHours(0, 0, 0, 0);
+        let t = 0, a = 0, v = 0, vc = 0;
+        clientes.forEach(c => {
+            let e = new Date(c.expira); e.setHours(0, 0, 0, 0);
+            let d = Math.ceil((e - h) / 86400000);
+            t++;
+            if(d > 0) a++;
+            else if(d === 0) v++;
+            else vc++;
+        });
+        document.getElementById('countTodos').textContent = t;
+        document.getElementById('countAtivos').textContent = a;
+        document.getElementById('countVencendo').textContent = v;
+        document.getElementById('countVencidos').textContent = vc;
     }
-    function calcularFaturamento(){
-        let total=0,h=new Date();h.setHours(0,0,0,0);
-        clientes.forEach(c=>{let dc=new Date(c.dataCadastro),inc=false;if(periodoAtual==='tudo')inc=true;else if(periodoAtual==='hoje')inc=dc.toDateString()===h.toDateString();else if(periodoAtual==='mes')inc=dc.getMonth()===h.getMonth()&&dc.getFullYear()===h.getFullYear();else if(periodoAtual==='ano')inc=dc.getFullYear()===h.getFullYear();if(inc)total+=c.valor;});
-        document.getElementById('totalFaturamento').textContent='R$ '+total.toFixed(2);
+    function calcularFaturamento() {
+        let total = 0;
+        clientes.forEach(c => { total += c.valor || 0; });
+        document.getElementById('totalFaturamento').textContent = 'R$ ' + total.toFixed(2);
     }
-    window.setFiltroStatus=function(f){
-        filtroStatus=f;
-        document.querySelectorAll('.status-card').forEach(c=>c.classList.remove('active'));
-        document.getElementById('status'+f.charAt(0).toUpperCase()+f.slice(1)).classList.add('active');
+    window.setFiltroStatus = function(f) {
+        filtroStatus = f;
+        document.querySelectorAll('.status-card').forEach(c => c.classList.remove('active'));
+        document.getElementById('status' + f.charAt(0).toUpperCase() + f.slice(1)).classList.add('active');
         renderizarTabela();
     };
-    window.setPeriodo=function(p){
-        periodoAtual=p;
-        ['periodoTudo','periodoHoje','periodoMes','periodoAno'].forEach(id=>document.getElementById(id).classList.remove('active'));
-        document.getElementById('periodo'+p.charAt(0).toUpperCase()+p.slice(1)).classList.add('active');
-        document.getElementById('periodoAtivoLabel').textContent=p==='tudo'?'Tudo':p==='hoje'?'Hoje':p==='mes'?'Mês':'Ano';
+    window.setPeriodo = function(p) {
+        periodoAtual = p;
+        ['periodoTudo', 'periodoHoje', 'periodoMes', 'periodoAno'].forEach(id => document.getElementById(id).classList.remove('active'));
+        document.getElementById('periodo' + p.charAt(0).toUpperCase() + p.slice(1)).classList.add('active');
         calcularFaturamento();
     };
 
-    // NOTIFICAÇÕES
-    function carregarNotificacoes(){return JSON.parse(localStorage.getItem('twpro_notificacoes')||'[]')}
-    window.mostrarNotificacoes=function(){
-        let p=document.getElementById('painelNotificacoes');p.classList.toggle('show');
-        if(p.classList.contains('show'))renderizarNotificacoes();
+    window.abrirModal = function(id) {
+        if(id === 'modalMensagens' || id === 'modalPrecos') carregarInputsConfig();
+        document.getElementById(id).style.display = 'block';
+        document.getElementById('modalOverlay').style.display = 'block';
     };
-    function renderizarNotificacoes(){
-        let nots=carregarNotificacoes(),c=document.getElementById('listaNotificacoes');
-        if(nots.length===0){c.innerHTML='<div class="sem-notificacoes">✅ Nenhum cadastro</div>';return}
-        c.innerHTML=nots.slice(0,20).map(n=>{
-            let ic=n.tipo==='teste'?'🔰':'📩',cl=n.lida?'':'nova';
-            let d=new Date(n.data),ds=d.toLocaleDateString('pt-BR')+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-            return `<div class="notif-item ${cl}" onclick="marcarLida('${n.id}')"><div class="notif-icone">${ic}</div><div class="notif-info"><div class="notif-nome">${n.nome}</div><div class="notif-detalhe">📱 ${n.whatsapp||'N/I'} | 📧 ${n.email||'N/I'}</div><div class="notif-detalhe">🖥️ Terminal: ${n.terminal||'N/I'} | 🏷️ ${n.plano||'LATÃO'}</div><div class="notif-data">${ds} ${n.lida?'✅':'🆕'}</div></div></div>`;
-        }).join('');
-    }
-    window.marcarLida=function(id){
-        let ns=carregarNotificacoes(),f=ns.find(n=>n.id==id);
-        if(f)f.lida=true;
-        localStorage.setItem('twpro_notificacoes',JSON.stringify(ns));
-        renderizarNotificacoes();atualizarContadorNotificacoes();
+    window.fecharModais = function() {
+        document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+        document.getElementById('modalOverlay').style.display = 'none';
     };
-    window.marcarTodasLidas=function(){
-        let ns=carregarNotificacoes();ns.forEach(n=>n.lida=true);
-        localStorage.setItem('twpro_notificacoes',JSON.stringify(ns));
-        renderizarNotificacoes();atualizarContadorNotificacoes();
-    };
-    function atualizarContadorNotificacoes(){
-        let ns=carregarNotificacoes(),nl=ns.filter(n=>!n.lida).length;
-        let ct=document.getElementById('notifContador');if(ct){ct.textContent=nl;ct.style.display=nl>0?'flex':'none'}
-    }
-
-    window.abrirModal=function(id){
-        if(id==='modalMensagens'||id==='modalPrecos')carregarInputsConfig();
-        document.getElementById(id).style.display='block';document.getElementById('modalOverlay').style.display='block';
-    };
-    window.fecharModais=function(){document.querySelectorAll('.modal').forEach(m=>m.style.display='none');document.getElementById('modalOverlay').style.display='none';};
-    window.salvarConfiguracoes=function(){
-        config.mensagens.entrega=document.getElementById('msgEntregaInput').value;
-        config.mensagens.cobranca=document.getElementById('msgCobrancaInput').value;
-        config.mensagens.teste=document.getElementById('msgTesteInput').value;
-        config.mensagens.outro=document.getElementById('msgOutroInput').value;
-        config.precos.latao=parseFloat(document.getElementById('precoLataoInput').value)||0;
-        config.precos.bronze=parseFloat(document.getElementById('precoBronzeInput').value)||49.90;
-        config.precos.prata=parseFloat(document.getElementById('precoPrataInput').value)||129.90;
-        config.precos.ouro=parseFloat(document.getElementById('precoOuroInput').value)||199.90;
-        config.precos.diamante=parseFloat(document.getElementById('precoDiamanteInput').value)||299.90;
-        config.precos.elite=parseFloat(document.getElementById('precoEliteInput').value)||399.90;
-        salvarConfig();atualizarValoresPlanos();
-        fecharModais();alert('✅ Configurações salvas!');
-    };
-    window.gerarRelatorio=function(tipo){
+    window.salvarConfiguracoes = function() {
+        config.mensagens.entrega = document.getElementById('msgEntregaInput').value;
+        config.precos.latao = parseFloat(document.getElementById('precoLataoInput').value) || 0;
+        config.precos.bronze = parseFloat(document.getElementById('precoBronzeInput').value) || 49.90;
+        config.precos.prata = parseFloat(document.getElementById('precoPrataInput').value) || 129.90;
+        config.precos.ouro = parseFloat(document.getElementById('precoOuroInput').value) || 199.90;
+        config.precos.diamante = parseFloat(document.getElementById('precoDiamanteInput').value) || 299.90;
+        config.precos.elite = parseFloat(document.getElementById('precoEliteInput').value) || 399.90;
+        salvarConfig();
+        atualizarValoresPlanos();
         fecharModais();
-        let tit='',cf=[];
-        clientes.forEach(c=>{let e=new Date(c.expira);e.setHours(0,0,0,0);let hd=new Date();hd.setHours(0,0,0,0);let d=Math.ceil((e-hd)/86400000);if(tipo==='todos')cf.push(c);else if(tipo==='ativos'&&d>0)cf.push(c);else if(tipo==='vencidos'&&d<0)cf.push(c);else if(tipo==='financeiro')cf.push(c)});
-        if(tipo==='todos')tit='TODOS';else if(tipo==='ativos')tit='ATIVOS';else if(tipo==='vencidos')tit='VENCIDOS';else tit='FINANCEIRO';
-        let pw=window.open('','_blank');
-        let html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Relatório - ${tit}</title><style>body{font-family:sans-serif;padding:40px;background:#0a0e17;color:#e0e6f0}h1{color:#ffd700}table{width:100%;border-collapse:collapse}th{background:#1a2538;color:#ffd700;padding:12px}td{padding:10px;border-bottom:1px solid #253040}</style></head><body><h1>TRADE WINNER PRO - ${tit}</h1><table><tr><th>Cliente</th><th>WhatsApp</th><th>Plano</th><th>Chave</th><th>Expira</th><th>Valor</th></tr>`;
-        cf.forEach(c=>{html+=`<tr><td>${c.nome}</td><td>${c.whats}</td><td>${c.plano}</td><td>${c.chave}</td><td>${new Date(c.expira).toLocaleDateString('pt-BR')}</td><td>R$ ${c.valor.toFixed(2)}</td></tr>`});
-        html+=`</table><button onclick="window.print()" style="margin-top:20px;padding:10px 20px;background:#00c3a0;border:none;border-radius:8px;cursor:pointer;font-weight:bold">🖨️ IMPRIMIR</button></body></html>`;
-        pw.document.write(html);pw.document.close();
+        alert('✅ Configurações salvas!');
+    };
+    window.gerarRelatorio = function(tipo) {
+        fecharModais();
+        let cf = [];
+        clientes.forEach(c => { cf.push(c); });
+        let pw = window.open('', '_blank');
+        let html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Relatório</title><style>body{font-family:sans-serif;padding:40px;background:#0a0e17;color:#e0e6f0}h1{color:#ffd700}table{width:100%;border-collapse:collapse}th{background:#1a2538;color:#ffd700;padding:12px}td{padding:10px;border-bottom:1px solid #253040}</style></head><body><h1>TRADE WINNER PRO</h1><table><tr><th>Cliente</th><th>WhatsApp</th><th>Plano</th><th>Chave</th><th>Expira</th><th>Valor</th></tr>';
+        cf.forEach(c => { html += `<tr><td>${c.nome}</td><td>${c.whats}</td><td>${c.plano}</td><td>${c.chave}</td><td>${new Date(c.expira).toLocaleDateString('pt-BR')}</td><td>R$ ${c.valor.toFixed(2)}</td></tr>`; });
+        html += '</table><button onclick="window.print()" style="margin-top:20px;padding:10px 20px;background:#00c3a0;border:none;border-radius:8px;cursor:pointer;font-weight:bold">🖨️ IMPRIMIR</button></body></html>';
+        pw.document.write(html);
+        pw.document.close();
     };
 
-    // Inicialização
-    if(localStorage.getItem('twpro_logado')==='true'){
-        document.getElementById('loginOverlay').style.display='none';
+    // ⭐ Inicialização ⭐
+    if(localStorage.getItem('twpro_logado') === 'true') {
+        document.getElementById('loginOverlay').style.display = 'none';
         document.getElementById('conteudoPrincipal').classList.add('desbloqueado');
-        logado=true;
+        logado = true;
         carregarDados();
-        setTimeout(function(){verificarNovosCadastros();},500);
+        buscarDadosServidor();
     }
 
-    window.addEventListener('beforeunload',()=>{
-        localStorage.setItem('twpro_logado',logado?'true':'false');
-        salvarNotificacoesProcessadas();
+    window.addEventListener('beforeunload', () => {
+        localStorage.setItem('twpro_logado', logado ? 'true' : 'false');
     });
 
-    // Verifica a cada 5 segundos
-    setInterval(()=>{
-        if(logado){
-            verificarNovosCadastros();
-            atualizarContadorNotificacoes();
+    // Verifica novos cadastros a cada 10 segundos
+    setInterval(() => {
+        if(logado) {
+            buscarDadosServidor();
         }
-    },5000);
+    }, 10000);
 })();
 </script>
 </body>
