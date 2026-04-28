@@ -259,6 +259,8 @@
     .btn-icon-whats:hover { background: rgba(37,211,102,0.15); }
     .btn-icon-delete { border-color: var(--red); color: var(--red); }
     .btn-icon-delete:hover { background: rgba(224,82,96,0.15); }
+    .btn-icon-edit { border-color: #c9a84c; color: #c9a84c; }
+    .btn-icon-edit:hover { background: rgba(201,168,76,0.15); }
 
     .status-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 1.5rem; }
     @media(max-width:600px){.status-grid{grid-template-columns:repeat(2,1fr)}}
@@ -490,103 +492,7 @@ Suporte: (41) 99976-5210</textarea></div>
 </div>
 
 <!-- SCRIPTS -->
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js">
-      // ⭐ FUNÇÃO: EDITAR CLIENTE ⭐
-    window.editarCliente = function(id) {
-        let c = clientes.find(x => x.id == id);
-        if(!c) return alert('⚠️ Cliente não encontrado!');
-        
-        // Pega os dados atuais
-        let diasRestantes = Math.max(0, Math.ceil((new Date(c.expira) - new Date()) / 86400000));
-        
-        // Monta HTML do modal de edição
-        let html = `
-            <div style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:999;display:flex;align-items:center;justify-content:center;" id="modalEditar">
-                <div style="background:#13131a;border:2px solid #c9a84c;border-radius:20px;padding:2rem;max-width:500px;width:90%;text-align:center;">
-                    <h3 style="color:#e8c96a;margin-bottom:1rem;">✏️ Editar Cliente</h3>
-                    <p style="color:#fff;">👤 <strong>${c.nome}</strong></p>
-                    <p style="color:#8888a8;">📱 ${c.whats} | 📧 ${c.email || 'N/I'}</p>
-                    <p style="color:#8888a8;">🖥️ Terminal: ${c.terminal}</p>
-                    <hr style="border-color:#2a2a38;margin:15px 0;">
-                    <p style="color:#3ecf8e;">🔰 Plano Atual: <strong>${c.plano}</strong></p>
-                    <p style="color:#3ecf8e;">📅 Dias Restantes: <strong>${diasRestantes} dias</strong></p>
-                    <p style="color:#3ecf8e;">🔑 Chave Atual: <strong style="font-size:.8rem;">${c.chave}</strong></p>
-                    <hr style="border-color:#2a2a38;margin:15px 0;">
-                    <label style="color:#8888a8;display:block;margin-bottom:.5rem;">Novo Plano:</label>
-                    <select id="editarPlano" style="background:#09090d;border:1px solid #2a2a38;border-radius:8px;color:#e8e8f0;padding:.65rem;width:100%;font-size:.9rem;margin-bottom:1rem;">
-                        <option value="">Selecione...</option>
-                        <option value="LATAO">🔰 LATÃO (7 dias)</option>
-                        <option value="BRONZE">🥉 BRONZE (30 dias)</option>
-                        <option value="PRATA">🥈 PRATA (90 dias)</option>
-                        <option value="OURO">🥇 OURO (180 dias)</option>
-                        <option value="DIAMANTE">💎 DIAMANTE (270 dias)</option>
-                        <option value="ELITE">👑 ELITE (365 dias)</option>
-                    </select>
-                    <label style="color:#8888a8;display:block;margin-bottom:.5rem;">Valor Pago (R$):</label>
-                    <input type="number" id="editarValor" step="0.01" value="0" style="background:#09090d;border:1px solid #2a2a38;border-radius:8px;color:#e8e8f0;padding:.65rem;width:100%;font-size:.9rem;margin-bottom:1rem;">
-                    <p style="color:#e8c96a;font-size:.8rem;margin-bottom:1rem;">⭐ Dias acumulados: ${diasRestantes} + dias do novo plano</p>
-                    <button onclick="confirmarEdicao('${c.id}', ${diasRestantes})" style="background:#c9a84c;color:#09090d;border:none;padding:12px;border-radius:8px;font-weight:700;cursor:pointer;width:100%;font-size:1rem;">✅ CONFIRMAR EDIÇÃO</button>
-                    <button onclick="document.getElementById('modalEditar').remove()" style="background:transparent;border:1px solid #e05260;color:#e05260;padding:10px;border-radius:8px;cursor:pointer;width:100%;margin-top:8px;">❌ CANCELAR</button>
-                </div>
-            </div>
-        `;
-        document.body.insertAdjacentHTML('beforeend', html);
-    };
-    
-    // ⭐ FUNÇÃO: CONFIRMAR EDIÇÃO ⭐
-    window.confirmarEdicao = function(id, diasRestantes) {
-        let c = clientes.find(x => x.id == id);
-        if(!c) return;
-        
-        let novoPlano = document.getElementById('editarPlano').value;
-        let novoValor = parseFloat(document.getElementById('editarValor').value) || 0;
-        
-        if(!novoPlano) return alert('⚠️ Selecione o novo plano!');
-        
-        // Calcula dias do novo plano
-        let diasPlano = 0;
-        if(novoPlano === 'LATAO') diasPlano = 7;
-        else if(novoPlano === 'BRONZE') diasPlano = 30;
-        else if(novoPlano === 'PRATA') diasPlano = 90;
-        else if(novoPlano === 'OURO') diasPlano = 180;
-        else if(novoPlano === 'DIAMANTE') diasPlano = 270;
-        else if(novoPlano === 'ELITE') diasPlano = 365;
-        
-        // ACUMULA: dias restantes + dias do novo plano
-        let diasTotal = diasRestantes + diasPlano;
-        
-        // Gera nova chave
-        let novaChave = novoPlano + "-" + gerarHashBase(c.terminal);
-        
-        // Atualiza cliente
-        c.plano = novoPlano;
-        c.dias = diasTotal;
-        c.chave = novaChave;
-        c.valor += novoValor; // Acumula valor
-        c.expira = new Date(Date.now() + diasTotal * 86400000).toISOString();
-        c.dataCompra = new Date().toISOString().split('T')[0];
-        
-        salvarDados();
-        document.getElementById('modalEditar').remove();
-        renderizarTudo();
-        
-        // WhatsApp cliente
-        let msg = '🎯 *TRADE WINNER PRO - Plano Atualizado!*\n\n' +
-                  'Olá *' + c.nome + '*!\n\n' +
-                  '✅ Seu plano foi atualizado!\n\n' +
-                  '🏷️ *Plano Anterior:* ' + (c.plano === novoPlano ? novoPlano : 'Atualizado') + '\n' +
-                  '🏷️ *Novo Plano:* ' + novoPlano + '\n' +
-                  '📅 *Dias Acumulados:* ' + diasRestantes + ' + ' + diasPlano + ' = *' + diasTotal + ' dias*\n' +
-                  '🔑 *Nova Chave:* ' + novaChave + '\n\n' +
-                  '⚙️ Cole esta chave no campo "Chave de Ativação" do EA.\n\n' +
-                  '📞 Dúvidas? (41) 99976-5210';
-        
-        let num = c.whats.replace(/\D/g, '');
-        window.open('https://wa.me/' + num + '?text=' + encodeURIComponent(msg), '_blank');
-        
-        alert('✅ CLIENTE ATUALIZADO!\n\n👤 ' + c.nome + '\n🏷️ ' + novoPlano + '\n📅 ' + diasTotal + ' dias\n🔑 ' + novaChave);
-    };
-</script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'})}})});
 </script>
@@ -614,6 +520,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
     let filtroStatus = 'todos', periodoAtual = 'tudo', planoSelecionado = 'LATAO', diasSelecionados = 7, valorSelecionado = 0;
     let ultimaChaveGerada = '', ultimoClienteGerado = null;
     let logado = false;
+    let clientesProcessados = new Set(); // ⭐ EVITA EMAIL DUPLICADO
 
     // ⭐ BUSCAR DADOS DO JSONbin ⭐
     async function buscarDadosServidor() {
@@ -626,25 +533,20 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
             let clientesServidor = data.record.clientes || [];
             console.log('📋 Clientes no servidor:', clientesServidor.length);
             
-            // Pega os IDs dos clientes locais
             let idsLocais = clientes.map(c => c.id);
-            
-            // Filtra os novos (que não estão no local)
-            let novos = clientesServidor.filter(c => !idsLocais.includes(c.id));
+            let novos = clientesServidor.filter(c => !idsLocais.includes(c.id) && !clientesProcessados.has(c.id));
             
             if(novos.length > 0) {
                 console.log('🆕 ' + novos.length + ' novo(s) cliente(s) do servidor!');
                 
-                // Adiciona ao array local
                 clientes = [...clientes, ...novos];
                 salvarDados();
                 
-                // WhatsApp e Email para cada novo
                 novos.forEach(n => {
+                    clientesProcessados.add(n.id);
                     processarNovoCadastro(n);
                 });
                 
-                // Atualiza interface
                 renderizarTudo();
                 atualizarContadores();
                 calcularFaturamento();
@@ -666,7 +568,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
             '📅 *Data:* ' + new Date().toLocaleString('pt-BR');
         window.open('https://wa.me/' + SEU_WATS + '?text=' + encodeURIComponent(msgDono), '_blank');
         
-        // Email para o cliente
         if(n.email) {
             console.log('📧 Enviando email para o cliente...');
             let expiraFormatada = new Date(n.expira).toLocaleDateString('pt-BR');
@@ -693,7 +594,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
             document.getElementById('conteudoPrincipal').classList.add('desbloqueado');
             document.getElementById('senhaLoginInput').value = '';
             carregarDados();
-            buscarDadosServidor(); // ⭐ BUSCA DADOS DO SERVIDOR
+            buscarDadosServidor();
         } else {
             document.getElementById('loginError').classList.add('show');
             setTimeout(() => document.getElementById('loginError').classList.remove('show'), 2000);
@@ -791,10 +692,8 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         document.getElementById('terminalInput').value = '';
         document.getElementById('emailInput').value = '';
         
-        // WhatsApp dono
         window.open('https://wa.me/' + SEU_WATS + '?text=' + encodeURIComponent('🔔 NOVA CHAVE\n👤 ' + n + '\n🔑 ' + chave + '\n📱 ' + w + '\n🏷️ ' + planoSelecionado), '_blank');
         
-        // Email cliente
         if(em) {
             let expiraFormatada = exp.toLocaleDateString('pt-BR');
             emailjs.send("service_kqme5zs", "template_rlrvpbm", {
@@ -840,6 +739,93 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         }).then(function(r) { alert('✅ Email enviado!'); }).catch(function(e) { alert('⚠️ Erro'); });
     };
 
+    // ⭐ FUNÇÃO: EDITAR CLIENTE ⭐
+    window.editarCliente = function(id) {
+        let c = clientes.find(x => x.id == id);
+        if(!c) return alert('⚠️ Cliente não encontrado!');
+        
+        let diasRestantes = Math.max(0, Math.ceil((new Date(c.expira) - new Date()) / 86400000));
+        
+        let html = `
+            <div style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:999;display:flex;align-items:center;justify-content:center;" id="modalEditar">
+                <div style="background:#13131a;border:2px solid #c9a84c;border-radius:20px;padding:2rem;max-width:500px;width:90%;text-align:center;">
+                    <h3 style="color:#e8c96a;margin-bottom:1rem;">✏️ Editar Cliente</h3>
+                    <p style="color:#fff;">👤 <strong>${c.nome}</strong></p>
+                    <p style="color:#8888a8;">📱 ${c.whats} | 📧 ${c.email || 'N/I'}</p>
+                    <p style="color:#8888a8;">🖥️ Terminal: ${c.terminal}</p>
+                    <hr style="border-color:#2a2a38;margin:15px 0;">
+                    <p style="color:#3ecf8e;">🔰 Plano Atual: <strong>${c.plano}</strong></p>
+                    <p style="color:#3ecf8e;">📅 Dias Restantes: <strong>${diasRestantes} dias</strong></p>
+                    <p style="color:#3ecf8e;">🔑 Chave Atual: <strong style="font-size:.8rem;">${c.chave}</strong></p>
+                    <hr style="border-color:#2a2a38;margin:15px 0;">
+                    <label style="color:#8888a8;display:block;margin-bottom:.5rem;">Novo Plano:</label>
+                    <select id="editarPlano" style="background:#09090d;border:1px solid #2a2a38;border-radius:8px;color:#e8e8f0;padding:.65rem;width:100%;font-size:.9rem;margin-bottom:1rem;">
+                        <option value="">Selecione...</option>
+                        <option value="LATAO">🔰 LATÃO (7 dias)</option>
+                        <option value="BRONZE">🥉 BRONZE (30 dias)</option>
+                        <option value="PRATA">🥈 PRATA (90 dias)</option>
+                        <option value="OURO">🥇 OURO (180 dias)</option>
+                        <option value="DIAMANTE">💎 DIAMANTE (270 dias)</option>
+                        <option value="ELITE">👑 ELITE (365 dias)</option>
+                    </select>
+                    <label style="color:#8888a8;display:block;margin-bottom:.5rem;">Valor Pago (R$):</label>
+                    <input type="number" id="editarValor" step="0.01" value="0" style="background:#09090d;border:1px solid #2a2a38;border-radius:8px;color:#e8e8f0;padding:.65rem;width:100%;font-size:.9rem;margin-bottom:1rem;">
+                    <p style="color:#e8c96a;font-size:.8rem;margin-bottom:1rem;">⭐ Dias acumulados: ${diasRestantes} + dias do novo plano</p>
+                    <button onclick="confirmarEdicao('${c.id}', ${diasRestantes})" style="background:#c9a84c;color:#09090d;border:none;padding:12px;border-radius:8px;font-weight:700;cursor:pointer;width:100%;font-size:1rem;">✅ CONFIRMAR EDIÇÃO</button>
+                    <button onclick="document.getElementById('modalEditar').remove()" style="background:transparent;border:1px solid #e05260;color:#e05260;padding:10px;border-radius:8px;cursor:pointer;width:100%;margin-top:8px;">❌ CANCELAR</button>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', html);
+    };
+    
+    // ⭐ FUNÇÃO: CONFIRMAR EDIÇÃO ⭐
+    window.confirmarEdicao = function(id, diasRestantes) {
+        let c = clientes.find(x => x.id == id);
+        if(!c) return;
+        
+        let novoPlano = document.getElementById('editarPlano').value;
+        let novoValor = parseFloat(document.getElementById('editarValor').value) || 0;
+        
+        if(!novoPlano) return alert('⚠️ Selecione o novo plano!');
+        
+        let diasPlano = 0;
+        if(novoPlano === 'LATAO') diasPlano = 7;
+        else if(novoPlano === 'BRONZE') diasPlano = 30;
+        else if(novoPlano === 'PRATA') diasPlano = 90;
+        else if(novoPlano === 'OURO') diasPlano = 180;
+        else if(novoPlano === 'DIAMANTE') diasPlano = 270;
+        else if(novoPlano === 'ELITE') diasPlano = 365;
+        
+        let diasTotal = diasRestantes + diasPlano;
+        let novaChave = novoPlano + "-" + gerarHashBase(c.terminal);
+        
+        c.plano = novoPlano;
+        c.dias = diasTotal;
+        c.chave = novaChave;
+        c.valor += novoValor;
+        c.expira = new Date(Date.now() + diasTotal * 86400000).toISOString();
+        c.dataCompra = new Date().toISOString().split('T')[0];
+        
+        salvarDados();
+        document.getElementById('modalEditar').remove();
+        renderizarTudo();
+        
+        let msg = '🎯 *TRADE WINNER PRO - Plano Atualizado!*\n\n' +
+                  'Olá *' + c.nome + '*!\n\n' +
+                  '✅ Seu plano foi atualizado!\n\n' +
+                  '🏷️ *Novo Plano:* ' + novoPlano + '\n' +
+                  '📅 *Dias Acumulados:* ' + diasRestantes + ' + ' + diasPlano + ' = *' + diasTotal + ' dias*\n' +
+                  '🔑 *Nova Chave:* ' + novaChave + '\n\n' +
+                  '⚙️ Cole esta chave no campo "Chave de Ativação" do EA.\n\n' +
+                  '📞 Dúvidas? (41) 99976-5210';
+        
+        let num = c.whats.replace(/\D/g, '');
+        window.open('https://wa.me/' + num + '?text=' + encodeURIComponent(msg), '_blank');
+        
+        alert('✅ CLIENTE ATUALIZADO!\n\n👤 ' + c.nome + '\n🏷️ ' + novoPlano + '\n📅 ' + diasTotal + ' dias\n🔑 ' + novaChave);
+    };
+
     function renderizarTudo() { renderizarTabela(); atualizarContadores(); calcularFaturamento(); }
     window.renderizarTabela = function() {
         let busca = document.getElementById('buscaInput').value.toLowerCase();
@@ -863,7 +849,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
             else if(d === 0) { sc = 'status-vencendo'; st = 'VENCE HOJE'; }
             else { sc = 'status-ativo'; st = 'ATIVO'; }
             let bc = 'badge-' + (c.plano || 'LATAO').toLowerCase();
-            return `<tr><td><div class="client-name">${c.nome}</div><div class="client-detail">${c.whats}${c.email?' | '+c.email:''}</div></td><td>${c.terminal}</td><td><span class="chave-display">${c.chave}</span></td><td><span class="badge-plano ${bc}">${c.plano}</span></td><td>${exp.toLocaleDateString('pt-BR')}<br><span class="status-badge ${sc}">${st}</span></td><td>R$ ${c.valor.toFixed(2)}</td><td><div class="action-btns"><button class="btn-icon btn-icon-chave" onclick="enviarWhatsAppCliente('${c.id}','entrega')">🔑</button><button class="btn-icon" style="border-color:#e67e22;color:#e67e22" onclick="enviarEmailCliente('${c.id}')">📧</button><button class="btn-icon btn-icon-delete" onclick="removerCliente('${c.id}')">🗑️</button></div></td></tr>`;
+            return `<tr><td><div class="client-name">${c.nome}</div><div class="client-detail">${c.whats}${c.email?' | '+c.email:''}</div></td><td>${c.terminal}</td><td><span class="chave-display">${c.chave}</span></td><td><span class="badge-plano ${bc}">${c.plano}</span></td><td>${exp.toLocaleDateString('pt-BR')}<br><span class="status-badge ${sc}">${st}</span></td><td>R$ ${c.valor.toFixed(2)}</td><td><div class="action-btns"><button class="btn-icon btn-icon-chave" onclick="enviarWhatsAppCliente('${c.id}','entrega')">🔑</button><button class="btn-icon btn-icon-edit" onclick="editarCliente('${c.id}')" title="Editar">✏️</button><button class="btn-icon" style="border-color:#e67e22;color:#e67e22" onclick="enviarEmailCliente('${c.id}')">📧</button><button class="btn-icon btn-icon-delete" onclick="removerCliente('${c.id}')">🗑️</button></div></td></tr>`;
         }).join('');
     };
     window.removerCliente = function(id) { if(!confirm('🗑️ Remover?')) return; clientes = clientes.filter(c => c.id != id); salvarDados(); renderizarTudo(); };
@@ -948,7 +934,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         localStorage.setItem('twpro_logado', logado ? 'true' : 'false');
     });
 
-    // Verifica novos cadastros a cada 10 segundos
     setInterval(() => {
         if(logado) {
             buscarDadosServidor();
