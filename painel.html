@@ -440,8 +440,10 @@
     <div class="card-header"><span class="card-title">📋 Clientes Cadastrados</span></div>
     <input type="text" id="buscaInput" placeholder="🔍 PESQUISAR CLIENTE" onkeyup="renderizarTabela()" style="background:rgba(9,9,13,0.8);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:.65rem .9rem;font-family:'DM Sans',sans-serif;font-size:.9rem;width:100%;margin-bottom:1rem">
     <div class="table-wrapper">
-      <table><thead><tr><th>Cliente</th><th>Terminal</th><th>🔑 Chave</th><th>Plano</th><th>Expira</th><th>Valor</th><th>Ações</th></tr></thead>
-      <tbody id="tabelaBody"></tbody></table>
+      <table>
+        <thead><tr><th>Cliente</th><th>Terminal</th><th>🔑 Chave</th><th>Plano</th><th>Expira</th><th>Valor</th><th>Ações</th></tr></thead>
+        <tbody id="tabelaBody"></tbody>
+      </table>
     </div>
   </div>
 
@@ -530,7 +532,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
     let logado = false;
     let clientesProcessados = new Set();
 
-    // ⭐ SALVAR/CARREGAR PROCESSADOS ⭐
     function salvarProcessados() { 
         localStorage.setItem('twpro_clientes_processados', JSON.stringify([...clientesProcessados])); 
     }
@@ -539,7 +540,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         if(proc) { try { clientesProcessados = new Set(JSON.parse(proc)); } catch(e) {} }
     }
 
-    // ⭐ BUSCAR DADOS DO JSONbin ⭐
     async function buscarDadosServidor() {
         try {
             let response = await fetch('https://api.jsonbin.io/v3/b/' + JSONBIN_ID + '/latest', {
@@ -547,20 +547,16 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
             });
             let data = await response.json();
             let clientesServidor = data.record.clientes || [];
-            
             let idsLocais = clientes.map(c => c.id);
             let novos = clientesServidor.filter(c => !idsLocais.includes(c.id) && !clientesProcessados.has(c.id));
-            
             if(novos.length > 0) {
                 clientes = [...clientes, ...novos];
                 salvarDados();
-                
                 novos.forEach(n => {
                     clientesProcessados.add(n.id);
                     salvarProcessados();
                     processarNovoCadastro(n);
                 });
-                
                 renderizarTudo();
             }
         } catch(err) {
@@ -568,7 +564,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         }
     }
     
-    // ⭐ PROCESSAR NOVO CADASTRO ⭐
     function processarNovoCadastro(n) {
         let msgDono = '🔔 *NOVO CADASTRO*\n\n' +
             '👤 *Cliente:* ' + n.nome + '\n' +
@@ -747,13 +742,10 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         }).then(function(r) { alert('✅ Email enviado!'); }).catch(function(e) { alert('⚠️ Erro'); });
     };
 
-    // ⭐ EDITAR CLIENTE ⭐
     window.editarCliente = function(id) {
         let c = clientes.find(x => x.id == id);
         if(!c) return alert('⚠️ Cliente não encontrado!');
-        
         let diasRestantes = Math.max(0, Math.ceil((new Date(c.expira) - new Date()) / 86400000));
-        
         let html = `
             <div style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:999;display:flex;align-items:center;justify-content:center;" id="modalEditar">
                 <div style="background:#13131a;border:2px solid #c9a84c;border-radius:20px;padding:2rem;max-width:500px;width:90%;text-align:center;">
@@ -787,7 +779,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         document.body.insertAdjacentHTML('beforeend', html);
     };
     
-    // ⭐ ATUALIZAR VALOR NA EDIÇÃO ⭐
     window.atualizarValorEdicao = function() {
         let select = document.getElementById('editarPlano');
         let option = select.options[select.selectedIndex];
@@ -795,16 +786,12 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         document.getElementById('editarValor').value = valor;
     };
     
-    // ⭐ CONFIRMAR EDIÇÃO ⭐
     window.confirmarEdicao = function(id, diasRestantes) {
         let c = clientes.find(x => x.id == id);
         if(!c) return;
-        
         let novoPlano = document.getElementById('editarPlano').value;
         let novoValor = parseFloat(document.getElementById('editarValor').value) || 0;
-        
         if(!novoPlano) return alert('⚠️ Selecione o novo plano!');
-        
         let diasPlano = 0;
         if(novoPlano === 'LATAO') diasPlano = 7;
         else if(novoPlano === 'BRONZE') diasPlano = 30;
@@ -812,51 +799,40 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         else if(novoPlano === 'OURO') diasPlano = 180;
         else if(novoPlano === 'DIAMANTE') diasPlano = 270;
         else if(novoPlano === 'ELITE') diasPlano = 365;
-        
         let diasTotal = diasRestantes + diasPlano;
         let novaChave = novoPlano + "-" + gerarHashBase(c.terminal);
-        
         c.plano = novoPlano;
         c.dias = diasTotal;
         c.chave = novaChave;
         c.valor += novoValor;
         c.expira = new Date(Date.now() + diasTotal * 86400000).toISOString();
         c.dataCompra = new Date().toISOString().split('T')[0];
-        
         salvarDados();
         document.getElementById('modalEditar').remove();
         renderizarTudo();
-        
-        let msg = '🎯 *TRADE WINNER PRO - Plano Atualizado!*\n\n' +
-                  'Olá *' + c.nome + '*!\n\n' +
-                  '✅ Seu plano foi atualizado!\n\n' +
-                  '🏷️ *Novo Plano:* ' + novoPlano + '\n' +
-                  '📅 *Dias Acumulados:* ' + diasRestantes + ' + ' + diasPlano + ' = *' + diasTotal + ' dias*\n' +
-                  '🔑 *Nova Chave:* ' + novaChave + '\n\n' +
-                  '⚙️ Cole esta chave no campo "Chave de Ativação" do EA.\n\n' +
-                  '📞 Dúvidas? (41) 99976-5210';
-        
+        let msg = '🎯 *TRADE WINNER PRO - Plano Atualizado!*\n\nOlá *' + c.nome + '*!\n\n✅ Seu plano foi atualizado!\n\n🏷️ *Novo Plano:* ' + novoPlano + '\n📅 *Dias Acumulados:* ' + diasRestantes + ' + ' + diasPlano + ' = *' + diasTotal + ' dias*\n🔑 *Nova Chave:* ' + novaChave + '\n\n⚙️ Cole esta chave no campo "Chave de Ativação" do EA.\n\n📞 Dúvidas? (41) 99976-5210';
         let num = c.whats.replace(/\D/g, '');
         window.open('https://wa.me/' + num + '?text=' + encodeURIComponent(msg), '_blank');
-        
         alert('✅ CLIENTE ATUALIZADO!\n\n👤 ' + c.nome + '\n🏷️ ' + novoPlano + '\n📅 ' + diasTotal + ' dias\n🔑 ' + novaChave);
     };
 
     function renderizarTudo() { renderizarTabela(); atualizarContadores(); calcularFaturamento(); }
+    
+    // FUNÇÃO RENDERIZAR TABELA ORIGINAL (PRESERVADA)
     window.renderizarTabela = function() {
         let busca = document.getElementById('buscaInput').value.toLowerCase();
-        let hoje = new Date(); hoje.setHours(0, 0, 0, 0);
+        let hoje = new Date(); hoje.setHours(0,0,0,0);
         let lista = clientes.filter(c => {
             let m = !busca || c.nome.toLowerCase().includes(busca) || c.whats.includes(busca) || c.terminal.toLowerCase().includes(busca) || c.chave.toLowerCase().includes(busca);
             if(!m) return false;
-            let exp = new Date(c.expira); exp.setHours(0, 0, 0, 0);
+            let exp = new Date(c.expira); exp.setHours(0,0,0,0);
             let d = Math.ceil((exp - hoje) / 86400000);
             if(filtroStatus === 'ativos') return d > 0;
             if(filtroStatus === 'vencendo') return d === 0;
             if(filtroStatus === 'vencidos') return d < 0;
             return true;
         });
-        lista.sort((a, b) => new Date(a.expira) - new Date(b.expira));
+        lista.sort((a,b) => new Date(a.expira) - new Date(b.expira));
         let tb = document.getElementById('tabelaBody');
         if(!lista.length) { tb.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--text2)">Nenhum cliente cadastrado</td></tr>'; return; }
         tb.innerHTML = lista.map(c => {
@@ -865,15 +841,30 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
             else if(d === 0) { sc = 'status-vencendo'; st = 'VENCE HOJE'; }
             else { sc = 'status-ativo'; st = 'ATIVO'; }
             let bc = 'badge-' + (c.plano || 'LATAO').toLowerCase();
-            return `<tr><td><div class="client-name">${c.nome}</div><div class="client-detail">${c.whats}${c.email?' | '+c.email:''}</div></td><td>${c.terminal}</td><td><span class="chave-display">${c.chave}</span></td><td><span class="badge-plano ${bc}">${c.plano}</span></td><td>${exp.toLocaleDateString('pt-BR')}<br><span class="status-badge ${sc}">${st}</span></td><td>R$ ${c.valor.toFixed(2)}</td><td><div class="action-btns"><button class="btn-icon btn-icon-chave" onclick="enviarWhatsAppCliente('${c.id}','entrega')">🔑</button><button class="btn-icon btn-icon-edit" onclick="editarCliente('${c.id}')" title="Editar">✏️</button><button class="btn-icon btn-icon-email" onclick="enviarEmailCliente('${c.id}')">📧</button><button class="btn-icon btn-icon-delete" onclick="removerCliente('${c.id}')">🗑️</button></div></td></tr>`;
+            return `<tr>
+                <td><div class="client-name">${c.nome}</div><div class="client-detail">${c.whats}${c.email?' | '+c.email:''}</div></td>
+                <td>${c.terminal}</td>
+                <td><span class="chave-display">${c.chave}</span></td>
+                <td><span class="badge-plano ${bc}">${c.plano}</span></td>
+                <td>${exp.toLocaleDateString('pt-BR')}<br><span class="status-badge ${sc}">${st}</span></td>
+                <td>R$ ${c.valor.toFixed(2)}</td>
+                <td><div class="action-btns">
+                    <button class="btn-icon btn-icon-chave" onclick="enviarWhatsAppCliente('${c.id}','entrega')" title="Enviar Chave">🔑</button>
+                    <button class="btn-icon btn-icon-edit" onclick="editarCliente('${c.id}')" title="Editar">✏️</button>
+                    <button class="btn-icon btn-icon-email" onclick="enviarEmailCliente('${c.id}')" title="Email">📧</button>
+                    <button class="btn-icon btn-icon-delete" onclick="removerCliente('${c.id}')" title="Excluir">🗑️</button>
+                </div></td>
+            </tr>`;
         }).join('');
     };
+    
     window.removerCliente = function(id) { if(!confirm('🗑️ Remover?')) return; clientes = clientes.filter(c => c.id != id); salvarDados(); renderizarTudo(); };
+    
     function atualizarContadores() {
-        let h = new Date(); h.setHours(0, 0, 0, 0);
+        let h = new Date(); h.setHours(0,0,0,0);
         let t = 0, a = 0, v = 0, vc = 0;
         clientes.forEach(c => {
-            let e = new Date(c.expira); e.setHours(0, 0, 0, 0);
+            let e = new Date(c.expira); e.setHours(0,0,0,0);
             let d = Math.ceil((e - h) / 86400000);
             t++; if(d > 0) a++; else if(d === 0) v++; else vc++;
         });
@@ -882,20 +873,23 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         document.getElementById('countVencendo').textContent = v;
         document.getElementById('countVencidos').textContent = vc;
     }
+    
     function calcularFaturamento() {
         let total = 0;
         clientes.forEach(c => { total += c.valor || 0; });
         document.getElementById('totalFaturamento').textContent = 'R$ ' + total.toFixed(2);
     }
+    
     window.setFiltroStatus = function(f) {
         filtroStatus = f;
         document.querySelectorAll('.status-card').forEach(c => c.classList.remove('active'));
         document.getElementById('status' + f.charAt(0).toUpperCase() + f.slice(1)).classList.add('active');
         renderizarTabela();
     };
+    
     window.setPeriodo = function(p) {
         periodoAtual = p;
-        ['periodoTudo', 'periodoHoje', 'periodoMes', 'periodoAno'].forEach(id => document.getElementById(id).classList.remove('active'));
+        ['periodoTudo','periodoHoje','periodoMes','periodoAno'].forEach(id => document.getElementById(id).classList.remove('active'));
         document.getElementById('periodo' + p.charAt(0).toUpperCase() + p.slice(1)).classList.add('active');
         calcularFaturamento();
     };
@@ -905,10 +899,12 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         document.getElementById(id).classList.add('show');
         document.getElementById('modalOverlay').classList.add('show');
     };
+    
     window.fecharModais = function() {
         document.querySelectorAll('.modal').forEach(m => m.classList.remove('show'));
         document.getElementById('modalOverlay').classList.remove('show');
     };
+    
     window.salvarConfiguracoes = function() {
         config.mensagens.entrega = document.getElementById('msgEntregaInput').value;
         config.mensagens.cobranca = document.getElementById('msgCobrancaInput').value;
@@ -925,6 +921,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         fecharModais();
         alert('✅ Configurações salvas!');
     };
+    
     window.gerarRelatorio = function(tipo) {
         fecharModais();
         let cf = [];
@@ -953,370 +950,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         if(logado) buscarDadosServidor();
     }, 10000);
 
- // ============================================
-// ⭐ FUNÇÕES PARA ENVIO DE MENSAGENS DE VENCIMENTO ⭐
-// ============================================
-
-// Mensagens para vencimento (serão salvas no config)
-const MSG_VENCIMENTO_PADRAO = {
-    quase_vencendo: `🎯 LATAO - SEU TESTE ESTÁ QUASE VENCENDO!
-
-Olá {nome}!
-
-⚠️ Atenção! Seu plano {plano} está quase vencendo!
-
-📅 Data de cadastro: {data_cadastro}
-⏰ Expira em: {validade}
-🔑 Sua chave atual: {chave}
-📱 Terminal MT5: {terminal_id}
-
-⚡ RENOVE AGORA E NÃO PARE DE RECEBER SINAIS!
-
-🔹 ESCOLHA SEU PLANO:
-👉 BRONZE: https://pag.ae/81Jw7qy2N
-👉 PRATA: https://pag.ae/81Jw7ZCg6
-👉 OURO: https://pag.ae/81Jw8oyYM
-👉 DIAMANTE: https://pag.ae/81Jw8RJ16
-👉 ELITE: https://pag.ae/81Jw9ggEr
-
-💡 Após o pagamento, envie o comprovante para ativarmos sua nova chave.
-
-📞 Dúvidas ou suporte: (41) 99976-5210`,
-
-    vencido: `⛔ LATAO - SEU TESTE EXPIRU!
-
-Olá {nome}!
-
-❌ Infelizmente seu plano {plano} expirou em {validade}.
-
-🔑 Sua chave {chave} não está mais ativa.
-
-⚡ RENOVE AGORA E VOLTE A RECEBER SINAIS!
-
-🔹 Planos disponíveis:
-👉 BRONZE: https://pag.ae/81Jw7qy2N
-👉 PRATA: https://pag.ae/81Jw7ZCg6
-👉 OURO: https://pag.ae/81Jw8oyYM
-👉 DIAMANTE: https://pag.ae/81Jw8RJ16
-👉 ELITE: https://pag.ae/81Jw9ggEr
-
-📞 Suporte: (41) 99976-5210`,
-
-    boas_vindas: `🎯 LATAO - TESTE ATIVADO!
-
-Olá {nome}!
-
-✅ Seu plano {plano} foi ativado com sucesso!
-
-📅 Período de teste: {validade}
-🔑 Chave de ativação: {chave}
-📱 Terminal MT5: {terminal_id}
-
-⚙️ Instruções de uso:
-1. Baixe o EA pelo seu assessor
-2. Cole a chave no campo "Chave de Ativação"
-3. Aproveite os sinais!
-
-📞 Dúvidas: (41) 99976-5210`
-};
-
-// Inicializar mensagens no config se não existirem
-function inicializarMensagensVencimento() {
-    if (!config.mensagensVencimento) {
-        config.mensagensVencimento = MSG_VENCIMENTO_PADRAO;
-        salvarConfig();
-    }
-    // Carregar as mensagens salvas para os inputs se existirem
-    if(document.getElementById('msgQuaseVencendoInput') && config.mensagensVencimento) {
-        document.getElementById('msgQuaseVencendoInput').value = config.mensagensVencimento.quase_vencendo || MSG_VENCIMENTO_PADRAO.quase_vencendo;
-        document.getElementById('msgVencidoInput').value = config.mensagensVencimento.vencido || MSG_VENCIMENTO_PADRAO.vencido;
-        document.getElementById('msgBoasVindasInput').value = config.mensagensVencimento.boas_vindas || MSG_VENCIMENTO_PADRAO.boas_vindas;
-    }
-}
-
-// Função para processar mensagem de vencimento
-function processarMsgVencimento(tipo, cliente) {
-    let msg = (config.mensagensVencimento && config.mensagensVencimento[tipo]) || MSG_VENCIMENTO_PADRAO[tipo];
-    
-    let dataCadastro = new Date(cliente.dataCadastro).toLocaleDateString('pt-BR');
-    let validade = new Date(cliente.expira).toLocaleDateString('pt-BR');
-    
-    return msg
-        .replace(/{nome}/g, cliente.nome)
-        .replace(/{plano}/g, cliente.plano)
-        .replace(/{data_cadastro}/g, dataCadastro)
-        .replace(/{validade}/g, validade)
-        .replace(/{chave}/g, cliente.chave)
-        .replace(/{terminal_id}/g, cliente.terminal);
-}
-
-// Enviar mensagem para um cliente específico
-window.enviarMensagemCliente = function(clienteId, tipo) {
-    let c = clientes.find(x => x.id == clienteId);
-    if(!c) return alert('Cliente não encontrado!');
-    
-    let msg = processarMsgVencimento(tipo, c);
-    let numero = c.whats.replace(/\D/g, '');
-    
-    if(numero) {
-        window.open('https://wa.me/' + numero + '?text=' + encodeURIComponent(msg), '_blank');
-    } else {
-        alert('WhatsApp não cadastrado para este cliente!');
-    }
-};
-
-// Enviar planos para cliente
-window.enviarPlanosCliente = function(clienteId) {
-    let c = clientes.find(x => x.id == clienteId);
-    if(!c) return alert('Cliente não encontrado!');
-    
-    let msg = `📢 *PLANOS TRADE WINNER PRO* - Olá *${c.nome}*!
-
-💰 *Escolha o seu plano:*
-
-🔰 *BRONZE* (30 dias) - R$ 47
-👉 Link: https://pag.ae/81Jw7qy2N
-
-🥈 *PRATA* (90 dias) - R$ 127
-👉 Link: https://pag.ae/81Jw7ZCg6
-
-🥇 *OURO* (180 dias) - R$ 227
-👉 Link: https://pag.ae/81Jw8oyYM
-
-💎 *DIAMANTE* (270 dias) - R$ 307
-👉 Link: https://pag.ae/81Jw8RJ16
-
-👑 *ELITE* (365 dias) - R$ 367
-👉 Link: https://pag.ae/81Jw9ggEr
-
-⚡ *Pague e envie o comprovante para ativarmos sua chave!*
-
-📞 Dúvidas: (41) 99976-5210`;
-    
-    let numero = c.whats.replace(/\D/g, '');
-    if(numero) {
-        window.open('https://wa.me/' + numero + '?text=' + encodeURIComponent(msg), '_blank');
-    }
-};
-
-// NOVA FUNÇÃO: Abrir modal de relatório para escolher cliente e mensagem
-window.abrirRelatorioMensagem = function() {
-    // Criar modal de seleção de clientes
-    let html = `
-        <div style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:1000;display:flex;align-items:center;justify-content:center;" id="modalRelatorioMsg">
-            <div style="background:#13131a;border:2px solid #c9a84c;border-radius:20px;padding:2rem;max-width:800px;width:95%;max-height:85vh;overflow-y:auto;">
-                <h3 style="color:#e8c96a;margin-bottom:1rem;text-align:center;">📨 ENVIAR MENSAGEM</h3>
-                
-                <div class="fg">
-                    <label style="color:#8888a8;">📝 SELECIONE O TIPO DE MENSAGEM:</label>
-                    <select id="tipoMensagemSelect" style="background:#09090d;border:1px solid #2a2a38;border-radius:8px;color:#e8e8f0;padding:.65rem;width:100%;">
-                        <option value="quase_vencendo">⚠️ QUASE VENCENDO - Aviso de renovação</option>
-                        <option value="vencido">❌ VENCIDO - Licença expirada</option>
-                        <option value="boas_vindas">🎯 BOAS VINDAS - Teste ativado</option>
-                    </select>
-                </div>
-                
-                <div class="fg" style="margin-top:1rem;">
-                    <label style="color:#8888a8;">👤 SELECIONE O CLIENTE:</label>
-                    <div style="max-height:300px;overflow-y:auto;border:1px solid #2a2a38;border-radius:8px;">
-                        <div id="listaClientesRelatorio" style="padding:8px;"></div>
-                    </div>
-                </div>
-                
-                <div style="display:flex;gap:10px;margin-top:1.5rem;">
-                    <button class="btn-primary" onclick="enviarMensagemSelecionada()" style="flex:1;">📤 ENVIAR WHATSAPP</button>
-                    <button class="btn-ghost" onclick="fecharModalRelatorioMsg()" style="flex:1;">❌ CANCELAR</button>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    document.body.insertAdjacentHTML('beforeend', html);
-    
-    // Preencher lista de clientes
-    let listaHtml = '';
-    let hoje = new Date(); hoje.setHours(0,0,0,0);
-    
-    clientes.forEach(c => {
-        let exp = new Date(c.expira); exp.setHours(0,0,0,0);
-        let diff = Math.ceil((exp - hoje) / 86400000);
-        let statusText = diff > 0 ? `✅ ${diff} dias restantes` : (diff === 0 ? '⚠️ VENCE HOJE' : '❌ VENCIDO');
-        
-        listaHtml += `
-            <label style="display:flex;align-items:center;gap:10px;padding:10px;border-bottom:1px solid #2a2a38;cursor:pointer;">
-                <input type="radio" name="clienteRelatorio" value="${c.id}">
-                <div style="flex:1;">
-                    <strong style="color:#e8c96a;">${c.nome}</strong><br>
-                    <span style="font-size:.75rem;color:#8888a8;">📱 ${c.whats} | ${c.plano} | ${statusText}</span>
-                </div>
-            </label>
-        `;
-    });
-    
-    if(listaHtml === '') {
-        listaHtml = '<div style="padding:2rem;text-align:center;color:#8888a8;">⚠️ Nenhum cliente cadastrado</div>';
-    }
-    
-    document.getElementById('listaClientesRelatorio').innerHTML = listaHtml;
-};
-
-window.fecharModalRelatorioMsg = function() {
-    let modal = document.getElementById('modalRelatorioMsg');
-    if(modal) modal.remove();
-};
-
-window.enviarMensagemSelecionada = function() {
-    let selecionado = document.querySelector('input[name="clienteRelatorio"]:checked');
-    if(!selecionado) return alert('⚠️ Selecione um cliente!');
-    
-    let tipo = document.getElementById('tipoMensagemSelect').value;
-    let clienteId = selecionado.value;
-    
-    fecharModalRelatorioMsg();
-    enviarMensagemCliente(clienteId, tipo);
-};
-
-// FUNÇÃO RENDERIZAR TABELA (com botões PADRÃO)
-window.renderizarTabela = function() {
-    let busca = document.getElementById('buscaInput').value.toLowerCase();
-    let hoje = new Date(); hoje.setHours(0, 0, 0, 0);
-    let lista = clientes.filter(c => {
-        let m = !busca || c.nome.toLowerCase().includes(busca) || c.whats.includes(busca) || c.terminal.toLowerCase().includes(busca) || c.chave.toLowerCase().includes(busca);
-        if(!m) return false;
-        let exp = new Date(c.expira); exp.setHours(0, 0, 0, 0);
-        let d = Math.ceil((exp - hoje) / 86400000);
-        if(filtroStatus === 'ativos') return d > 0;
-        if(filtroStatus === 'vencendo') return d === 0;
-        if(filtroStatus === 'vencidos') return d < 0;
-        return true;
-    });
-    lista.sort((a, b) => new Date(a.expira) - new Date(b.expira));
-    let tb = document.getElementById('tabelaBody');
-    if(!lista.length) { tb.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--text2)">Nenhum cliente cadastrado</td></tr>'; return; }
-    
-    tb.innerHTML = lista.map(c => {
-        let exp = new Date(c.expira), d = Math.ceil((exp - new Date()) / 86400000), sc, st;
-        if(d < 0) { sc = 'status-vencido'; st = 'VENCIDO'; }
-        else if(d === 0) { sc = 'status-vencendo'; st = 'VENCE HOJE'; }
-        else { sc = 'status-ativo'; st = 'ATIVO'; }
-        let bc = 'badge-' + (c.plano || 'LATAO').toLowerCase();
-        
-        return `<tr>
-            <td><div class="client-name">${c.nome}</div><div class="client-detail">${c.whats}${c.email?' | '+c.email:''}</div></td>
-            <td>${c.terminal}</td>
-            <td><span class="chave-display">${c.chave}</span></td>
-            <td><span class="badge-plano ${bc}">${c.plano}</span></td>
-            <td>${exp.toLocaleDateString('pt-BR')}<br><span class="status-badge ${sc}">${st}</span></td>
-            <td>R$ ${c.valor.toFixed(2)}</td>
-            <td><div class="action-btns" style="gap: 4px; flex-wrap: wrap; min-width: 170px;">
-                <button class="btn-icon btn-icon-chave" onclick="enviarWhatsAppCliente('${c.id}','entrega')" title="Enviar Chave">🔑</button>
-                <button class="btn-icon btn-icon-edit" onclick="editarCliente('${c.id}')" title="Editar">✏️</button>
-                <button class="btn-icon btn-icon-email" onclick="enviarEmailCliente('${c.id}')" title="Email">📧</button>
-                <button class="btn-icon" style="border-color:#ff9800;color:#ff9800;" onclick="enviarMensagemCliente('${c.id}','quase_vencendo')" title="⚠️ Aviso Vencimento">⚠️</button>
-                <button class="btn-icon" style="border-color:#e67e22;color:#e67e22;" onclick="enviarPlanosCliente('${c.id}')" title="📢 Enviar Planos">💰</button>
-                <button class="btn-icon btn-icon-delete" onclick="removerCliente('${c.id}')" title="Excluir">🗑️</button>
-            </div></td>
-        </tr>`;
-    }).join('');
-};
-
-// MODIFICAR O BOTÃO RELATÓRIOS para abrir o novo modal
-function modificarBotaoRelatorios() {
-    let modalRelatorios = document.getElementById('modalRelatorios');
-    if(!modalRelatorios) return;
-    
-    // Mudar o título do modal para refletir a nova função
-    let modalTitle = modalRelatorios.querySelector('.modal-title');
-    if(modalTitle && modalTitle.textContent === '📊 GERAR RELATÓRIOS') {
-        modalTitle.textContent = '📨 ENVIAR MENSAGEM PARA CLIENTE';
-    }
-    
-    // Limpar e recriar o conteúdo do modal
-    let divGrid = modalRelatorios.querySelector('div[style*="display:grid"]');
-    if(divGrid) {
-        divGrid.innerHTML = `
-            <div style="grid-column:span 2; text-align:center; padding:1rem;">
-                <div style="font-size:2rem;">📨</div>
-                <p style="margin-top:1rem; color:var(--text2);">Selecione um cliente para receber a mensagem</p>
-                <button class="btn-primary" onclick="abrirRelatorioMensagem()" style="margin-top:1rem;">📤 ESCOLHER CLIENTE E ENVIAR</button>
-            </div>
-        `;
-    }
-}
-
-// Atualizar os modais de MENSAGENS para incluir as mensagens de vencimento (SEM APAGAR AS ORIGINAIS)
-function atualizarModalMensagens() {
-    let modalMensagens = document.getElementById('modalMensagens');
-    if(!modalMensagens) return;
-    
-    // Verificar se já foi adicionado as mensagens de vencimento
-    if(document.getElementById('msgQuaseVencendoInput')) return;
-    
-    // Encontrar o botão de salvar para inserir antes dele
-    let btnSalvar = modalMensagens.querySelector('.btn-primary');
-    if(!btnSalvar) return;
-    
-    // Criar as novas mensagens de vencimento
-    let divVencimento = document.createElement('div');
-    divVencimento.innerHTML = `
-        <div style="border-top:1px solid #2a2a38; margin: 1rem 0 1rem 0; padding-top: 0.5rem;">
-            <div class="fg">
-                <label style="color:var(--gold);">⚠️ Mensagem QUASE VENCENDO</label>
-                <textarea id="msgQuaseVencendoInput" rows="4" style="background:rgba(9,9,13,0.8);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:.65rem .9rem;width:100%;font-family:'DM Sans',sans-serif;font-size:.9rem;">${MSG_VENCIMENTO_PADRAO.quase_vencendo}</textarea>
-            </div>
-            <div class="fg">
-                <label style="color:var(--gold);">❌ Mensagem VENCIDO</label>
-                <textarea id="msgVencidoInput" rows="3" style="background:rgba(9,9,13,0.8);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:.65rem .9rem;width:100%;font-family:'DM Sans',sans-serif;font-size:.9rem;">${MSG_VENCIMENTO_PADRAO.vencido}</textarea>
-            </div>
-            <div class="fg">
-                <label style="color:var(--gold);">🎯 Mensagem BOAS VINDAS</label>
-                <textarea id="msgBoasVindasInput" rows="2" style="background:rgba(9,9,13,0.8);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:.65rem .9rem;width:100%;font-family:'DM Sans',sans-serif;font-size:.9rem;">${MSG_VENCIMENTO_PADRAO.boas_vindas}</textarea>
-            </div>
-        </div>
-    `;
-    
-    // Inserir ANTES do botão de salvar (para manter os campos originais)
-    modalMensagens.insertBefore(divVencimento, btnSalvar);
-}
-
-// Sobrescrever salvarConfiguracoes para incluir as novas mensagens
-window.salvarConfiguracoes = function() {
-    // Salvar mensagens originais
-    config.mensagens.entrega = document.getElementById('msgEntregaInput').value;
-    config.mensagens.cobranca = document.getElementById('msgCobrancaInput').value;
-    config.mensagens.teste = document.getElementById('msgTesteInput').value;
-    config.mensagens.outro = document.getElementById('msgOutroInput').value;
-    
-    // Salvar novas mensagens de vencimento se existirem
-    if(document.getElementById('msgQuaseVencendoInput')) {
-        if(!config.mensagensVencimento) config.mensagensVencimento = {};
-        config.mensagensVencimento.quase_vencendo = document.getElementById('msgQuaseVencendoInput').value;
-        config.mensagensVencimento.vencido = document.getElementById('msgVencidoInput').value;
-        config.mensagensVencimento.boas_vindas = document.getElementById('msgBoasVindasInput').value;
-    }
-    
-    // Salvar preços
-    config.precos.latao = parseFloat(document.getElementById('precoLataoInput').value) || 0;
-    config.precos.bronze = parseFloat(document.getElementById('precoBronzeInput').value) || 47;
-    config.precos.prata = parseFloat(document.getElementById('precoPrataInput').value) || 127;
-    config.precos.ouro = parseFloat(document.getElementById('precoOuroInput').value) || 227;
-    config.precos.diamante = parseFloat(document.getElementById('precoDiamanteInput').value) || 307;
-    config.precos.elite = parseFloat(document.getElementById('precoEliteInput').value) || 367;
-    
-    salvarConfig();
-    atualizarValoresPlanos();
-    fecharModais();
-    alert('✅ Configurações salvas!');
-};
-
-// Inicializar
-inicializarMensagensVencimento();
-setTimeout(() => {
-    if(logado) {
-        modificarBotaoRelatorios();
-        atualizarModalMensagens();
-    }
-}, 500);
 })();
 </script>
 </body>
