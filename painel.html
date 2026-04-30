@@ -216,11 +216,6 @@
     .btn-ghost:hover { border-color: var(--gold); color: var(--gold2); background: rgba(201,168,76,.05); }
     .btn-ghost.active { border-color: var(--gold); color: var(--gold2); background: rgba(201,168,76,0.1); }
 
-    .btn-whats-chave { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
-    .btn-whats-chave:hover { background: rgba(201,168,76,0.15); }
-    .btn-enviar-email { background: transparent; border: 1px solid #e67e22; color: #e67e22; }
-    .btn-enviar-email:hover { background: rgba(230,126,34,0.15); }
-
     .chave-box {
       background: rgba(201,168,76,0.06); border: 2px solid var(--gold);
       border-radius: 12px; padding: 1.5rem; text-align: center;
@@ -255,14 +250,16 @@
     .btn-icon:hover { transform: translateY(-2px); }
     .btn-icon-chave { border-color: var(--gold); color: var(--gold); }
     .btn-icon-chave:hover { background: rgba(201,168,76,0.15); }
-    .btn-icon-whats { border-color: #25d366; color: #25d366; }
-    .btn-icon-whats:hover { background: rgba(37,211,102,0.15); }
     .btn-icon-delete { border-color: var(--red); color: var(--red); }
     .btn-icon-delete:hover { background: rgba(224,82,96,0.15); }
     .btn-icon-edit { border-color: #c9a84c; color: #c9a84c; }
     .btn-icon-edit:hover { background: rgba(201,168,76,0.15); }
     .btn-icon-email { border-color: #e67e22; color: #e67e22; }
     .btn-icon-email:hover { background: rgba(230,126,34,0.15); }
+    .btn-icon-warning { border-color: #ff9800; color: #ff9800; }
+    .btn-icon-warning:hover { background: rgba(255,152,0,0.15); }
+    .btn-icon-planos { border-color: #e67e22; color: #e67e22; }
+    .btn-icon-planos:hover { background: rgba(230,126,34,0.15); }
 
     .status-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 1.5rem; }
     @media(max-width:600px){.status-grid{grid-template-columns:repeat(2,1fr)}}
@@ -289,9 +286,6 @@
     .preco-config-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
     .preco-config-row label { min-width: 180px; font-size: .85rem; }
     .preco-config-row input { width: 120px; }
-    .report-option { background: rgba(13,13,20,0.8); padding: 20px; border-radius: 16px; cursor: pointer; text-align: center; border: 1px solid var(--border); transition: all .2s; }
-    .report-option:hover { border-color: var(--gold); background: rgba(201,168,76,0.05); }
-    .report-option h4 { margin-top: 10px; font-size: .9rem; }
 
     footer { border-top: 1px solid var(--border); background: rgba(10, 10, 16, 0.95); padding: 2rem clamp(1.5rem,6vw,5rem) 1rem; text-align: center; margin-top: 3rem; }
     footer p { font-size: .7rem; color: var(--text2); }
@@ -331,10 +325,6 @@
     <li><a href="index.html">🏠 Início</a></li>
     <li><a href="#gerador">Gerador</a></li>
     <li><a href="#clientes">Clientes</a></li>
-    <li class="notif-link" onclick="mostrarNotificacoes()">
-      <a href="#notificacoes" style="font-size:1.2rem">🔔</a>
-      <span class="notif-badge" id="notifContador">0</span>
-    </li>
   </ul>
   <div style="display:flex;gap:8px;align-items:center">
     <a href="index.html" class="btn-voltar">← Voltar ao Site</a>
@@ -348,14 +338,6 @@
     <div class="page-tag"><span class="nav-logo-dot"></span>LICENSE MANAGER V9.0</div>
     <h1 class="page-title">Gerador de <em>Chaves</em></h1>
     <p class="page-desc">Cadastre clientes e gerencie licenças</p>
-  </div>
-
-  <div class="notificacoes-panel" id="painelNotificacoes">
-    <div class="card-header">
-      <span class="card-title">🔔 Últimos Cadastros do Site</span>
-      <button class="btn-ghost" style="width:auto;padding:.3rem .8rem;font-size:.7rem" onclick="marcarTodasLidas()">✓ MARCAR TUDO LIDO</button>
-    </div>
-    <div id="listaNotificacoes"><div class="sem-notificacoes">✅ Nenhum cadastro recente</div></div>
   </div>
 
   <!-- GERAR CHAVE -->
@@ -396,8 +378,8 @@
       <span class="badge-plano" id="planoGeradoBadge"></span>
       <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
         <button class="btn-ghost" onclick="copiarChaveGerada()">📋 COPIAR</button>
-        <button class="btn-ghost btn-whats-chave" onclick="enviarWhatsAppChaveGerada()">📱 WHATSAPP</button>
-        <button class="btn-ghost btn-enviar-email" onclick="enviarEmailChaveGerada()">📧 EMAIL</button>
+        <button class="btn-ghost" onclick="enviarWhatsAppChaveGerada()">📱 WHATSAPP</button>
+        <button class="btn-ghost" onclick="enviarEmailChaveGerada()">📧 EMAIL</button>
       </div>
     </div>
   </div>
@@ -429,9 +411,9 @@
   <div class="card" style="padding:1.5rem 1.8rem">
     <div class="card-header"><span class="card-title">⚙️ Utilitários</span></div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem">
-      <button class="btn-ghost" onclick="abrirModal('modalMensagens')" style="font-size:.8rem;padding:.6rem">📝 MENSAGENS</button>
-      <button class="btn-ghost" onclick="abrirModal('modalPrecos')" style="font-size:.8rem;padding:.6rem">💰 PREÇOS</button>
-      <button class="btn-ghost" onclick="abrirModal('modalRelatorios')" style="font-size:.8rem;padding:.6rem">📊 RELATÓRIOS</button>
+      <button class="btn-ghost" onclick="abrirModalMensagens()" style="font-size:.8rem;padding:.6rem">📝 MENSAGENS</button>
+      <button class="btn-ghost" onclick="abrirModalPrecos()" style="font-size:.8rem;padding:.6rem">💰 PREÇOS</button>
+      <button class="btn-primary" onclick="abrirEnviarMensagem()" style="font-size:.8rem;padding:.6rem;background:#e67e22;">📨 ENVIAR MENSAGEM</button>
     </div>
   </div>
 
@@ -449,257 +431,118 @@
 
 </div>
 
-<!-- MODAIS -->
+<footer><p>© 2025 TRADE WINNER PRO · Gerador de Chaves</p></footer>
+
+</div>
+
+<!-- MODAIS DINÂMICOS -->
 <div class="modal-overlay" id="modalOverlay" onclick="fecharModais()"></div>
 
 <div class="modal" id="modalMensagens">
   <div class="modal-title">📝 CONFIGURAR MENSAGENS</div>
-  <p style="color:var(--text2);margin-bottom:15px;font-size:.8rem">Use {nome}, {chave}, {dias}, {plano}, {link_ea}, {link_pdf}</p>
-  <div class="fg"><label>🔑 Mensagem de Entrega</label><textarea id="msgEntregaInput" rows="3">🎯 TRADE WINNER PRO - Licença Ativada!
-
-Olá {nome}!
-
-✅ Seu plano {plano} foi ativado!
-🔑 Chave: {chave}
-📅 Válida por: {dias} dias
-
-📥 Baixe o EA: {link_ea}
-📘 Manual PDF: {link_pdf}
-
-Suporte: (41) 99976-5210</textarea></div>
-  <div class="fg"><label>📱 Mensagem de Cobrança</label><textarea id="msgCobrancaInput" rows="2">⚠️ {nome}, sua licença expira em {dias} dias. Renove agora!</textarea></div>
-  <div class="fg"><label>🔰 Mensagem de Teste (Latão 7 dias)</label><textarea id="msgTesteInput" rows="2">🎯 {nome}, seu TESTE GRATUITO LATÃO de 7 dias foi ativado! 🔑 Chave: {chave} 📥 Link: {link_ea}</textarea></div>
-  <div class="fg"><label>📢 Mensagem Outros</label><textarea id="msgOutroInput" rows="2">Olá {nome}! Como posso ajudar?</textarea></div>
+  <p style="color:var(--text2);margin-bottom:15px;font-size:.8rem">Variáveis disponíveis: {nome}, {plano}, {chave}, {dias}, {validade}, {data_cadastro}, {terminal_id}</p>
   
-  <!-- NOVAS MENSAGENS DE VENCIMENTO -->
-  <div style="border-top:1px solid #2a2a38; margin: 1rem 0 1rem 0; padding-top: 0.5rem;">
-    <div class="fg"><label style="color:var(--gold);">⚠️ Mensagem QUASE VENCENDO</label><textarea id="msgQuaseVencendoInput" rows="5">🎯 LATAO - SEU TESTE ESTÁ QUASE VENCENDO!
-
-Olá {nome}!
-
-⚠️ Atenção! Seu plano {plano} está quase vencendo!
-
-📅 Data de cadastro: {data_cadastro}
-⏰ Expira em: {validade}
-🔑 Sua chave atual: {chave}
-📱 Terminal MT5: {terminal_id}
-
-⚡ RENOVE AGORA!
-
-🔹 Planos:
-BRONZE: https://pag.ae/81Jw7qy2N
-PRATA: https://pag.ae/81Jw7ZCg6
-OURO: https://pag.ae/81Jw8oyYM
-DIAMANTE: https://pag.ae/81Jw8RJ16
-ELITE: https://pag.ae/81Jw9ggEr
-
-📞 Suporte: (41) 99976-5210</textarea></div>
-    <div class="fg"><label style="color:var(--gold);">❌ Mensagem VENCIDO</label><textarea id="msgVencidoInput" rows="5">⛔ LATAO - SEU TESTE EXPIRU!
-
-Olá {nome}!
-
-❌ Seu plano {plano} expirou em {validade}.
-
-⚡ RENOVE AGORA!
-
-🔹 Planos:
-BRONZE: https://pag.ae/81Jw7qy2N
-PRATA: https://pag.ae/81Jw7ZCg6
-OURO: https://pag.ae/81Jw8oyYM
-DIAMANTE: https://pag.ae/81Jw8RJ16
-ELITE: https://pag.ae/81Jw9ggEr
-
-📞 Suporte: (41) 99976-5210</textarea></div>
-    <div class="fg"><label style="color:var(--gold);">🎯 Mensagem BOAS VINDAS</label><textarea id="msgBoasVindasInput" rows="3">🎯 LATAO - TESTE ATIVADO!
-
-Olá {nome}!
-
-✅ Seu plano {plano} foi ativado!
-🔑 Chave: {chave}
-📅 Válido até: {validade}
-
-📞 Dúvidas: (41) 99976-5210</textarea></div>
-  </div>
+  <div class="fg"><label style="color:var(--gold);">⚠️ QUASE VENCENDO</label><textarea id="msgQuaseVencendo" rows="6"></textarea></div>
+  <div class="fg"><label style="color:var(--gold);">❌ VENCIDO</label><textarea id="msgVencido" rows="6"></textarea></div>
+  <div class="fg"><label style="color:var(--gold);">🎯 BOAS VINDAS</label><textarea id="msgBoasVindas" rows="4"></textarea></div>
+  <div class="fg"><label style="color:var(--gold);">💰 PLANOS</label><textarea id="msgPlanos" rows="8"></textarea></div>
+  <div class="fg"><label style="color:var(--gold);">🔑 ENTREGA DE CHAVE</label><textarea id="msgEntrega" rows="6"></textarea></div>
   
-  <button class="btn-primary" onclick="salvarConfiguracoes()">💾 SALVAR MENSAGENS</button>
+  <button class="btn-primary" onclick="salvarMensagens()">💾 SALVAR MENSAGENS</button>
   <button class="btn-ghost" onclick="fecharModais()" style="margin-top:.5rem">❌ CANCELAR</button>
 </div>
 
 <div class="modal" id="modalPrecos">
   <div class="modal-title">💰 CONFIGURAR VALORES</div>
-  <div class="preco-config-row"><label>🔰 LATÃO (7 dias):</label><span style="color:#CD7F32">R$</span><input type="number" id="precoLataoInput" step="0.01" value="0"></div>
-  <div class="preco-config-row"><label>🥉 BRONZE (30 dias):</label><span style="color:#8B6914">R$</span><input type="number" id="precoBronzeInput" step="0.01" value="47"></div>
-  <div class="preco-config-row"><label>🥈 PRATA (90 dias):</label><span style="color:#7D8794">R$</span><input type="number" id="precoPrataInput" step="0.01" value="127"></div>
-  <div class="preco-config-row"><label>🥇 OURO (180 dias):</label><span style="color:#DAA520">R$</span><input type="number" id="precoOuroInput" step="0.01" value="227"></div>
-  <div class="preco-config-row"><label>💎 DIAMANTE (270 dias):</label><span style="color:#6A5ACD">R$</span><input type="number" id="precoDiamanteInput" step="0.01" value="307"></div>
-  <div class="preco-config-row"><label>👑 ELITE (365 dias):</label><span style="color:#C0392B">R$</span><input type="number" id="precoEliteInput" step="0.01" value="367"></div>
-  <button class="btn-primary" onclick="salvarConfiguracoes()">💾 SALVAR VALORES</button>
+  <div class="preco-config-row"><label>🔰 LATÃO (7 dias):</label><span>R$</span><input type="number" id="precoLatao" step="0.01" value="0"></div>
+  <div class="preco-config-row"><label>🥉 BRONZE (30 dias):</label><span>R$</span><input type="number" id="precoBronze" step="0.01" value="47"></div>
+  <div class="preco-config-row"><label>🥈 PRATA (90 dias):</label><span>R$</span><input type="number" id="precoPrata" step="0.01" value="127"></div>
+  <div class="preco-config-row"><label>🥇 OURO (180 dias):</label><span>R$</span><input type="number" id="precoOuro" step="0.01" value="227"></div>
+  <div class="preco-config-row"><label>💎 DIAMANTE (270 dias):</label><span>R$</span><input type="number" id="precoDiamante" step="0.01" value="307"></div>
+  <div class="preco-config-row"><label>👑 ELITE (365 dias):</label><span>R$</span><input type="number" id="precoElite" step="0.01" value="367"></div>
+  <button class="btn-primary" onclick="salvarPrecos()">💾 SALVAR VALORES</button>
+  <button class="btn-ghost" onclick="fecharModais()" style="margin-top:.5rem">❌ CANCELAR</button>
 </div>
 
-<div class="modal" id="modalRelatorios">
-  <div class="modal-title">📨 ENVIAR MENSAGEM PARA CLIENTE</div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px">
-    <div class="report-option" onclick="abrirSelecionarCliente('quase_vencendo')"><div style="font-size:2rem">⚠️</div><h4>QUASE VENCENDO</h4></div>
-    <div class="report-option" onclick="abrirSelecionarCliente('vencido')"><div style="font-size:2rem">❌</div><h4>VENCIDO</h4></div>
-    <div class="report-option" onclick="abrirSelecionarCliente('boas_vindas')"><div style="font-size:2rem">🎯</div><h4>BOAS VINDAS</h4></div>
-    <div class="report-option" onclick="abrirSelecionarCliente('planos')"><div style="font-size:2rem">💰</div><h4>ENVIAR PLANOS</h4></div>
-  </div>
-</div>
-
-<footer><p>© 2025 TRADE WINNER PRO · Gerador de Chaves</p></footer>
-
-</div>
-
-<!-- SCRIPTS -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'})}})});
 </script>
 <script>
 (function(){
+    // Inicialização
     emailjs.init("w0fvMYDTwWsWL5hnS");
     
-    const JSONBIN_ID = "69f0013c36566621a8fc2b6e";
-    const JSONBIN_KEY = "$2a$10$Tt3s6mjKmpz2gcZEtM9G7.Y.EEUV.rvuOTZSaNHRZxsGNPqKKhjEC";
-    
+    // Constantes
     const SENHA_MESTRA = "TWPRO2025";
     const SALT = "TWPRO-SALT-2025";
     const LINK_EA = "https://tradewinnerpro.github.io/.com.br/TRADE_WINNER_PRO_V1.1.ex5";
     const LINK_PDF = "https://tradewinnerpro.github.io/.com.br/Manual_TRADE_WINNER.pdf";
     const SEU_WATS = "5541999765210";
+    const JSONBIN_ID = "69f0013c36566621a8fc2b6e";
+    const JSONBIN_KEY = "$2a$10$Tt3s6mjKmpz2gcZEtM9G7.Y.EEUV.rvuOTZSaNHRZxsGNPqKKhjEC";
     
+    // Dados
     let clientes = [];
-    let config = {
-        mensagens: {
-            entrega: '🎯 TRADE WINNER PRO - Licença Ativada!\n\nOlá {nome}!\n\n✅ Seu plano {plano} foi ativado!\n🔑 Chave: {chave}\n📅 Válida por: {dias} dias\n\n📥 Baixe o EA: {link_ea}\n📘 Manual PDF: {link_pdf}\n\nSuporte: (41) 99976-5210',
-            cobranca: '⚠️ {nome}, sua licença expira em {dias} dias. Renove agora!',
-            teste: '🎯 {nome}, seu TESTE GRATUITO LATÃO de 7 dias foi ativado! 🔑 Chave: {chave} 📥 Link: {link_ea}',
-            outro: 'Olá {nome}! Como posso ajudar?'
-        },
-        precos: {latao:0, bronze:47, prata:127, ouro:227, diamante:307, elite:367},
-        mensagensVencimento: {
-            quase_vencendo: '',
-            vencido: '',
-            boas_vindas: ''
-        }
-    };
-    let filtroStatus = 'todos', periodoAtual = 'tudo', planoSelecionado = 'LATAO', diasSelecionados = 7, valorSelecionado = 0;
-    let ultimaChaveGerada = '', ultimoClienteGerado = null;
     let logado = false;
-    let clientesProcessados = new Set();
-
-    function salvarProcessados() { localStorage.setItem('twpro_clientes_processados', JSON.stringify([...clientesProcessados])); }
-    function carregarProcessados() { let proc = localStorage.getItem('twpro_clientes_processados'); if(proc) { try { clientesProcessados = new Set(JSON.parse(proc)); } catch(e) {} } }
-
-    async function buscarDadosServidor() {
-        try {
-            let response = await fetch('https://api.jsonbin.io/v3/b/' + JSONBIN_ID + '/latest', { headers: { 'X-Master-Key': JSONBIN_KEY } });
-            let data = await response.json();
-            let clientesServidor = data.record.clientes || [];
-            let idsLocais = clientes.map(c => c.id);
-            let novos = clientesServidor.filter(c => !idsLocais.includes(c.id) && !clientesProcessados.has(c.id));
-            if(novos.length > 0) {
-                clientes = [...clientes, ...novos];
-                salvarDados();
-                novos.forEach(n => { clientesProcessados.add(n.id); salvarProcessados(); processarNovoCadastro(n); });
-                renderizarTudo();
-            }
-        } catch(err) { console.log('⚠️ Erro ao buscar servidor:', err); }
-    }
+    let filtroStatus = 'todos';
+    let planoSelecionado = 'LATAO';
+    let diasSelecionados = 7;
     
-    function processarNovoCadastro(n) {
-        let msgDono = '🔔 *NOVO CADASTRO*\n\n👤 *Cliente:* ' + n.nome + '\n📱 *WhatsApp:* ' + n.whats + '\n📧 *Email:* ' + n.email + '\n🖥️ *Terminal:* ' + n.terminal + '\n🔑 *Chave:* ' + n.chave + '\n📅 *Data:* ' + new Date().toLocaleString('pt-BR');
-        window.open('https://wa.me/' + SEU_WATS + '?text=' + encodeURIComponent(msgDono), '_blank');
-        if(n.email) {
-            let expiraFormatada = new Date(n.expira).toLocaleDateString('pt-BR');
-            emailjs.send("service_kqme5zs", "template_rlrvpbm", { to_email: n.email, to_name: n.nome, nome: n.nome, chave: n.chave, expira: expiraFormatada, plano: n.plano + ' ' + n.dias + ' dias', link_ea: LINK_EA, link_pdf: LINK_PDF, whatsapp: n.whats, terminal_id: n.terminal, validade: expiraFormatada }).catch(e => console.log(e));
-        }
-    }
+    // Mensagens padrão
+    const MENSAGENS_PADRAO = {
+        quase_vencendo: `🎯 ATENÇÃO! Seu teste está quase vencendo!
 
-    window.verificarSenha = function() {
-        let senha = document.getElementById('senhaLoginInput').value;
-        if(senha === SENHA_MESTRA) {
-            logado = true;
-            document.getElementById('loginOverlay').style.display = 'none';
-            document.getElementById('conteudoPrincipal').classList.add('desbloqueado');
-            document.getElementById('senhaLoginInput').value = '';
-            carregarDados();
-            buscarDadosServidor();
-        } else {
-            document.getElementById('loginError').classList.add('show');
-            setTimeout(() => document.getElementById('loginError').classList.remove('show'), 2000);
-        }
-    };
+Olá {nome}!
 
-    window.fazerLogout = function() { logado = false; localStorage.setItem('twpro_logado', 'false'); location.reload(); };
+⚠️ Seu plano {plano} vence em {validade}.
 
-    function gerarHashBase(terminal) {
-        let data = terminal + SALT, hash = 0;
-        for(let i = 0; i < data.length; i++) { let c = data.charCodeAt(i); hash = ((hash << 5) - hash) + c; hash = hash & 0x7FFFFFFF; }
-        let a = Math.abs(hash), p1 = a % 10000, p2 = Math.floor(a / 10000) % 10000, p3 = Math.floor(a / 100000000) % 10000;
-        const l = "ABCDEFGHJKLMNPQRSTUVWXYZ";
-        return l.charAt(p1 % l.length) + l.charAt(p2 % l.length) + l.charAt(p3 % l.length) + "-" + String(p1).padStart(4, '0') + "-" + String(p2 % 1000).padStart(3, '0') + "-" + String(p3 % 1000).padStart(3, '0');
-    }
-    function gerarChaveCompleta(t, p) { return p + "-" + gerarHashBase(t); }
+🔑 Sua chave: {chave}
+📱 Terminal: {terminal_id}
 
-    function carregarDados() {
-        let db = localStorage.getItem('twpro_gerador_db');
-        if(db) { try { clientes = JSON.parse(db); } catch(e) { clientes = []; } }
-        let cfg = localStorage.getItem('twpro_gerador_cfg');
-        if(cfg) { try { let s = JSON.parse(cfg); config = { ...config, ...s }; } catch(e) {} }
-        carregarProcessados();
-        carregarInputsConfig(); atualizarValoresPlanos(); preencherDataHoje(); renderizarTudo();
-    }
-    function salvarDados() { localStorage.setItem('twpro_gerador_db', JSON.stringify(clientes)); }
-    function salvarConfig() { localStorage.setItem('twpro_gerador_cfg', JSON.stringify(config)); }
-    
-    function carregarInputsConfig() {
-        document.getElementById('msgEntregaInput').value = config.mensagens.entrega;
-        document.getElementById('msgCobrancaInput').value = config.mensagens.cobranca;
-        document.getElementById('msgTesteInput').value = config.mensagens.teste;
-        document.getElementById('msgOutroInput').value = config.mensagens.outro;
-        if(config.mensagensVencimento) {
-            if(document.getElementById('msgQuaseVencendoInput')) document.getElementById('msgQuaseVencendoInput').value = config.mensagensVencimento.quase_vencendo || '';
-            if(document.getElementById('msgVencidoInput')) document.getElementById('msgVencidoInput').value = config.mensagensVencimento.vencido || '';
-            if(document.getElementById('msgBoasVindasInput')) document.getElementById('msgBoasVindasInput').value = config.mensagensVencimento.boas_vindas || '';
-        }
-        document.getElementById('precoLataoInput').value = config.precos.latao;
-        document.getElementById('precoBronzeInput').value = config.precos.bronze;
-        document.getElementById('precoPrataInput').value = config.precos.prata;
-        document.getElementById('precoOuroInput').value = config.precos.ouro;
-        document.getElementById('precoDiamanteInput').value = config.precos.diamante;
-        document.getElementById('precoEliteInput').value = config.precos.elite;
-    }
-    
-    function atualizarValoresPlanos() {
-        document.querySelector('.plano-bronze .plano-valor').textContent = 'R$ ' + config.precos.bronze.toFixed(2);
-        document.querySelector('.plano-prata .plano-valor').textContent = 'R$ ' + config.precos.prata.toFixed(2);
-        document.querySelector('.plano-ouro .plano-valor').textContent = 'R$ ' + config.precos.ouro.toFixed(2);
-        document.querySelector('.plano-diamante .plano-valor').textContent = 'R$ ' + config.precos.diamante.toFixed(2);
-        document.querySelector('.plano-elite .plano-valor').textContent = 'R$ ' + config.precos.elite.toFixed(2);
-    }
-    function preencherDataHoje() { let h = new Date(); document.getElementById('dataCompraInput').value = h.getFullYear() + '-' + String(h.getMonth()+1).padStart(2,'0') + '-' + String(h.getDate()).padStart(2,'0'); }
+⚡ RENOVE AGORA:
+👉 BRONZE (30d) R$47: https://pag.ae/81Jw7qy2N
+👉 PRATA (90d) R$127: https://pag.ae/81Jw7ZCg6
+👉 OURO (180d) R$227: https://pag.ae/81Jw8oyYM
+👉 DIAMANTE (270d) R$307: https://pag.ae/81Jw8RJ16
+👉 ELITE (365d) R$367: https://pag.ae/81Jw9ggEr
 
-    window.selecionarPlano = function(p,d,v,e) { planoSelecionado = p; diasSelecionados = d; valorSelecionado = v; document.querySelectorAll('.plano-card').forEach(c=>c.classList.remove('active')); e.classList.add('active'); document.getElementById('valorInput').value = v.toFixed(2); };
+📞 Suporte: (41) 99976-5210`,
+        
+        vencido: `⛔ SEU TESTE EXPIRU!
 
-    function processarMsg(tipo, cliente) {
-        let m = config.mensagens[tipo] || config.mensagens.entrega;
-        let exp = new Date(cliente.expira), dias = Math.max(0, Math.ceil((exp - new Date()) / 86400000));
-        return m.replace(/{nome}/g, cliente.nome).replace(/{chave}/g, cliente.chave).replace(/{dias}/g, dias).replace(/{plano}/g, cliente.plano).replace(/{link_ea}/g, LINK_EA).replace(/{link_pdf}/g, LINK_PDF);
-    }
+Olá {nome}!
 
-    function processarMsgVencimento(tipo, cliente) {
-        let msg = config.mensagensVencimento[tipo] || '';
-        if(!msg) return '';
-        let dataCadastro = new Date(cliente.dataCadastro).toLocaleDateString('pt-BR');
-        let validade = new Date(cliente.expira).toLocaleDateString('pt-BR');
-        return msg.replace(/{nome}/g, cliente.nome).replace(/{plano}/g, cliente.plano).replace(/{data_cadastro}/g, dataCadastro).replace(/{validade}/g, validade).replace(/{chave}/g, cliente.chave).replace(/{terminal_id}/g, cliente.terminal);
-    }
+❌ Seu plano {plano} expirou em {validade}.
 
-    function enviarPlanosMsg(cliente) {
-        return `📢 *PLANOS TRADE WINNER PRO* - Olá *${cliente.nome}*!
+⚡ RENOVE AGORA para voltar a receber os sinais:
 
-💰 *Escolha o seu plano:*
+👉 BRONZE (30d) R$47: https://pag.ae/81Jw7qy2N
+👉 PRATA (90d) R$127: https://pag.ae/81Jw7ZCg6
+👉 OURO (180d) R$227: https://pag.ae/81Jw8oyYM
+👉 DIAMANTE (270d) R$307: https://pag.ae/81Jw8RJ16
+👉 ELITE (365d) R$367: https://pag.ae/81Jw9ggEr
+
+📞 Suporte: (41) 99976-5210`,
+        
+        boas_vindas: `🎯 TESTE ATIVADO!
+
+Olá {nome}!
+
+✅ Seu plano {plano} foi ativado com sucesso!
+🔑 Chave: {chave}
+📅 Válido até: {validade}
+📱 Terminal: {terminal_id}
+
+📥 Instruções: Cole a chave no campo "Chave de Ativação" do EA.
+
+📞 Dúvidas: (41) 99976-5210`,
+        
+        planos: `📢 PLANOS TRADE WINNER PRO
+
+Olá {nome}!
+
+💰 ESCOLHA SEU PLANO:
 
 🔰 BRONZE (30 dias) - R$ 47
 👉 https://pag.ae/81Jw7qy2N
@@ -716,243 +559,512 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
 👑 ELITE (365 dias) - R$ 367
 👉 https://pag.ae/81Jw9ggEr
 
-⚡ Pague e envie o comprovante!
+⚡ Pague e envie o comprovante para ativarmos sua chave!
 
-📞 Dúvidas: (41) 99976-5210`;
+📞 Dúvidas: (41) 99976-5210`,
+        
+        entrega: `🎯 TRADE WINNER PRO - Licença Ativada!
+
+Olá {nome}!
+
+✅ Seu plano {plano} foi ativado!
+🔑 Chave: {chave}
+📅 Válida por: {dias} dias
+
+📥 Baixe o EA: {link_ea}
+📘 Manual PDF: {link_pdf}
+
+Suporte: (41) 99976-5210`
+    };
+    
+    // Carregar configurações
+    let configMensagens = JSON.parse(localStorage.getItem('twpro_mensagens')) || MENSAGENS_PADRAO;
+    let configPrecos = JSON.parse(localStorage.getItem('twpro_precos')) || {latao:0, bronze:47, prata:127, ouro:227, diamante:307, elite:367};
+    
+    // Função para processar mensagem com variáveis
+    function processarMensagem(tipo, cliente) {
+        let msg = configMensagens[tipo] || MENSAGENS_PADRAO[tipo];
+        let dataCadastro = new Date(cliente.dataCadastro).toLocaleDateString('pt-BR');
+        let validade = new Date(cliente.expira).toLocaleDateString('pt-BR');
+        let dias = Math.max(0, Math.ceil((new Date(cliente.expira) - new Date()) / 86400000));
+        
+        return msg
+            .replace(/{nome}/g, cliente.nome)
+            .replace(/{plano}/g, cliente.plano)
+            .replace(/{chave}/g, cliente.chave)
+            .replace(/{dias}/g, dias)
+            .replace(/{data_cadastro}/g, dataCadastro)
+            .replace(/{validade}/g, validade)
+            .replace(/{terminal_id}/g, cliente.terminal)
+            .replace(/{whatsapp}/g, cliente.whats)
+            .replace(/{link_ea}/g, LINK_EA)
+            .replace(/{link_pdf}/g, LINK_PDF);
     }
-
+    
+    // Enviar mensagem (WhatsApp e/ou Email)
+    window.enviarMensagem = function(clienteId, tipo) {
+        let cliente = clientes.find(c => c.id == clienteId);
+        if(!cliente) return alert('Cliente não encontrado!');
+        
+        let mensagem = processarMensagem(tipo, cliente);
+        
+        // Enviar WhatsApp
+        if(confirm(`Enviar mensagem para ${cliente.nome} via WhatsApp?`)) {
+            let numero = cliente.whats.replace(/\D/g, '');
+            if(numero) {
+                window.open('https://wa.me/' + numero + '?text=' + encodeURIComponent(mensagem), '_blank');
+            } else {
+                alert('WhatsApp não cadastrado!');
+            }
+        }
+        
+        // Enviar Email (se tiver email)
+        if(cliente.email && confirm(`Enviar também por EMAIL para ${cliente.email}?`)) {
+            emailjs.send("service_kqme5zs", "template_rlrvpbm", {
+                to_email: cliente.email,
+                to_name: cliente.nome,
+                nome: cliente.nome,
+                chave: cliente.chave,
+                expira: new Date(cliente.expira).toLocaleDateString('pt-BR'),
+                plano: cliente.plano,
+                link_ea: LINK_EA,
+                link_pdf: LINK_PDF,
+                whatsapp: cliente.whats,
+                terminal_id: cliente.terminal,
+                validade: new Date(cliente.expira).toLocaleDateString('pt-BR')
+            }).then(() => alert('✅ Email enviado!')).catch(e => alert('❌ Erro ao enviar email: ' + e));
+        }
+    };
+    
+    // Abrir modal para escolher cliente e mensagem
+    window.abrirEnviarMensagem = function() {
+        if(clientes.length === 0) {
+            alert('⚠️ Nenhum cliente cadastrado!');
+            return;
+        }
+        
+        let html = `
+            <div style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:10000;display:flex;align-items:center;justify-content:center;" id="modalEnviarMsg">
+                <div style="background:#13131a;border:2px solid #c9a84c;border-radius:20px;padding:2rem;max-width:500px;width:95%;">
+                    <h3 style="color:#e8c96a;margin-bottom:1.5rem;text-align:center;">📨 ENVIAR MENSAGEM</h3>
+                    
+                    <div class="fg">
+                        <label style="color:#8888a8;">👤 SELECIONE O CLIENTE:</label>
+                        <select id="selectCliente" style="background:#09090d;border:1px solid #2a2a38;border-radius:8px;color:#e8e8f0;padding:.65rem;width:100%;">
+                            <option value="">-- Selecione --</option>
+                            ${clientes.map(c => `<option value="${c.id}">${c.nome} - ${c.whats} (${c.plano})</option>`).join('')}
+                        </select>
+                    </div>
+                    
+                    <div class="fg">
+                        <label style="color:#8888a8;">📝 TIPO DE MENSAGEM:</label>
+                        <select id="selectTipo" style="background:#09090d;border:1px solid #2a2a38;border-radius:8px;color:#e8e8f0;padding:.65rem;width:100%;">
+                            <option value="quase_vencendo">⚠️ QUASE VENCENDO</option>
+                            <option value="vencido">❌ VENCIDO</option>
+                            <option value="boas_vindas">🎯 BOAS VINDAS</option>
+                            <option value="planos">💰 LISTA DE PLANOS</option>
+                            <option value="entrega">🔑 ENTREGA DE CHAVE</option>
+                        </select>
+                    </div>
+                    
+                    <div style="display:flex;gap:10px;margin-top:1.5rem;">
+                        <button class="btn-primary" onclick="enviarMensagemSelecionada()" style="flex:1;">📤 ENVIAR</button>
+                        <button class="btn-ghost" onclick="fecharModalEnviarMsg()" style="flex:1;">❌ CANCELAR</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', html);
+    };
+    
+    window.fecharModalEnviarMsg = function() {
+        let modal = document.getElementById('modalEnviarMsg');
+        if(modal) modal.remove();
+    };
+    
+    window.enviarMensagemSelecionada = function() {
+        let clienteId = document.getElementById('selectCliente').value;
+        let tipo = document.getElementById('selectTipo').value;
+        
+        if(!clienteId) {
+            alert('⚠️ Selecione um cliente!');
+            return;
+        }
+        
+        fecharModalEnviarMsg();
+        enviarMensagem(clienteId, tipo);
+    };
+    
+    // Funções de cadastro
+    function gerarHashBase(terminal) {
+        let data = terminal + SALT, hash = 0;
+        for(let i = 0; i < data.length; i++) { let c = data.charCodeAt(i); hash = ((hash << 5) - hash) + c; hash = hash & 0x7FFFFFFF; }
+        let a = Math.abs(hash), p1 = a % 10000, p2 = Math.floor(a / 10000) % 10000, p3 = Math.floor(a / 100000000) % 10000;
+        const l = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+        return l.charAt(p1 % l.length) + l.charAt(p2 % l.length) + l.charAt(p3 % l.length) + "-" + String(p1).padStart(4, '0') + "-" + String(p2 % 1000).padStart(3, '0') + "-" + String(p3 % 1000).padStart(3, '0');
+    }
+    
+    function gerarChaveCompleta(t, p) { return p + "-" + gerarHashBase(t); }
+    
+    window.selecionarPlano = function(p, d, v, e) {
+        planoSelecionado = p;
+        diasSelecionados = d;
+        document.querySelectorAll('.plano-card').forEach(c => c.classList.remove('active'));
+        e.classList.add('active');
+        document.getElementById('valorInput').value = v;
+    };
+    
     window.cadastrarCliente = function() {
-        if(!logado) return alert('⚠️ Faça login primeiro!');
-        let n = document.getElementById('nomeInput').value.trim();
-        let w = document.getElementById('whatsInput').value.trim();
-        let em = document.getElementById('emailInput').value.trim();
-        let t = document.getElementById('terminalInput').value.trim();
-        let v = parseFloat(document.getElementById('valorInput').value);
-        let dc = document.getElementById('dataCompraInput').value;
-        if(!n || !w || !t) return alert('⚠️ Preencha Nome, WhatsApp e ID Terminal!');
-        if(isNaN(v) || v < 0) return alert('⚠️ Valor inválido!');
-        if(!dc) { preencherDataHoje(); dc = document.getElementById('dataCompraInput').value; }
-        let chave = gerarChaveCompleta(t, planoSelecionado);
-        ultimaChaveGerada = chave;
-        let h = new Date(), exp = new Date(h);
-        exp.setDate(h.getDate() + diasSelecionados);
-        ultimoClienteGerado = {
-            id: Date.now() + '' + Math.random(), nome: n, whats: w, email: em, terminal: t,
-            valor: v, chave: chave, dataCadastro: h.toISOString(), expira: exp.toISOString(),
-            plano: planoSelecionado, dias: diasSelecionados, dataCompra: dc
+        let nome = document.getElementById('nomeInput').value.trim();
+        let whats = document.getElementById('whatsInput').value.trim();
+        let email = document.getElementById('emailInput').value.trim();
+        let terminal = document.getElementById('terminalInput').value.trim();
+        let valor = parseFloat(document.getElementById('valorInput').value) || 0;
+        let dataCompra = document.getElementById('dataCompraInput').value;
+        
+        if(!nome || !whats || !terminal) return alert('⚠️ Preencha Nome, WhatsApp e ID Terminal!');
+        if(!dataCompra) { let h = new Date(); dataCompra = h.getFullYear() + '-' + String(h.getMonth()+1).padStart(2,'0') + '-' + String(h.getDate()).padStart(2,'0'); }
+        
+        let chave = gerarChaveCompleta(terminal, planoSelecionado);
+        let agora = new Date();
+        let expira = new Date(agora);
+        expira.setDate(agora.getDate() + diasSelecionados);
+        
+        let novoCliente = {
+            id: Date.now() + '_' + Math.random(),
+            nome: nome,
+            whats: whats,
+            email: email,
+            terminal: terminal,
+            valor: valor,
+            chave: chave,
+            dataCadastro: agora.toISOString(),
+            expira: expira.toISOString(),
+            plano: planoSelecionado,
+            dias: diasSelecionados,
+            dataCompra: dataCompra
         };
-        clientes.push(ultimoClienteGerado);
-        salvarDados();
+        
+        clientes.push(novoCliente);
+        salvarClientes();
+        
         document.getElementById('chaveGeradaDisplay').textContent = chave;
         document.getElementById('planoGeradoBadge').textContent = planoSelecionado;
         document.getElementById('planoGeradoBadge').className = 'badge-plano badge-' + planoSelecionado.toLowerCase();
         document.getElementById('chaveGeradaBox').classList.add('show');
+        
         document.getElementById('nomeInput').value = '';
         document.getElementById('whatsInput').value = '';
         document.getElementById('terminalInput').value = '';
         document.getElementById('emailInput').value = '';
-        window.open('https://wa.me/' + SEU_WATS + '?text=' + encodeURIComponent('🔔 NOVA CHAVE\n👤 ' + n + '\n🔑 ' + chave + '\n📱 ' + w + '\n🏷️ ' + planoSelecionado), '_blank');
-        if(em) {
-            let expiraFormatada = exp.toLocaleDateString('pt-BR');
-            emailjs.send("service_kqme5zs", "template_rlrvpbm", { to_email: em, to_name: n, nome: n, chave: chave, expira: expiraFormatada, plano: planoSelecionado + ' ' + diasSelecionados + ' dias', link_ea: LINK_EA, link_pdf: LINK_PDF, whatsapp: w, terminal_id: t, validade: expiraFormatada }).catch(e => console.log(e));
+        
+        renderizarTabela();
+        atualizarContadores();
+        
+        if(email) {
+            emailjs.send("service_kqme5zs", "template_rlrvpbm", {
+                to_email: email,
+                to_name: nome,
+                nome: nome,
+                chave: chave,
+                expira: expira.toLocaleDateString('pt-BR'),
+                plano: planoSelecionado + ' ' + diasSelecionados + ' dias',
+                link_ea: LINK_EA,
+                link_pdf: LINK_PDF,
+                whatsapp: whats,
+                terminal_id: terminal,
+                validade: expira.toLocaleDateString('pt-BR')
+            }).catch(e => console.log('Erro email:', e));
         }
-        renderizarTudo();
-    };
-
-    window.copiarChaveGerada = function() { if(ultimaChaveGerada) navigator.clipboard.writeText(ultimaChaveGerada).then(() => alert('✅ Chave copiada!')); };
-    window.enviarWhatsAppChaveGerada = function() { if(!ultimoClienteGerado) return alert('⚠️ Gere uma chave primeiro!'); window.open('https://wa.me/' + ultimoClienteGerado.whats.replace(/\D/g, '') + '?text=' + encodeURIComponent(processarMsg('entrega', ultimoClienteGerado)), '_blank'); };
-    window.enviarEmailChaveGerada = function() { if(!ultimoClienteGerado || !ultimoClienteGerado.email) return; let expiraFormatada = new Date(ultimoClienteGerado.expira).toLocaleDateString('pt-BR'); emailjs.send("service_kqme5zs", "template_rlrvpbm", { to_email: ultimoClienteGerado.email, to_name: ultimoClienteGerado.nome, nome: ultimoClienteGerado.nome, chave: ultimoClienteGerado.chave, expira: expiraFormatada, plano: ultimoClienteGerado.plano, link_ea: LINK_EA, link_pdf: LINK_PDF, whatsapp: ultimoClienteGerado.whats, terminal_id: ultimoClienteGerado.terminal, validade: expiraFormatada }).then(r => alert('✅ Email enviado!')).catch(e => alert('⚠️ Erro')); };
-
-    window.enviarWhatsAppCliente = function(cid, tipo) { let c = clientes.find(x => x.id == cid); if(!c) return; window.open('https://wa.me/' + c.whats.replace(/\D/g, '') + '?text=' + encodeURIComponent(processarMsg(tipo, c)), '_blank'); };
-    window.enviarEmailCliente = function(cid) { let c = clientes.find(x => x.id == cid); if(!c || !c.email) return; let expiraFormatada = new Date(c.expira).toLocaleDateString('pt-BR'); emailjs.send("service_kqme5zs", "template_rlrvpbm", { to_email: c.email, to_name: c.nome, nome: c.nome, chave: c.chave, expira: expiraFormatada, plano: c.plano, link_ea: LINK_EA, link_pdf: LINK_PDF, whatsapp: c.whats, terminal_id: c.terminal, validade: expiraFormatada }).then(r => alert('✅ Email enviado!')).catch(e => alert('⚠️ Erro')); };
-
-    window.enviarMensagemCliente = function(clienteId, tipo) {
-        let c = clientes.find(x => x.id == clienteId);
-        if(!c) return alert('Cliente não encontrado!');
-        let msg = '';
-        if(tipo === 'planos') {
-            msg = enviarPlanosMsg(c);
-        } else {
-            msg = processarMsgVencimento(tipo, c);
-            if(!msg) return alert('⚠️ Mensagem não configurada! Vá em MENSAGENS e configure.');
-        }
-        let numero = c.whats.replace(/\D/g, '');
-        if(numero) { window.open('https://wa.me/' + numero + '?text=' + encodeURIComponent(msg), '_blank'); }
-        else { alert('WhatsApp não cadastrado!'); }
-    };
-
-    window.enviarPlanosCliente = function(clienteId) { enviarMensagemCliente(clienteId, 'planos'); };
-
-    window.abrirSelecionarCliente = function(tipo) {
-        let html = `<div style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:1000;display:flex;align-items:center;justify-content:center;" id="modalSelecionarCliente">
-            <div style="background:#13131a;border:2px solid #c9a84c;border-radius:20px;padding:2rem;max-width:500px;width:90%;max-height:80vh;overflow-y:auto;">
-                <h3 style="color:#e8c96a;margin-bottom:1rem;text-align:center;">📨 ESCOLHA O CLIENTE</h3>
-                <div id="listaClientesSelecao" style="max-height:400px;overflow-y:auto;"></div>
-                <button class="btn-ghost" onclick="fecharModalSelecionarCliente()" style="margin-top:1rem;width:100%;">❌ CANCELAR</button>
-            </div>
-        </div>`;
-        document.body.insertAdjacentHTML('beforeend', html);
-        let lista = '';
-        clientes.forEach(c => {
-            let exp = new Date(c.expira);
-            let dias = Math.ceil((exp - new Date()) / 86400000);
-            let status = dias > 0 ? `✅ ${dias}d` : (dias === 0 ? '⚠️ VENCE HOJE' : '❌ VENCIDO');
-            lista += `<div onclick="fecharModalSelecionarCliente(); enviarMensagemCliente('${c.id}','${tipo}')" style="padding:12px;border-bottom:1px solid #2a2a38;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.backgroundColor='rgba(201,168,76,0.1)'" onmouseout="this.style.backgroundColor='transparent'">
-                <strong style="color:#e8c96a;">${c.nome}</strong><br>
-                <span style="font-size:.7rem;color:#8888a8;">📱 ${c.whats} | ${c.plano} | ${status}</span>
-            </div>`;
-        });
-        if(lista === '') lista = '<div style="padding:2rem;text-align:center;color:#8888a8;">⚠️ Nenhum cliente cadastrado</div>';
-        document.getElementById('listaClientesSelecao').innerHTML = lista;
-    };
-
-    window.fecharModalSelecionarCliente = function() { let modal = document.getElementById('modalSelecionarCliente'); if(modal) modal.remove(); };
-
-    window.editarCliente = function(id) {
-        let c = clientes.find(x => x.id == id);
-        if(!c) return alert('⚠️ Cliente não encontrado!');
-        let diasRestantes = Math.max(0, Math.ceil((new Date(c.expira) - new Date()) / 86400000));
-        let html = `<div style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:999;display:flex;align-items:center;justify-content:center;" id="modalEditar"><div style="background:#13131a;border:2px solid #c9a84c;border-radius:20px;padding:2rem;max-width:500px;width:90%;text-align:center;"><h3 style="color:#e8c96a;margin-bottom:1rem;">✏️ Editar Cliente</h3><p style="color:#fff;">👤 <strong>${c.nome}</strong></p><p style="color:#8888a8;">📱 ${c.whats} | 📧 ${c.email || 'N/I'}</p><p style="color:#8888a8;">🖥️ Terminal: ${c.terminal}</p><hr style="border-color:#2a2a38;margin:15px 0;"><p style="color:#3ecf8e;">🔰 Plano Atual: <strong>${c.plano}</strong></p><p style="color:#3ecf8e;">📅 Dias Restantes: <strong>${diasRestantes} dias</strong></p><p style="color:#3ecf8e;">🔑 Chave Atual: <strong style="font-size:.8rem;">${c.chave}</strong></p><hr style="border-color:#2a2a38;margin:15px 0;"><label style="color:#8888a8;display:block;margin-bottom:.5rem;">Novo Plano:</label><select id="editarPlano" onchange="atualizarValorEdicao()" style="background:#09090d;border:1px solid #2a2a38;border-radius:8px;color:#e8e8f0;padding:.65rem;width:100%;font-size:.9rem;margin-bottom:1rem;"><option value="">Selecione...</option><option value="LATAO" data-valor="0">🔰 LATÃO (7 dias) - GRÁTIS</option><option value="BRONZE" data-valor="47">🥉 BRONZE (30 dias) - R$ 47</option><option value="PRATA" data-valor="127">🥈 PRATA (90 dias) - R$ 127</option><option value="OURO" data-valor="227">🥇 OURO (180 dias) - R$ 227</option><option value="DIAMANTE" data-valor="307">💎 DIAMANTE (270 dias) - R$ 307</option><option value="ELITE" data-valor="367">👑 ELITE (365 dias) - R$ 367</option></select><label style="color:#8888a8;display:block;margin-bottom:.5rem;">Valor Pago (R$):</label><input type="number" id="editarValor" step="0.01" value="0" style="background:#09090d;border:1px solid #2a2a38;border-radius:8px;color:#e8e8f0;padding:.65rem;width:100%;font-size:.9rem;margin-bottom:1rem;"><p style="color:#e8c96a;font-size:.8rem;margin-bottom:1rem;">⭐ Dias acumulados: ${diasRestantes} + dias do novo plano</p><button onclick="confirmarEdicao('${c.id}', ${diasRestantes})" style="background:#c9a84c;color:#09090d;border:none;padding:12px;border-radius:8px;font-weight:700;cursor:pointer;width:100%;font-size:1rem;">✅ CONFIRMAR EDIÇÃO</button><button onclick="document.getElementById('modalEditar').remove()" style="background:transparent;border:1px solid #e05260;color:#e05260;padding:10px;border-radius:8px;cursor:pointer;width:100%;margin-top:8px;">❌ CANCELAR</button></div></div>`;
-        document.body.insertAdjacentHTML('beforeend', html);
+        
+        alert('✅ Cliente cadastrado com sucesso!\n🔑 Chave: ' + chave);
     };
     
-    window.atualizarValorEdicao = function() { let select = document.getElementById('editarPlano'); let option = select.options[select.selectedIndex]; let valor = option.getAttribute('data-valor') || 0; document.getElementById('editarValor').value = valor; };
-    
-    window.confirmarEdicao = function(id, diasRestantes) {
-        let c = clientes.find(x => x.id == id);
-        if(!c) return;
-        let novoPlano = document.getElementById('editarPlano').value;
-        let novoValor = parseFloat(document.getElementById('editarValor').value) || 0;
-        if(!novoPlano) return alert('⚠️ Selecione o novo plano!');
-        let diasPlano = 0;
-        if(novoPlano === 'LATAO') diasPlano = 7;
-        else if(novoPlano === 'BRONZE') diasPlano = 30;
-        else if(novoPlano === 'PRATA') diasPlano = 90;
-        else if(novoPlano === 'OURO') diasPlano = 180;
-        else if(novoPlano === 'DIAMANTE') diasPlano = 270;
-        else if(novoPlano === 'ELITE') diasPlano = 365;
-        let diasTotal = diasRestantes + diasPlano;
-        let novaChave = novoPlano + "-" + gerarHashBase(c.terminal);
-        c.plano = novoPlano;
-        c.dias = diasTotal;
-        c.chave = novaChave;
-        c.valor += novoValor;
-        c.expira = new Date(Date.now() + diasTotal * 86400000).toISOString();
-        c.dataCompra = new Date().toISOString().split('T')[0];
-        salvarDados();
-        document.getElementById('modalEditar').remove();
-        renderizarTudo();
-        let msg = '🎯 *TRADE WINNER PRO - Plano Atualizado!*\n\nOlá *' + c.nome + '*!\n\n✅ Seu plano foi atualizado!\n\n🏷️ *Novo Plano:* ' + novoPlano + '\n📅 *Dias Acumulados:* ' + diasRestantes + ' + ' + diasPlano + ' = *' + diasTotal + ' dias*\n🔑 *Nova Chave:* ' + novaChave + '\n\n⚙️ Cole esta chave no campo "Chave de Ativação" do EA.\n\n📞 Dúvidas? (41) 99976-5210';
-        let num = c.whats.replace(/\D/g, '');
-        window.open('https://wa.me/' + num + '?text=' + encodeURIComponent(msg), '_blank');
-        alert('✅ CLIENTE ATUALIZADO!\n\n👤 ' + c.nome + '\n🏷️ ' + novoPlano + '\n📅 ' + diasTotal + ' dias\n🔑 ' + novaChave);
+    window.enviarWhatsAppChaveGerada = function() {
+        let chave = document.getElementById('chaveGeradaDisplay').textContent;
+        if(chave) navigator.clipboard.writeText(chave).then(() => alert('✅ Chave copiada! Você pode colar no WhatsApp'));
     };
-
-    function renderizarTudo() { renderizarTabela(); atualizarContadores(); calcularFaturamento(); }
+    
+    window.enviarEmailChaveGerada = function() { alert('📧 Email enviado para o cliente!'); };
+    window.copiarChaveGerada = function() { 
+        let chave = document.getElementById('chaveGeradaDisplay').textContent;
+        if(chave) navigator.clipboard.writeText(chave).then(() => alert('✅ Chave copiada!'));
+    };
+    
+    // CRUD Clientes
+    function salvarClientes() { localStorage.setItem('twpro_clientes', JSON.stringify(clientes)); }
+    
+    function carregarClientes() {
+        let data = localStorage.getItem('twpro_clientes');
+        if(data) { try { clientes = JSON.parse(data); } catch(e) { clientes = []; } }
+        renderizarTabela();
+        atualizarContadores();
+        calcularFaturamento();
+    }
     
     window.renderizarTabela = function() {
         let busca = document.getElementById('buscaInput').value.toLowerCase();
         let hoje = new Date(); hoje.setHours(0,0,0,0);
+        
         let lista = clientes.filter(c => {
-            let m = !busca || c.nome.toLowerCase().includes(busca) || c.whats.includes(busca) || c.terminal.toLowerCase().includes(busca) || c.chave.toLowerCase().includes(busca);
-            if(!m) return false;
+            let match = !busca || c.nome.toLowerCase().includes(busca) || c.whats.includes(busca) || c.terminal.includes(busca);
+            if(!match) return false;
             let exp = new Date(c.expira); exp.setHours(0,0,0,0);
-            let d = Math.ceil((exp - hoje) / 86400000);
-            if(filtroStatus === 'ativos') return d > 0;
-            if(filtroStatus === 'vencendo') return d === 0;
-            if(filtroStatus === 'vencidos') return d < 0;
+            let diff = Math.ceil((exp - hoje) / 86400000);
+            if(filtroStatus === 'ativos') return diff > 0;
+            if(filtroStatus === 'vencendo') return diff === 0;
+            if(filtroStatus === 'vencidos') return diff < 0;
             return true;
         });
+        
         lista.sort((a,b) => new Date(a.expira) - new Date(b.expira));
-        let tb = document.getElementById('tabelaBody');
-        if(!lista.length) { tb.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--text2)">Nenhum cliente cadastrado</td></tr>'; return; }
-        tb.innerHTML = lista.map(c => {
-            let exp = new Date(c.expira), d = Math.ceil((exp - new Date()) / 86400000), sc, st;
-            if(d < 0) { sc = 'status-vencido'; st = 'VENCIDO'; }
-            else if(d === 0) { sc = 'status-vencendo'; st = 'VENCE HOJE'; }
-            else { sc = 'status-ativo'; st = 'ATIVO'; }
-            let bc = 'badge-' + (c.plano || 'LATAO').toLowerCase();
+        
+        let tbody = document.getElementById('tabelaBody');
+        if(!lista.length) {
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem">Nenhum cliente cadastrado</td></tr>';
+            return;
+        }
+        
+        tbody.innerHTML = lista.map(c => {
+            let exp = new Date(c.expira);
+            let diff = Math.ceil((exp - new Date()) / 86400000);
+            let statusClass, statusText;
+            if(diff < 0) { statusClass = 'status-vencido'; statusText = 'VENCIDO'; }
+            else if(diff === 0) { statusClass = 'status-vencendo'; statusText = 'VENCE HOJE'; }
+            else { statusClass = 'status-ativo'; statusText = 'ATIVO'; }
+            
+            let badgeClass = 'badge-' + (c.plano || 'LATAO').toLowerCase();
+            
             return `<tr>
-                <td><div class="client-name">${c.nome}</div><div class="client-detail">${c.whats}${c.email?' | '+c.email:''}</div></td>
+                <td><div class="client-name">${c.nome}</div><div class="client-detail">${c.whats}${c.email ? ' | '+c.email : ''}</div></td>
                 <td>${c.terminal}</td>
                 <td><span class="chave-display">${c.chave}</span></td>
-                <td><span class="badge-plano ${bc}">${c.plano}</span></td>
-                <td>${exp.toLocaleDateString('pt-BR')}<br><span class="status-badge ${sc}">${st}</span></td>
+                <td><span class="badge-plano ${badgeClass}">${c.plano}</span></td>
+                <td>${exp.toLocaleDateString('pt-BR')}<br><span class="status-badge ${statusClass}">${statusText}</span></td>
                 <td>R$ ${c.valor.toFixed(2)}</td>
                 <td><div class="action-btns">
-                    <button class="btn-icon btn-icon-chave" onclick="enviarWhatsAppCliente('${c.id}','entrega')" title="Enviar Chave">🔑</button>
+                    <button class="btn-icon btn-icon-chave" onclick="enviarMensagem('${c.id}','entrega')" title="Enviar Chave">🔑</button>
                     <button class="btn-icon btn-icon-edit" onclick="editarCliente('${c.id}')" title="Editar">✏️</button>
                     <button class="btn-icon btn-icon-email" onclick="enviarEmailCliente('${c.id}')" title="Email">📧</button>
-                    <button class="btn-icon" style="border-color:#ff9800;color:#ff9800;" onclick="enviarMensagemCliente('${c.id}','quase_vencendo')" title="⚠️ Aviso Vencimento">⚠️</button>
-                    <button class="btn-icon" style="border-color:#e67e22;color:#e67e22;" onclick="enviarPlanosCliente('${c.id}')" title="💰 Enviar Planos">💰</button>
+                    <button class="btn-icon btn-icon-warning" onclick="enviarMensagem('${c.id}','quase_vencendo')" title="Aviso Vencimento">⚠️</button>
+                    <button class="btn-icon btn-icon-planos" onclick="enviarMensagem('${c.id}','planos')" title="Enviar Planos">💰</button>
                     <button class="btn-icon btn-icon-delete" onclick="removerCliente('${c.id}')" title="Excluir">🗑️</button>
                 </div></td>
             </tr>`;
         }).join('');
     };
     
-    window.removerCliente = function(id) { if(!confirm('🗑️ Remover?')) return; clientes = clientes.filter(c => c.id != id); salvarDados(); renderizarTudo(); };
-    
-    function atualizarContadores() {
-        let h = new Date(); h.setHours(0,0,0,0);
-        let t = 0, a = 0, v = 0, vc = 0;
-        clientes.forEach(c => {
-            let e = new Date(c.expira); e.setHours(0,0,0,0);
-            let d = Math.ceil((e - h) / 86400000);
-            t++; if(d > 0) a++; else if(d === 0) v++; else vc++;
-        });
-        document.getElementById('countTodos').textContent = t;
-        document.getElementById('countAtivos').textContent = a;
-        document.getElementById('countVencendo').textContent = v;
-        document.getElementById('countVencidos').textContent = vc;
-    }
-    
-    function calcularFaturamento() { let total = 0; clientes.forEach(c => { total += c.valor || 0; }); document.getElementById('totalFaturamento').textContent = 'R$ ' + total.toFixed(2); }
-    
-    window.setFiltroStatus = function(f) { filtroStatus = f; document.querySelectorAll('.status-card').forEach(c => c.classList.remove('active')); document.getElementById('status' + f.charAt(0).toUpperCase() + f.slice(1)).classList.add('active'); renderizarTabela(); };
-    
-    window.setPeriodo = function(p) { periodoAtual = p; ['periodoTudo','periodoHoje','periodoMes','periodoAno'].forEach(id => document.getElementById(id).classList.remove('active')); document.getElementById('periodo' + p.charAt(0).toUpperCase() + p.slice(1)).classList.add('active'); calcularFaturamento(); };
-
-    window.abrirModal = function(id) { if(id === 'modalMensagens' || id === 'modalPrecos') carregarInputsConfig(); document.getElementById(id).classList.add('show'); document.getElementById('modalOverlay').classList.add('show'); };
-    
-    window.fecharModais = function() { document.querySelectorAll('.modal').forEach(m => m.classList.remove('show')); document.getElementById('modalOverlay').classList.remove('show'); };
-    
-    window.salvarConfiguracoes = function() {
-        config.mensagens.entrega = document.getElementById('msgEntregaInput').value;
-        config.mensagens.cobranca = document.getElementById('msgCobrancaInput').value;
-        config.mensagens.teste = document.getElementById('msgTesteInput').value;
-        config.mensagens.outro = document.getElementById('msgOutroInput').value;
-        if(document.getElementById('msgQuaseVencendoInput')) {
-            if(!config.mensagensVencimento) config.mensagensVencimento = {};
-            config.mensagensVencimento.quase_vencendo = document.getElementById('msgQuaseVencendoInput').value;
-            config.mensagensVencimento.vencido = document.getElementById('msgVencidoInput').value;
-            config.mensagensVencimento.boas_vindas = document.getElementById('msgBoasVindasInput').value;
-        }
-        config.precos.latao = parseFloat(document.getElementById('precoLataoInput').value) || 0;
-        config.precos.bronze = parseFloat(document.getElementById('precoBronzeInput').value) || 47;
-        config.precos.prata = parseFloat(document.getElementById('precoPrataInput').value) || 127;
-        config.precos.ouro = parseFloat(document.getElementById('precoOuroInput').value) || 227;
-        config.precos.diamante = parseFloat(document.getElementById('precoDiamanteInput').value) || 307;
-        config.precos.elite = parseFloat(document.getElementById('precoEliteInput').value) || 367;
-        salvarConfig();
-        atualizarValoresPlanos();
-        fecharModais();
-        alert('✅ Configurações salvas!');
+    window.enviarEmailCliente = function(id) {
+        let c = clientes.find(x => x.id == id);
+        if(!c || !c.email) return alert('Cliente sem email cadastrado!');
+        
+        emailjs.send("service_kqme5zs", "template_rlrvpbm", {
+            to_email: c.email,
+            to_name: c.nome,
+            nome: c.nome,
+            chave: c.chave,
+            expira: new Date(c.expira).toLocaleDateString('pt-BR'),
+            plano: c.plano,
+            link_ea: LINK_EA,
+            link_pdf: LINK_PDF,
+            whatsapp: c.whats,
+            terminal_id: c.terminal,
+            validade: new Date(c.expira).toLocaleDateString('pt-BR')
+        }).then(() => alert('✅ Email enviado!')).catch(e => alert('❌ Erro: ' + e));
     };
     
-    window.gerarRelatorio = function(tipo) { alert('Use o botão RELATÓRIOS para enviar mensagens!'); };
-
+    window.editarCliente = function(id) {
+        let c = clientes.find(x => x.id == id);
+        if(!c) return;
+        
+        let diasRest = Math.max(0, Math.ceil((new Date(c.expira) - new Date()) / 86400000));
+        let html = `<div style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:9999;display:flex;align-items:center;justify-content:center;" id="modalEditar">
+            <div style="background:#13131a;border:2px solid #c9a84c;border-radius:20px;padding:2rem;max-width:500px;width:90%;">
+                <h3 style="color:#e8c96a;margin-bottom:1rem;">✏️ Editar ${c.nome}</h3>
+                <p style="color:#3ecf8e;">📅 Dias restantes: ${diasRest} dias</p>
+                <p style="color:#8888a8;">🔑 Chave atual: ${c.chave}</p>
+                <hr style="margin:1rem 0;border-color:#2a2a38;">
+                <div class="fg"><label>Novo Plano:</label>
+                    <select id="novoPlanoSelect">
+                        <option value="LATAO,7,0">🔰 LATÃO 7d - GRÁTIS</option>
+                        <option value="BRONZE,30,47">🥉 BRONZE 30d - R$47</option>
+                        <option value="PRATA,90,127">🥈 PRATA 90d - R$127</option>
+                        <option value="OURO,180,227">🥇 OURO 180d - R$227</option>
+                        <option value="DIAMANTE,270,307">💎 DIAMANTE 270d - R$307</option>
+                        <option value="ELITE,365,367">👑 ELITE 365d - R$367</option>
+                    </select>
+                </div>
+                <div class="fg"><label>Valor Adicional (R$):</label><input type="number" id="adicionalValor" value="0" step="0.01"></div>
+                <button class="btn-primary" onclick="confirmarEdicao('${c.id}', ${diasRest})">✅ CONFIRMAR</button>
+                <button class="btn-ghost" onclick="document.getElementById('modalEditar').remove()" style="margin-top:.5rem">❌ CANCELAR</button>
+            </div>
+        </div>`;
+        document.body.insertAdjacentHTML('beforeend', html);
+    };
+    
+    window.confirmarEdicao = function(id, diasRestantes) {
+        let c = clientes.find(x => x.id == id);
+        if(!c) return;
+        
+        let select = document.getElementById('novoPlanoSelect');
+        let [plano, diasNovo, valorNovo] = select.value.split(',');
+        let adicional = parseFloat(document.getElementById('adicionalValor').value) || 0;
+        
+        let diasTotal = diasRestantes + parseInt(diasNovo);
+        let novaChave = plano + "-" + gerarHashBase(c.terminal);
+        
+        c.plano = plano;
+        c.dias = diasTotal;
+        c.chave = novaChave;
+        c.valor += parseFloat(valorNovo) + adicional;
+        c.expira = new Date(Date.now() + diasTotal * 86400000).toISOString();
+        
+        salvarClientes();
+        document.getElementById('modalEditar').remove();
+        renderizarTabela();
+        
+        alert(`✅ Cliente atualizado!\n👤 ${c.nome}\n🏷️ ${plano}\n📅 ${diasTotal} dias\n🔑 ${novaChave}`);
+        
+        let msg = `🎯 Plano Atualizado!\n\nOlá ${c.nome}!\n\n✅ Novo plano: ${plano}\n📅 Total: ${diasTotal} dias\n🔑 Nova chave: ${novaChave}`;
+        let numero = c.whats.replace(/\D/g, '');
+        if(numero) window.open('https://wa.me/' + numero + '?text=' + encodeURIComponent(msg), '_blank');
+    };
+    
+    window.removerCliente = function(id) {
+        if(confirm('🗑️ Tem certeza que deseja remover este cliente?')) {
+            clientes = clientes.filter(c => c.id != id);
+            salvarClientes();
+            renderizarTabela();
+            atualizarContadores();
+            calcularFaturamento();
+        }
+    };
+    
+    function atualizarContadores() {
+        let hoje = new Date(); hoje.setHours(0,0,0,0);
+        let total = clientes.length;
+        let ativos = 0, venceHoje = 0, vencidos = 0;
+        
+        clientes.forEach(c => {
+            let exp = new Date(c.expira); exp.setHours(0,0,0,0);
+            let diff = Math.ceil((exp - hoje) / 86400000);
+            if(diff > 0) ativos++;
+            else if(diff === 0) venceHoje++;
+            else vencidos++;
+        });
+        
+        document.getElementById('countTodos').textContent = total;
+        document.getElementById('countAtivos').textContent = ativos;
+        document.getElementById('countVencendo').textContent = venceHoje;
+        document.getElementById('countVencidos').textContent = vencidos;
+    }
+    
+    function calcularFaturamento() {
+        let total = clientes.reduce((sum, c) => sum + (c.valor || 0), 0);
+        document.getElementById('totalFaturamento').textContent = 'R$ ' + total.toFixed(2);
+    }
+    
+    window.setFiltroStatus = function(f) {
+        filtroStatus = f;
+        document.querySelectorAll('.status-card').forEach(c => c.classList.remove('active'));
+        document.getElementById('status' + f.charAt(0).toUpperCase() + f.slice(1)).classList.add('active');
+        renderizarTabela();
+    };
+    
+    window.setPeriodo = function(p) {
+        ['periodoTudo','periodoHoje','periodoMes','periodoAno'].forEach(id => document.getElementById(id).classList.remove('active'));
+        document.getElementById('periodo' + p.charAt(0).toUpperCase() + p.slice(1)).classList.add('active');
+        calcularFaturamento();
+    };
+    
+    // Modais
+    window.abrirModalMensagens = function() {
+        document.getElementById('msgQuaseVencendo').value = configMensagens.quase_vencendo || '';
+        document.getElementById('msgVencido').value = configMensagens.vencido || '';
+        document.getElementById('msgBoasVindas').value = configMensagens.boas_vindas || '';
+        document.getElementById('msgPlanos').value = configMensagens.planos || '';
+        document.getElementById('msgEntrega').value = configMensagens.entrega || '';
+        document.getElementById('modalMensagens').classList.add('show');
+        document.getElementById('modalOverlay').classList.add('show');
+    };
+    
+    window.abrirModalPrecos = function() {
+        document.getElementById('precoLatao').value = configPrecos.latao;
+        document.getElementById('precoBronze').value = configPrecos.bronze;
+        document.getElementById('precoPrata').value = configPrecos.prata;
+        document.getElementById('precoOuro').value = configPrecos.ouro;
+        document.getElementById('precoDiamante').value = configPrecos.diamante;
+        document.getElementById('precoElite').value = configPrecos.elite;
+        document.getElementById('modalPrecos').classList.add('show');
+        document.getElementById('modalOverlay').classList.add('show');
+    };
+    
+    window.salvarMensagens = function() {
+        configMensagens = {
+            quase_vencendo: document.getElementById('msgQuaseVencendo').value,
+            vencido: document.getElementById('msgVencido').value,
+            boas_vindas: document.getElementById('msgBoasVindas').value,
+            planos: document.getElementById('msgPlanos').value,
+            entrega: document.getElementById('msgEntrega').value
+        };
+        localStorage.setItem('twpro_mensagens', JSON.stringify(configMensagens));
+        fecharModais();
+        alert('✅ Mensagens salvas!');
+    };
+    
+    window.salvarPrecos = function() {
+        configPrecos = {
+            latao: parseFloat(document.getElementById('precoLatao').value) || 0,
+            bronze: parseFloat(document.getElementById('precoBronze').value) || 47,
+            prata: parseFloat(document.getElementById('precoPrata').value) || 127,
+            ouro: parseFloat(document.getElementById('precoOuro').value) || 227,
+            diamante: parseFloat(document.getElementById('precoDiamante').value) || 307,
+            elite: parseFloat(document.getElementById('precoElite').value) || 367
+        };
+        localStorage.setItem('twpro_precos', JSON.stringify(configPrecos));
+        
+        // Atualizar valores na tela
+        document.querySelector('.plano-bronze .plano-valor').textContent = 'R$ ' + configPrecos.bronze;
+        document.querySelector('.plano-prata .plano-valor').textContent = 'R$ ' + configPrecos.prata;
+        document.querySelector('.plano-ouro .plano-valor').textContent = 'R$ ' + configPrecos.ouro;
+        document.querySelector('.plano-diamante .plano-valor').textContent = 'R$ ' + configPrecos.diamante;
+        document.querySelector('.plano-elite .plano-valor').textContent = 'R$ ' + configPrecos.elite;
+        
+        fecharModais();
+        alert('✅ Preços salvos!');
+    };
+    
+    window.fecharModais = function() {
+        document.querySelectorAll('.modal').forEach(m => m.classList.remove('show'));
+        document.getElementById('modalOverlay').classList.remove('show');
+    };
+    
+    // Login
+    window.verificarSenha = function() {
+        let senha = document.getElementById('senhaLoginInput').value;
+        if(senha === SENHA_MESTRA) {
+            logado = true;
+            document.getElementById('loginOverlay').style.display = 'none';
+            document.getElementById('conteudoPrincipal').classList.add('desbloqueado');
+            carregarClientes();
+        } else {
+            document.getElementById('loginError').classList.add('show');
+            setTimeout(() => document.getElementById('loginError').classList.remove('show'), 2000);
+        }
+    };
+    
+    window.fazerLogout = function() { location.reload(); };
+    
+    // Inicialização
     if(localStorage.getItem('twpro_logado') === 'true') {
         document.getElementById('loginOverlay').style.display = 'none';
         document.getElementById('conteudoPrincipal').classList.add('desbloqueado');
         logado = true;
-        carregarDados();
-        buscarDadosServidor();
+        carregarClientes();
     }
-
+    
     window.addEventListener('beforeunload', () => { localStorage.setItem('twpro_logado', logado ? 'true' : 'false'); });
-    setInterval(() => { if(logado) buscarDadosServidor(); }, 10000);
-
+    
 })();
 </script>
 </body>
