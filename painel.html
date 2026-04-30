@@ -952,6 +952,304 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
     setInterval(() => {
         if(logado) buscarDadosServidor();
     }, 10000);
+
+  // ============================================
+// ⭐ FUNÇÕES PARA ENVIO DE MENSAGENS DE VENCIMENTO ⭐
+// ============================================
+
+// Mensagens para vencimento (você pode editar)
+const MSG_VENCIMENTO = {
+    quase_vencendo: `🎯 LATAO - SEU TESTE ESTÁ QUASE VENCENDO!
+
+Olá {nome}!
+
+⚠️ Atenção! Seu plano {plano} está quase vencendo!
+
+📅 Data de cadastro: {data_cadastro}
+⏰ Expira em: {validade}
+🔑 Sua chave atual: {chave}
+📱 Terminal MT5: {terminal_id}
+
+⚡ RENOVE AGORA E NÃO PARE DE RECEBER SINAIS!
+
+🔹 ESCOLHA SEU PLANO:
+👉 BRONZE: https://pag.ae/81Jw7qy2N
+👉 PRATA: https://pag.ae/81Jw7ZCg6
+👉 OURO: https://pag.ae/81Jw8oyYM
+👉 DIAMANTE: https://pag.ae/81Jw8RJ16
+👉 ELITE: https://pag.ae/81Jw9ggEr
+
+💡 Após o pagamento, envie o comprovante para ativarmos sua nova chave.
+
+📞 Dúvidas ou suporte: (41) 99976-5210`,
+
+    vencido: `⛔ LATAO - SEU TESTE EXPIRU!
+
+Olá {nome}!
+
+❌ Infelizmente seu plano {plano} expirou em {validade}.
+
+🔑 Sua chave {chave} não está mais ativa.
+
+⚡ RENOVE AGORA E VOLTE A RECEBER SINAIS!
+
+🔹 Planos disponíveis:
+👉 BRONZE: https://pag.ae/81Jw7qy2N
+👉 PRATA: https://pag.ae/81Jw7ZCg6
+👉 OURO: https://pag.ae/81Jw8oyYM
+👉 DIAMANTE: https://pag.ae/81Jw8RJ16
+👉 ELITE: https://pag.ae/81Jw9ggEr
+
+📞 Suporte: (41) 99976-5210`,
+
+    boas_vindas: `🎯 LATAO - TESTE ATIVADO!
+
+Olá {nome}!
+
+✅ Seu plano {plano} foi ativado com sucesso!
+
+📅 Período de teste: {validade}
+🔑 Chave de ativação: {chave}
+📱 Terminal MT5: {terminal_id}
+
+⚙️ Instruções de uso:
+1. Baixe o EA pelo seu assessor
+2. Cole a chave no campo "Chave de Ativação"
+3. Aproveite os sinais!
+
+📞 Dúvidas: (41) 99976-5210`
+};
+
+// Enviar mensagem de "quase vencendo" para um cliente
+window.enviarAvisoVencimento = function(clienteId) {
+    let c = clientes.find(x => x.id == clienteId);
+    if(!c) return alert('Cliente não encontrado!');
+    
+    let dataCadastro = new Date(c.dataCadastro).toLocaleDateString('pt-BR');
+    let validade = new Date(c.expira).toLocaleDateString('pt-BR');
+    let diasRestantes = Math.ceil((new Date(c.expira) - new Date()) / 86400000);
+    
+    let msg = MSG_VENCIMENTO.quase_vencendo
+        .replace(/{nome}/g, c.nome)
+        .replace(/{plano}/g, c.plano)
+        .replace(/{data_cadastro}/g, dataCadastro)
+        .replace(/{validade}/g, validade)
+        .replace(/{chave}/g, c.chave)
+        .replace(/{terminal_id}/g, c.terminal);
+    
+    let numero = c.whats.replace(/\D/g, '');
+    if(numero) {
+        window.open('https://wa.me/' + numero + '?text=' + encodeURIComponent(msg), '_blank');
+    } else {
+        alert('WhatsApp não cadastrado para este cliente!');
+    }
+};
+
+// Enviar mensagem de "vencido"
+window.enviarAvisoVencido = function(clienteId) {
+    let c = clientes.find(x => x.id == clienteId);
+    if(!c) return alert('Cliente não encontrado!');
+    
+    let validade = new Date(c.expira).toLocaleDateString('pt-BR');
+    
+    let msg = MSG_VENCIMENTO.vencido
+        .replace(/{nome}/g, c.nome)
+        .replace(/{plano}/g, c.plano)
+        .replace(/{validade}/g, validade)
+        .replace(/{chave}/g, c.chave);
+    
+    let numero = c.whats.replace(/\D/g, '');
+    if(numero) {
+        window.open('https://wa.me/' + numero + '?text=' + encodeURIComponent(msg), '_blank');
+    } else {
+        alert('WhatsApp não cadastrado para este cliente!');
+    }
+};
+
+// Enviar boas vindas (teste ativado)
+window.enviarBoasVindas = function(clienteId) {
+    let c = clientes.find(x => x.id == clienteId);
+    if(!c) return alert('Cliente não encontrado!');
+    
+    let validade = new Date(c.expira).toLocaleDateString('pt-BR');
+    
+    let msg = MSG_VENCIMENTO.boas_vindas
+        .replace(/{nome}/g, c.nome)
+        .replace(/{plano}/g, c.plano)
+        .replace(/{validade}/g, validade)
+        .replace(/{chave}/g, c.chave)
+        .replace(/{terminal_id}/g, c.terminal);
+    
+    let numero = c.whats.replace(/\D/g, '');
+    if(numero) {
+        window.open('https://wa.me/' + numero + '?text=' + encodeURIComponent(msg), '_blank');
+    } else {
+        alert('WhatsApp não cadastrado para este cliente!');
+    }
+};
+
+// Enviar para MÚLTIPLOS clientes (quase vencendo)
+window.enviarAvisoEmMassa = function(tipo) {
+    let hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+    
+    let clientesAlvo = [];
+    
+    if(tipo === 'vencendo_hoje') {
+        clientesAlvo = clientes.filter(c => {
+            let expira = new Date(c.expira);
+            expira.setHours(0, 0, 0, 0);
+            let diff = Math.ceil((expira - hoje) / 86400000);
+            return diff === 0;
+        });
+    } 
+    else if(tipo === 'quase_vencendo') {
+        clientesAlvo = clientes.filter(c => {
+            let expira = new Date(c.expira);
+            expira.setHours(0, 0, 0, 0);
+            let diff = Math.ceil((expira - hoje) / 86400000);
+            return diff > 0 && diff <= 3;
+        });
+    }
+    else if(tipo === 'vencidos') {
+        clientesAlvo = clientes.filter(c => {
+            let expira = new Date(c.expira);
+            expira.setHours(0, 0, 0, 0);
+            return expira < hoje;
+        });
+    }
+    
+    if(clientesAlvo.length === 0) {
+        return alert('⚠️ Nenhum cliente encontrado para este filtro!');
+    }
+    
+    let confirmMsg = `📢 Enviar mensagem para ${clientesAlvo.length} cliente(s)?\n\n`;
+    if(tipo === 'vencendo_hoje') confirmMsg += '⚠️ Clientes que VENCEM HOJE';
+    else if(tipo === 'quase_vencendo') confirmMsg += '⚠️ Clientes que VENCEM EM ATÉ 3 DIAS';
+    else confirmMsg += '❌ Clientes VENCIDOS';
+    
+    if(confirm(confirmMsg)) {
+        clientesAlvo.forEach(c => {
+            if(tipo === 'vencidos') {
+                enviarAvisoVencido(c.id);
+            } else {
+                enviarAvisoVencimento(c.id);
+            }
+            // Pequeno delay para não abrir muitas abas de uma vez
+            setTimeout(() => {}, 500);
+        });
+        alert(`✅ Mensagens abertas para ${clientesAlvo.length} cliente(s)!\n\n⚠️ O WhatsApp abrirá em novas abas. Envie cada uma manualmente.`);
+    }
+};
+
+// Enviar todos os links dos planos via WhatsApp
+window.enviarPlanosCliente = function(clienteId) {
+    let c = clientes.find(x => x.id == clienteId);
+    if(!c) return alert('Cliente não encontrado!');
+    
+    let msg = `📢 *PLANOS TRADE WINNER PRO* - Olá *${c.nome}*!
+
+💰 *Escolha o seu plano:*
+
+🔰 *BRONZE* (30 dias) - R$ 47
+👉 Link: https://pag.ae/81Jw7qy2N
+
+🥈 *PRATA* (90 dias) - R$ 127
+👉 Link: https://pag.ae/81Jw7ZCg6
+
+🥇 *OURO* (180 dias) - R$ 227
+👉 Link: https://pag.ae/81Jw8oyYM
+
+💎 *DIAMANTE* (270 dias) - R$ 307
+👉 Link: https://pag.ae/81Jw8RJ16
+
+👑 *ELITE* (365 dias) - R$ 367
+👉 Link: https://pag.ae/81Jw9ggEr
+
+⚡ *Pague e envie o comprovante para ativarmos sua chave!*
+
+📞 Dúvidas: (41) 99976-5210`;
+    
+    let numero = c.whats.replace(/\D/g, '');
+    if(numero) {
+        window.open('https://wa.me/' + numero + '?text=' + encodeURIComponent(msg), '_blank');
+    }
+};
+
+// ALTERAR A FUNÇÃO renderizarTabela para incluir NOVOS BOTÕES
+// (Substitua a função renderizarTabela existente por esta)
+window.renderizarTabela = function() {
+    let busca = document.getElementById('buscaInput').value.toLowerCase();
+    let hoje = new Date(); hoje.setHours(0, 0, 0, 0);
+    let lista = clientes.filter(c => {
+        let m = !busca || c.nome.toLowerCase().includes(busca) || c.whats.includes(busca) || c.terminal.toLowerCase().includes(busca) || c.chave.toLowerCase().includes(busca);
+        if(!m) return false;
+        let exp = new Date(c.expira); exp.setHours(0, 0, 0, 0);
+        let d = Math.ceil((exp - hoje) / 86400000);
+        if(filtroStatus === 'ativos') return d > 0;
+        if(filtroStatus === 'vencendo') return d === 0;
+        if(filtroStatus === 'vencidos') return d < 0;
+        return true;
+    });
+    lista.sort((a, b) => new Date(a.expira) - new Date(b.expira));
+    let tb = document.getElementById('tabelaBody');
+    if(!lista.length) { tb.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--text2)">Nenhum cliente cadastrado</td></tr>'; return; }
+    
+    tb.innerHTML = lista.map(c => {
+        let exp = new Date(c.expira), d = Math.ceil((exp - new Date()) / 86400000), sc, st;
+        if(d < 0) { sc = 'status-vencido'; st = 'VENCIDO'; }
+        else if(d === 0) { sc = 'status-vencendo'; st = 'VENCE HOJE'; }
+        else { sc = 'status-ativo'; st = 'ATIVO'; }
+        let bc = 'badge-' + (c.plano || 'LATAO').toLowerCase();
+        
+        return `<tr>
+            <td><div class="client-name">${c.nome}</div><div class="client-detail">${c.whats}${c.email?' | '+c.email:''}</div></td>
+            <td>${c.terminal}</td>
+            <td><span class="chave-display">${c.chave}</span></td>
+            <td><span class="badge-plano ${bc}">${c.plano}</span></td>
+            <td>${exp.toLocaleDateString('pt-BR')}<br><span class="status-badge ${sc}">${st}</span></td>
+            <td>R$ ${c.valor.toFixed(2)}</td>
+            <td><div class="action-btns" style="gap: 4px; flex-wrap: wrap; min-width: 160px;">
+                <button class="btn-icon btn-icon-chave" onclick="enviarWhatsAppCliente('${c.id}','entrega')" title="Enviar Chave">🔑</button>
+                <button class="btn-icon btn-icon-edit" onclick="editarCliente('${c.id}')" title="Editar">✏️</button>
+                <button class="btn-icon btn-icon-email" onclick="enviarEmailCliente('${c.id}')" title="Email">📧</button>
+                <button class="btn-icon" style="border-color:#ff9800;color:#ff9800;" onclick="enviarAvisoVencimento('${c.id}')" title="⚠️ Aviso Vencimento">⚠️</button>
+                <button class="btn-icon" style="border-color:#e67e22;color:#e67e22;" onclick="enviarPlanosCliente('${c.id}')" title="📢 Enviar Planos">💰</button>
+                <button class="btn-icon btn-icon-delete" onclick="removerCliente('${c.id}')" title="Excluir">🗑️</button>
+            </div></td>
+        </tr>`;
+    }).join('');
+};
+
+// ============================================
+// ⭐ ADICIONAR BOTÕES DE ENVIO EM MASSA NO TOPO ⭐
+// ============================================
+
+// Função para adicionar os novos botões no painel
+function adicionarBotoesMensagem() {
+    let statusGrid = document.querySelector('.status-grid');
+    if(!statusGrid) return;
+    
+    // Verificar se já foi adicionado
+    if(document.getElementById('botoesMensagemMassa')) return;
+    
+    let divBotoes = document.createElement('div');
+    divBotoes.id = 'botoesMensagemMassa';
+    divBotoes.style.cssText = 'display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; justify-content: center;';
+    divBotoes.innerHTML = `
+        <button class="btn-primary" style="background:#e67e22; font-size:.7rem; padding:.5rem 1rem;" onclick="enviarAvisoEmMassa('quase_vencendo')">⚠️ AVISAR QUASE VENCENDO (≤3 dias)</button>
+        <button class="btn-primary" style="background:#ff9800; font-size:.7rem; padding:.5rem 1rem;" onclick="enviarAvisoEmMassa('vencendo_hoje')">⏰ AVISAR VENCE HOJE</button>
+        <button class="btn-primary" style="background:#e05260; font-size:.7rem; padding:.5rem 1rem;" onclick="enviarAvisoEmMassa('vencidos')">❌ AVISAR VENCIDOS</button>
+    `;
+    
+    // Inserir antes da status-grid
+    statusGrid.parentNode.insertBefore(divBotoes, statusGrid);
+}
+
+// Executar após carregamento
+setTimeout(() => {
+    if(logado) adicionarBotoesMensagem();
+}, 1000);
 })();
 </script>
 </body>
