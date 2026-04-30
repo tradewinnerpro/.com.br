@@ -953,7 +953,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
         if(logado) buscarDadosServidor();
     }, 10000);
 
-  // ============================================
+ // ============================================
 // ⭐ FUNÇÕES PARA ENVIO DE MENSAGENS DE VENCIMENTO ⭐
 // ============================================
 
@@ -1025,6 +1025,12 @@ function inicializarMensagensVencimento() {
     if (!config.mensagensVencimento) {
         config.mensagensVencimento = MSG_VENCIMENTO_PADRAO;
         salvarConfig();
+    }
+    // Carregar as mensagens salvas para os inputs se existirem
+    if(document.getElementById('msgQuaseVencendoInput') && config.mensagensVencimento) {
+        document.getElementById('msgQuaseVencendoInput').value = config.mensagensVencimento.quase_vencendo || MSG_VENCIMENTO_PADRAO.quase_vencendo;
+        document.getElementById('msgVencidoInput').value = config.mensagensVencimento.vencido || MSG_VENCIMENTO_PADRAO.vencido;
+        document.getElementById('msgBoasVindasInput').value = config.mensagensVencimento.boas_vindas || MSG_VENCIMENTO_PADRAO.boas_vindas;
     }
 }
 
@@ -1215,50 +1221,73 @@ window.renderizarTabela = function() {
 };
 
 // MODIFICAR O BOTÃO RELATÓRIOS para abrir o novo modal
-// Adicionar função para modificar o botão de relatórios
 function modificarBotaoRelatorios() {
-    let botoesRelatorio = document.querySelectorAll('.report-option');
-    botoesRelatorio.forEach(btn => {
-        let h4 = btn.querySelector('h4');
-        if(h4 && h4.textContent === 'RELATÓRIOS') {
-            btn.setAttribute('onclick', 'abrirRelatorioMensagem()');
-        }
-    });
+    let modalRelatorios = document.getElementById('modalRelatorios');
+    if(!modalRelatorios) return;
+    
+    // Mudar o título do modal para refletir a nova função
+    let modalTitle = modalRelatorios.querySelector('.modal-title');
+    if(modalTitle && modalTitle.textContent === '📊 GERAR RELATÓRIOS') {
+        modalTitle.textContent = '📨 ENVIAR MENSAGEM PARA CLIENTE';
+    }
+    
+    // Limpar e recriar o conteúdo do modal
+    let divGrid = modalRelatorios.querySelector('div[style*="display:grid"]');
+    if(divGrid) {
+        divGrid.innerHTML = `
+            <div style="grid-column:span 2; text-align:center; padding:1rem;">
+                <div style="font-size:2rem;">📨</div>
+                <p style="margin-top:1rem; color:var(--text2);">Selecione um cliente para receber a mensagem</p>
+                <button class="btn-primary" onclick="abrirRelatorioMensagem()" style="margin-top:1rem;">📤 ESCOLHER CLIENTE E ENVIAR</button>
+            </div>
+        `;
+    }
 }
 
-// Atualizar os modais de MENSAGENS para incluir as mensagens de vencimento
+// Atualizar os modais de MENSAGENS para incluir as mensagens de vencimento (SEM APAGAR AS ORIGINAIS)
 function atualizarModalMensagens() {
     let modalMensagens = document.getElementById('modalMensagens');
     if(!modalMensagens) return;
     
-    // Verificar se já foi adicionado
+    // Verificar se já foi adicionado as mensagens de vencimento
     if(document.getElementById('msgQuaseVencendoInput')) return;
     
-    let textareas = modalMensagens.querySelectorAll('.fg');
-    let ultimoTextarea = textareas[textareas.length - 1];
+    // Encontrar o botão de salvar para inserir antes dele
+    let btnSalvar = modalMensagens.querySelector('.btn-primary');
+    if(!btnSalvar) return;
     
+    // Criar as novas mensagens de vencimento
     let divVencimento = document.createElement('div');
     divVencimento.innerHTML = `
-        <div class="fg" style="margin-top:1rem;">
-            <label>⚠️ Mensagem QUASE VENCENDO</label>
-            <textarea id="msgQuaseVencendoInput" rows="4">${MSG_VENCIMENTO_PADRAO.quase_vencendo}</textarea>
-        </div>
-        <div class="fg">
-            <label>❌ Mensagem VENCIDO</label>
-            <textarea id="msgVencidoInput" rows="3">${MSG_VENCIMENTO_PADRAO.vencido}</textarea>
-        </div>
-        <div class="fg">
-            <label>🎯 Mensagem BOAS VINDAS</label>
-            <textarea id="msgBoasVindasInput" rows="2">${MSG_VENCIMENTO_PADRAO.boas_vindas}</textarea>
+        <div style="border-top:1px solid #2a2a38; margin: 1rem 0 1rem 0; padding-top: 0.5rem;">
+            <div class="fg">
+                <label style="color:var(--gold);">⚠️ Mensagem QUASE VENCENDO</label>
+                <textarea id="msgQuaseVencendoInput" rows="4" style="background:rgba(9,9,13,0.8);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:.65rem .9rem;width:100%;font-family:'DM Sans',sans-serif;font-size:.9rem;">${MSG_VENCIMENTO_PADRAO.quase_vencendo}</textarea>
+            </div>
+            <div class="fg">
+                <label style="color:var(--gold);">❌ Mensagem VENCIDO</label>
+                <textarea id="msgVencidoInput" rows="3" style="background:rgba(9,9,13,0.8);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:.65rem .9rem;width:100%;font-family:'DM Sans',sans-serif;font-size:.9rem;">${MSG_VENCIMENTO_PADRAO.vencido}</textarea>
+            </div>
+            <div class="fg">
+                <label style="color:var(--gold);">🎯 Mensagem BOAS VINDAS</label>
+                <textarea id="msgBoasVindasInput" rows="2" style="background:rgba(9,9,13,0.8);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:.65rem .9rem;width:100%;font-family:'DM Sans',sans-serif;font-size:.9rem;">${MSG_VENCIMENTO_PADRAO.boas_vindas}</textarea>
+            </div>
         </div>
     `;
     
-    modalMensagens.insertBefore(divVencimento, ultimoTextarea.nextSibling);
+    // Inserir ANTES do botão de salvar (para manter os campos originais)
+    modalMensagens.insertBefore(divVencimento, btnSalvar);
 }
 
 // Sobrescrever salvarConfiguracoes para incluir as novas mensagens
-const salvarConfiguracoesOriginal = window.salvarConfiguracoes;
 window.salvarConfiguracoes = function() {
+    // Salvar mensagens originais
+    config.mensagens.entrega = document.getElementById('msgEntregaInput').value;
+    config.mensagens.cobranca = document.getElementById('msgCobrancaInput').value;
+    config.mensagens.teste = document.getElementById('msgTesteInput').value;
+    config.mensagens.outro = document.getElementById('msgOutroInput').value;
+    
+    // Salvar novas mensagens de vencimento se existirem
     if(document.getElementById('msgQuaseVencendoInput')) {
         if(!config.mensagensVencimento) config.mensagensVencimento = {};
         config.mensagensVencimento.quase_vencendo = document.getElementById('msgQuaseVencendoInput').value;
@@ -1266,11 +1295,7 @@ window.salvarConfiguracoes = function() {
         config.mensagensVencimento.boas_vindas = document.getElementById('msgBoasVindasInput').value;
     }
     
-    // Chamar função original
-    config.mensagens.entrega = document.getElementById('msgEntregaInput').value;
-    config.mensagens.cobranca = document.getElementById('msgCobrancaInput').value;
-    config.mensagens.teste = document.getElementById('msgTesteInput').value;
-    config.mensagens.outro = document.getElementById('msgOutroInput').value;
+    // Salvar preços
     config.precos.latao = parseFloat(document.getElementById('precoLataoInput').value) || 0;
     config.precos.bronze = parseFloat(document.getElementById('precoBronzeInput').value) || 47;
     config.precos.prata = parseFloat(document.getElementById('precoPrataInput').value) || 127;
