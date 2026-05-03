@@ -349,10 +349,16 @@
     }
     
     // ⭐ ENVIAR EMAIL AUTOMÁTICO
-    async function enviarEmailAuto(cliente) {
-        if(!cliente.email) return false;
-        try {
-            let r = await emailjs.send("service_kqme5zs", "template_rlrvpbm", {
+async function enviarEmailAuto(cliente) {
+    if(!cliente.email) return false;
+    
+    console.log('📧 Tentando enviar email para:', cliente.email);
+    
+    try {
+        let resultado = await emailjs.send(
+            "service_kqme5zs",     // Service ID
+            "template_rlrvpbm",    // Template ID
+            {
                 to_email: cliente.email,
                 to_name: cliente.nome,
                 nome: cliente.nome,
@@ -364,14 +370,46 @@
                 whatsapp: cliente.whats,
                 terminal_id: cliente.terminal,
                 validade: new Date(cliente.expira).toLocaleDateString('pt-BR')
+            }
+        );
+        
+        console.log('✅ EMAIL ENVIADO! Status:', resultado.status);
+        console.log('✅ Resposta:', resultado);
+        alert('✅ Email enviado para ' + cliente.email + '!');
+        return true;
+        
+    } catch(erro) {
+        console.error('❌ ERRO EMAIL:', erro);
+        console.error('❌ Mensagem:', erro.message);
+        console.error('❌ Status:', erro.status);
+        console.error('❌ Detalhes:', erro.text);
+        
+        // Tenta novamente com outro formato
+        try {
+            console.log('🔄 Tentando envio alternativo...');
+            let resultado2 = await emailjs.send("service_kqme5zs", "template_rlrvpbm", {
+                to_email: cliente.email,
+                to_name: cliente.nome,
+                nome: cliente.nome,
+                chave: cliente.chave,
+                expira: new Date(cliente.expira).toLocaleDateString('pt-BR'),
+                plano: cliente.plano,
+                link_ea: LINK_EA,
+                link_pdf: LINK_PDF,
+                whatsapp: cliente.whats,
+                terminal_id: cliente.terminal,
+                validade: new Date(cliente.expira).toLocaleDateString('pt-BR')
             });
-            console.log('✅ Email enviado:', r.status);
+            console.log('✅ Email enviado (2ª tentativa)!');
+            alert('✅ Email enviado para ' + cliente.email + '!');
             return true;
-        } catch(e) {
-            console.error('❌ Email falhou:', e);
+        } catch(erro2) {
+            console.error('❌ Falhou nas 2 tentativas:', erro2);
+            alert('❌ Não foi possível enviar o email.\n\nVerifique:\n1. Conexão com internet\n2. Template no EmailJS\n3. Console (F12) para detalhes');
             return false;
         }
     }
+}
     
     // ⭐ ENVIAR MENSAGEM
     window.enviarMensagem = function(clienteId, tipo) {
