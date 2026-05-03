@@ -10,54 +10,456 @@
     :root{--bg:#09090d;--bg2:#0f0f15;--surface:#13131a;--border:#1f1f2a;--border2:#2a2a38;--gold:#c9a84c;--gold2:#e8c96a;--text:#e8e8f0;--text2:#8888a8;--green:#3ecf8e;--red:#e05260;--radius:12px}
     *{margin:0;padding:0;box-sizing:border-box}
     html{scroll-behavior:smooth}
-    body{background-color:#09090d;background-image:url('gettyimages.png');background-size:cover;background-position:center 20%;background-repeat:no-repeat;background-attachment:fixed;color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden;position:relative}
-    body::before{content:'';position:fixed;inset:0;background:rgba(9,9,13,0.82);backdrop-filter:blur(2px);z-index:0;pointer-events:none}
-    section,nav,.hero,.features,.boleta-sec,.markets,.signup,.ticker-wrap{position:relative;z-index:2}
-    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,2vw,2rem);height:60px;background:rgba(9,9,13,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);gap:0.8rem}
-    .nav-logo{font-family:'DM Mono',monospace;font-size:1.1rem;font-weight:900;color:var(--gold2);letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:7px;white-space:nowrap;flex-shrink:0}
-    .nav-logo-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold);animation:blink 2s ease infinite}
+    body{
+      background-color:#09090d;
+      background-image:url('gettyimages.png');
+      background-size:cover;
+      background-position:center 20%;
+      background-repeat:no-repeat;
+      background-attachment:fixed;
+      color:var(--text);
+      font-family:'DM Sans',sans-serif;
+      font-size:16px;
+      line-height:1.6;
+      overflow-x:hidden;
+      position:relative;
+    }
+    body::before{
+      content:'';
+      position:fixed;
+      inset:0;
+      background:rgba(9,9,13,0.82);
+      backdrop-filter:blur(2px);
+      z-index:0;
+      pointer-events:none;
+    }
+    section,nav,.hero,.signup{position:relative;z-index:2}
+    
+    /* ⭐ NAVBAR RESPONSIVA */
+    nav{
+      position:sticky;
+      top:0;
+      z-index:100;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 clamp(0.5rem,2vw,2rem);
+      height:60px;
+      background:rgba(9,9,13,0.95);
+      backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--border);
+      gap:0.5rem;
+      flex-wrap:wrap;
+    }
+    .nav-logo{
+      font-family:'DM Mono',monospace;
+      font-size:0.9rem;
+      font-weight:900;
+      color:var(--gold2);
+      letter-spacing:2px;
+      text-transform:uppercase;
+      display:flex;
+      align-items:center;
+      gap:7px;
+      white-space:nowrap;
+      flex-shrink:0;
+    }
+    .nav-logo-dot{
+      width:6px;
+      height:6px;
+      border-radius:50%;
+      background:var(--gold);
+      box-shadow:0 0 8px var(--gold);
+      animation:blink 2s ease infinite;
+    }
     @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
-    .nav-links{display:flex;align-items:center;gap:1.2rem;list-style:none;flex-shrink:0}
-    .nav-links a{font-size:.75rem;font-weight:500;color:var(--text2);text-decoration:none;letter-spacing:.5px;transition:color .2s;white-space:nowrap}
+    
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:0.8rem;
+      list-style:none;
+      flex-shrink:0;
+    }
+    .nav-links a{
+      font-size:0.7rem;
+      font-weight:500;
+      color:var(--text2);
+      text-decoration:none;
+      letter-spacing:.5px;
+      transition:color .2s;
+      white-space:nowrap;
+    }
     .nav-links a:hover{color:var(--gold2)}
-    .planos-row{display:flex;align-items:center;gap:5px;flex-shrink:1;overflow-x:auto;scrollbar-width:none}
+    
+    /* ⭐ PLANOS EM LINHA COM SCROLL */
+    .planos-row{
+      display:flex;
+      align-items:center;
+      gap:4px;
+      overflow-x:auto;
+      scrollbar-width:none;
+      -webkit-overflow-scrolling:touch;
+      padding:4px 0;
+    }
     .planos-row::-webkit-scrollbar{display:none}
-    .btn-plano{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:90px;height:38px;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:.6rem;font-weight:700;text-decoration:none;letter-spacing:.5px;transition:all .2s;border:none;flex-shrink:0;cursor:pointer;text-align:center;line-height:1.1}
-    .btn-latao{background:#CD7F32;color:#FFF5E0}.btn-bronze{background:#8B6914;color:#FFF5E0}.btn-prata{background:#7D8794;color:#FFF}.btn-ouro{background:#DAA520;color:#1a1a1a}.btn-diamante{background:#6A5ACD;color:#FFF}.btn-elite{background:#C0392B;color:#FFF}
-    .hero{min-height:92vh;display:flex;align-items:center;padding:0 clamp(1.5rem,6vw,5rem)}
-    .hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;width:100%;max-width:1280px;margin:0 auto}
-    @media(max-width:900px){.hero-inner{grid-template-columns:1fr;gap:2.5rem;padding-top:3rem}}
-    .hero-left{display:flex;flex-direction:column;gap:1.4rem}
-    .hero-tag{display:inline-flex;align-items:center;gap:.5rem;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.25);border-radius:4px;padding:.35rem .9rem;font-family:'DM Mono',monospace;font-size:.7rem;font-weight:500;color:var(--gold2);letter-spacing:2px;width:fit-content}
-    .hero-title{font-size:clamp(2.2rem,4.5vw,3.8rem);font-weight:700;line-height:1.08;letter-spacing:-1px}
+    
+    .btn-plano{
+      display:inline-flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      min-width:60px;
+      height:32px;
+      border-radius:4px;
+      font-family:'DM Sans',sans-serif;
+      font-size:0.55rem;
+      font-weight:700;
+      text-decoration:none;
+      letter-spacing:.5px;
+      transition:all .2s;
+      border:none;
+      flex-shrink:0;
+      cursor:pointer;
+      text-align:center;
+      line-height:1.1;
+      padding:2px 6px;
+    }
+    .btn-plano small{font-size:0.45rem;font-weight:400}
+    
+    .btn-latao{background:#CD7F32;color:#FFF5E0}
+    .btn-bronze{background:#8B6914;color:#FFF5E0}
+    .btn-prata{background:#7D8794;color:#FFF}
+    .btn-ouro{background:#DAA520;color:#1a1a1a}
+    .btn-diamante{background:#6A5ACD;color:#FFF}
+    .btn-elite{background:#C0392B;color:#FFF}
+    
+    /* ⭐ HERO RESPONSIVA */
+    .hero{
+      min-height:auto;
+      display:flex;
+      align-items:center;
+      padding:2rem clamp(1rem,3vw,2rem);
+    }
+    .hero-inner{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:2rem;
+      align-items:center;
+      width:100%;
+      max-width:1280px;
+      margin:0 auto;
+    }
+    @media(min-width:900px){
+      .hero-inner{grid-template-columns:1fr 1fr;gap:4rem}
+      .hero{min-height:92vh;padding:0 clamp(1.5rem,6vw,5rem)}
+      .nav-logo{font-size:1.1rem}
+      .nav-links a{font-size:0.75rem}
+      .btn-plano{min-width:90px;height:38px;font-size:0.6rem}
+      .btn-plano small{font-size:0.5rem}
+    }
+    
+    .hero-left{
+      display:flex;
+      flex-direction:column;
+      gap:1rem;
+      text-align:center;
+    }
+    @media(min-width:900px){
+      .hero-left{text-align:left;gap:1.4rem}
+    }
+    
+    .hero-tag{
+      display:inline-flex;
+      align-items:center;
+      gap:.5rem;
+      background:rgba(201,168,76,0.1);
+      border:1px solid rgba(201,168,76,0.25);
+      border-radius:4px;
+      padding:.3rem .7rem;
+      font-family:'DM Mono',monospace;
+      font-size:0.6rem;
+      font-weight:500;
+      color:var(--gold2);
+      letter-spacing:2px;
+      width:fit-content;
+      margin:0 auto;
+    }
+    @media(min-width:900px){
+      .hero-tag{margin:0;padding:.35rem .9rem;font-size:0.7rem}
+    }
+    
+    .hero-title{
+      font-size:clamp(1.8rem,6vw,3.8rem);
+      font-weight:700;
+      line-height:1.08;
+      letter-spacing:-1px;
+    }
     .hero-title em{font-style:normal;color:var(--gold2)}
-    .hero-sub{font-size:1.05rem;color:var(--text2);max-width:480px;line-height:1.7;font-weight:300}
-    .hero-stats{display:flex;gap:2rem;padding-top:.5rem;flex-wrap:wrap}
-    .hero-stat{display:flex;flex-direction:column;gap:.15rem}
-    .hero-stat-n{font-family:'DM Mono',monospace;font-size:1.5rem;font-weight:500;color:var(--gold2)}
-    .hero-stat-l{font-size:.72rem;color:var(--text2);letter-spacing:.5px}
-    .btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--gold);color:#09090d;font-weight:700;font-size:.9rem;padding:.75rem 1.8rem;border-radius:6px;text-decoration:none;letter-spacing:.3px;transition:all .2s;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
+    
+    .hero-sub{
+      font-size:0.9rem;
+      color:var(--text2);
+      max-width:480px;
+      line-height:1.7;
+      font-weight:300;
+      margin:0 auto;
+    }
+    @media(min-width:900px){
+      .hero-sub{font-size:1.05rem;margin:0}
+    }
+    
+    .hero-stats{
+      display:flex;
+      gap:1rem;
+      padding-top:.5rem;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+    @media(min-width:900px){
+      .hero-stats{gap:2rem;justify-content:flex-start}
+    }
+    
+    .hero-stat{
+      display:flex;
+      flex-direction:column;
+      gap:.15rem;
+      text-align:center;
+    }
+    .hero-stat-n{
+      font-family:'DM Mono',monospace;
+      font-size:1.2rem;
+      font-weight:500;
+      color:var(--gold2);
+    }
+    .hero-stat-l{
+      font-size:0.65rem;
+      color:var(--text2);
+      letter-spacing:.5px;
+    }
+    @media(min-width:900px){
+      .hero-stat-n{font-size:1.5rem}
+      .hero-stat-l{font-size:0.72rem}
+    }
+    
+    .hero-right{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      order:-1;
+    }
+    @media(min-width:900px){
+      .hero-right{order:0}
+    }
+    
+    .boleta-frame{
+      max-width:250px;
+      width:100%;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+    @media(min-width:900px){
+      .boleta-frame{max-width:340px}
+    }
+    .boleta-frame img{
+      width:80%;
+      display:block;
+      margin:0 auto;
+      border-radius:16px;
+    }
+    
+    /* ⭐ BOTÕES */
+    .btn-primary{
+      display:inline-flex;
+      align-items:center;
+      gap:.5rem;
+      background:var(--gold);
+      color:#09090d;
+      font-weight:700;
+      font-size:0.8rem;
+      padding:.7rem 1.2rem;
+      border-radius:6px;
+      text-decoration:none;
+      letter-spacing:.3px;
+      transition:all .2s;
+      border:none;
+      cursor:pointer;
+      font-family:'DM Sans',sans-serif;
+      width:100%;
+      justify-content:center;
+      text-align:center;
+    }
     .btn-primary:hover{background:var(--gold2);transform:translateY(-2px)}
-    .btn-ghost{display:inline-flex;align-items:center;gap:.5rem;background:transparent;border:1px solid var(--border2);color:var(--text2);font-size:.88rem;font-weight:500;padding:.75rem 1.5rem;border-radius:6px;text-decoration:none;transition:all .2s;cursor:pointer;font-family:'DM Sans',sans-serif}
+    @media(min-width:900px){
+      .btn-primary{font-size:0.9rem;padding:.75rem 1.8rem}
+    }
+    
+    .btn-ghost{
+      display:inline-flex;
+      align-items:center;
+      gap:.5rem;
+      background:transparent;
+      border:1px solid var(--border2);
+      color:var(--text2);
+      font-size:0.8rem;
+      font-weight:500;
+      padding:.7rem 1.2rem;
+      border-radius:6px;
+      text-decoration:none;
+      transition:all .2s;
+      cursor:pointer;
+      font-family:'DM Sans',sans-serif;
+      width:100%;
+      justify-content:center;
+      text-align:center;
+    }
     .btn-ghost:hover{border-color:var(--gold);color:var(--gold2)}
-    .hero-right{display:flex;justify-content:center;align-items:center}
-    .boleta-frame{max-width:340px;width:100%;display:flex;justify-content:center;align-items:center}
-    .boleta-frame img{width:80%;display:block;margin:0 auto;border-radius:16px}
-    .sec-pad{padding:6rem clamp(1.5rem,6vw,5rem)}
-    .sec-center{text-align:center;max-width:600px;margin:0 auto 3.5rem}
-    .sec-label{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:.8rem;display:block}
-    .sec-title{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700;letter-spacing:-.5px;line-height:1.2}
+    @media(min-width:900px){
+      .btn-ghost{font-size:0.88rem;padding:.75rem 1.5rem}
+    }
+    
+    /* ⭐ SEÇÕES */
+    .sec-pad{
+      padding:3rem clamp(1rem,3vw,2rem);
+    }
+    @media(min-width:900px){
+      .sec-pad{padding:6rem clamp(1.5rem,6vw,5rem)}
+    }
+    
+    .sec-center{
+      text-align:center;
+      max-width:600px;
+      margin:0 auto 2rem;
+    }
+    @media(min-width:900px){
+      .sec-center{margin:0 auto 3.5rem}
+    }
+    
+    .sec-label{
+      font-family:'DM Mono',monospace;
+      font-size:0.6rem;
+      color:var(--gold);
+      letter-spacing:3px;
+      text-transform:uppercase;
+      margin-bottom:.5rem;
+      display:block;
+    }
+    @media(min-width:900px){
+      .sec-label{font-size:0.68rem;margin-bottom:0.8rem}
+    }
+    
+    .sec-title{
+      font-size:clamp(1.3rem,4vw,2.4rem);
+      font-weight:700;
+      letter-spacing:-.5px;
+      line-height:1.2;
+    }
+    
+    /* ⭐ FORMULÁRIOS */
     .signup{background:rgba(15,15,21,0.8)}
-    .signup-box{max-width:580px;margin:0 auto;background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:2.5rem 2rem}
-    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
-    @media(max-width:560px){.form-row{grid-template-columns:1fr}}
-    .fg{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.9rem}
-    .fg label{font-size:.78rem;font-weight:500;color:var(--text2)}
-    .fg input,.fg select{background:var(--bg);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:.65rem .9rem;font-family:'DM Sans',sans-serif;font-size:.9rem;width:100%}
+    .signup-box{
+      max-width:580px;
+      margin:0 auto;
+      background:var(--surface);
+      border:1px solid var(--border2);
+      border-radius:16px;
+      padding:1.5rem 1rem;
+    }
+    @media(min-width:900px){
+      .signup-box{padding:2.5rem 2rem}
+    }
+    
+    .form-row{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:.6rem;
+    }
+    @media(min-width:560px){
+      .form-row{grid-template-columns:1fr 1fr;gap:0.8rem}
+    }
+    
+    .fg{
+      display:flex;
+      flex-direction:column;
+      gap:.3rem;
+      margin-bottom:.7rem;
+    }
+    .fg label{font-size:0.75rem;font-weight:500;color:var(--text2)}
+    .fg input,.fg select{
+      background:var(--bg);
+      border:1px solid var(--border2);
+      border-radius:8px;
+      color:var(--text);
+      padding:.6rem .8rem;
+      font-family:'DM Sans',sans-serif;
+      font-size:0.85rem;
+      width:100%;
+    }
     .fg input:focus,.fg select:focus{outline:none;border-color:var(--gold)}
-    .notice-green{font-size:.75rem;color:var(--green);background:rgba(62,207,142,.05);border:1px solid rgba(62,207,142,.15);border-radius:6px;padding:.7rem .9rem;margin-top:.5rem;text-align:center}
-    footer{border-top:1px solid var(--border);background:#0a0a10;padding:3rem clamp(1.5rem,6vw,5rem) 1.5rem;position:relative;z-index:10}
-    @media(max-width:600px){nav{padding:.3rem .5rem}.nav-logo{font-size:.65rem}.btn-plano{width:52px;height:22px;font-size:.5rem}}
+    
+    .notice-green{
+      font-size:0.7rem;
+      color:var(--green);
+      background:rgba(62,207,142,.05);
+      border:1px solid rgba(62,207,142,.15);
+      border-radius:6px;
+      padding:.6rem .8rem;
+      margin-top:.5rem;
+      text-align:center;
+    }
+    
+    /* ⭐ FOOTER */
+    footer{
+      border-top:1px solid var(--border);
+      background:#0a0a10;
+      padding:2rem clamp(1rem,3vw,2rem) 1rem;
+      position:relative;
+      z-index:10;
+    }
+    @media(min-width:900px){
+      footer{padding:3rem clamp(1.5rem,6vw,5rem) 1.5rem}
+    }
+    
+    /* ⭐ NAVBAR MOBILE */
+    @media(max-width:600px){
+      nav{
+        height:auto;
+        padding:0.4rem 0.5rem;
+        gap:0.3rem;
+      }
+      .nav-logo{
+        font-size:0.7rem;
+        letter-spacing:1px;
+      }
+      .nav-links{
+        gap:0.5rem;
+      }
+      .nav-links a{
+        font-size:0.6rem;
+      }
+      .btn-plano{
+        min-width:50px;
+        height:26px;
+        font-size:0.5rem;
+        border-radius:3px;
+        padding:2px 4px;
+      }
+      .btn-plano small{
+        font-size:0.4rem;
+      }
+      .planos-row{
+        gap:3px;
+        width:100%;
+        justify-content:flex-start;
+      }
+      .hero{
+        padding:1.5rem 1rem;
+      }
+      .boleta-frame{
+        max-width:180px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -65,23 +467,26 @@
 <nav>
   <div class="nav-logo"><span class="nav-logo-dot"></span>TRADE WINNER PRO</div>
   <ul class="nav-links">
-    <li><a href="#cadastro-teste">Teste Grátis</a></li>
-    <li><a href="#cadastro-comprovante" style="color:var(--gold);font-weight:600">📩 Comprovante</a></li>
+    <li><a href="#cadastro-teste">🎯 Teste Grátis</a></li>
+    <li><a href="#cadastro-comprovante">📩 Comprovante</a></li>
   </ul>
-  <div style="display:flex;align-items:center;gap:8px">
-    <div class="planos-row">
-      <a href="#cadastro-teste" class="btn-plano btn-latao">🔰 LATÃO<br><small>GRÁTIS 7D</small></a>
-      <a href="https://pag.ae/81Jw7qy2N" target="_blank" class="btn-plano btn-bronze">BRONZE<br><small>30D R$47</small></a>
-      <a href="https://pag.ae/81Jw7ZCg6" target="_blank" class="btn-plano btn-prata">PRATA<br><small>90D R$127</small></a>
-      <a href="https://pag.ae/81Jw8oyYM" target="_blank" class="btn-plano btn-ouro">OURO<br><small>180D R$227</small></a>
-      <a href="https://pag.ae/81Jw8RJ16" target="_blank" class="btn-plano btn-diamante">DIAMANTE<br><small>270D R$307</small></a>
-      <a href="https://pag.ae/81Jw9ggEr" target="_blank" class="btn-plano btn-elite">ELITE<br><small>365D R$367</small></a>
-    </div>
+  <div class="planos-row">
+    <a href="#cadastro-teste" class="btn-plano btn-latao">🔰 LATÃO<br><small>7D GRÁTIS</small></a>
+    <a href="https://pag.ae/81Jw7qy2N" target="_blank" class="btn-plano btn-bronze">🥉 BRONZE<br><small>30D R$47</small></a>
+    <a href="https://pag.ae/81Jw7ZCg6" target="_blank" class="btn-plano btn-prata">🥈 PRATA<br><small>90D R$127</small></a>
+    <a href="https://pag.ae/81Jw8oyYM" target="_blank" class="btn-plano btn-ouro">🥇 OURO<br><small>180D R$227</small></a>
+    <a href="https://pag.ae/81Jw8RJ16" target="_blank" class="btn-plano btn-diamante">💎 DIAMANTE<br><small>270D R$307</small></a>
+    <a href="https://pag.ae/81Jw9ggEr" target="_blank" class="btn-plano btn-elite">👑 ELITE<br><small>365D R$367</small></a>
   </div>
 </nav>
 
 <section class="hero">
   <div class="hero-inner">
+    <div class="hero-right">
+      <div class="boleta-frame">
+        <img src="boleta2.png" alt="Painel Trade Winner Pro" style="max-width:100%;height:auto;">
+      </div>
+    </div>
     <div class="hero-left">
       <div class="hero-tag"><span class="nav-logo-dot"></span>METATRADER 5 · EA PROFISSIONAL</div>
       <h1 class="hero-title">Execute com<br><em>precisão cirúrgica</em><br>no mercado.</h1>
@@ -92,15 +497,14 @@
         <div class="hero-stat"><span class="hero-stat-n">MT5</span><span class="hero-stat-l">Plataforma</span></div>
         <div class="hero-stat"><span class="hero-stat-n">XAUUSD</span><span class="hero-stat-l">Ativo principal</span></div>
       </div>
-      <div style="display:flex;flex-direction:column;gap:.8rem">
-        <div style="display:flex;gap:.8rem;flex-wrap:wrap">
-          <a href="#cadastro-teste" class="btn-primary" style="flex:1;min-width:200px;justify-content:center;text-align:center">🎯 QUERO TESTAR 7 DIAS GRÁTIS</a>
-          <a href="#cadastro-comprovante" class="btn-ghost" style="flex:1;min-width:200px;justify-content:center;text-align:center;border-color:var(--gold);color:var(--gold)">📩 JÁ ASSINEI</a>
+      <div style="display:flex;flex-direction:column;gap:.6rem">
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+          <a href="#cadastro-teste" class="btn-primary" style="flex:1;min-width:150px;">🎯 QUERO TESTAR 7 DIAS GRÁTIS</a>
+          <a href="#cadastro-comprovante" class="btn-ghost" style="flex:1;min-width:150px;border-color:var(--gold);color:var(--gold);">📩 JÁ ASSINEI</a>
         </div>
-        <a href="Manual_TRADE_WINNER.pdf" download class="btn-ghost" style="justify-content:center;text-align:center;width:100%;padding:.75rem 1.5rem">📘 MANUAL EM PDF</a>
+        <a href="Manual_TRADE_WINNER.pdf" download class="btn-ghost" style="width:100%;background:rgba(255,255,255,0.03);">📘 MANUAL EM PDF</a>
       </div>
     </div>
-    <div class="hero-right"><div class="boleta-frame"><img src="boleta2.png" alt="Painel Trade Winner Pro"></div></div>
   </div>
 </section>
 
@@ -108,50 +512,49 @@
   <div class="sec-center">
     <span class="sec-label">Teste Grátis</span>
     <h2 class="sec-title">Comece a mudar seus resultados hoje</h2>
-    <p class="hero-sub" style="text-align:center;margin:0 auto">Sem cartão. Sem compromisso. Apenas seus dados para receber a Boleta.</p>
+    <p style="color:var(--text2);font-size:0.9rem;text-align:center;margin-top:0.5rem;">Sem cartão. Sem compromisso. Apenas seus dados para receber a Boleta.</p>
   </div>
   <div class="signup-box">
     <form id="formTeste" onsubmit="return false;">
-      <input type="hidden" name="tipo" value="TESTE_GRATIS">
       <div class="form-row">
-        <div class="fg"><label>Nome *</label><input type="text" name="nome" id="testeNome" required></div>
-        <div class="fg"><label>WhatsApp *</label><input type="tel" name="whatsapp" id="testeWhats" required placeholder="+55 41 99999-9999"></div>
+        <div class="fg"><label>Nome *</label><input type="text" id="testeNome" required placeholder="Seu nome completo"></div>
+        <div class="fg"><label>WhatsApp *</label><input type="tel" id="testeWhats" required placeholder="+55 41 99999-9999"></div>
       </div>
-      <div class="fg"><label>E-mail *</label><input type="email" name="email" id="testeEmail" required></div>
-      <div class="fg"><label>ID Terminal MT5 *</label><input type="text" name="terminal_id" id="testeTerminal" required placeholder="Para teste, digite CELULAR se não souber"></div>
-      <button type="submit" class="btn-primary" id="btnTeste" style="width:100%;padding:.9rem;font-size:.95rem">🎯 QUERO TESTAR 7 DIAS GRÁTIS</button>
+      <div class="fg"><label>E-mail *</label><input type="email" id="testeEmail" required placeholder="seu@email.com"></div>
+      <div class="fg"><label>ID Terminal MT5 *</label><input type="text" id="testeTerminal" required placeholder="Digite CELULAR se não souber"></div>
+      <button type="submit" class="btn-primary" id="btnTeste" style="padding:.8rem;font-size:0.9rem;">🎯 QUERO TESTAR 7 DIAS GRÁTIS</button>
     </form>
-    <div class="notice-green" style="margin-top:1rem">✅ Chave enviada por WhatsApp e Email</div>
+    <div class="notice-green">✅ Chave enviada por WhatsApp e Email</div>
   </div>
 </section>
 
-<section class="sec-pad signup" id="cadastro-comprovante" style="background:rgba(15,15,21,0.9)">
+<section class="sec-pad signup" id="cadastro-comprovante" style="background:rgba(15,15,21,0.95);">
   <div class="sec-center">
     <span class="sec-label">Ativação de Licença</span>
     <h2 class="sec-title">Já fez sua assinatura?</h2>
-    <p class="hero-sub" style="text-align:center;margin:0 auto">Envie o comprovante para liberarmos sua licença em minutos.</p>
+    <p style="color:var(--text2);font-size:0.9rem;text-align:center;margin-top:0.5rem;">Envie o comprovante para liberarmos sua licença em minutos.</p>
   </div>
   <div class="signup-box">
     <form id="formComprovante" onsubmit="return false;">
       <div class="form-row">
-        <div class="fg"><label>Nome *</label><input type="text" id="compNome" required></div>
+        <div class="fg"><label>Nome *</label><input type="text" id="compNome" required placeholder="Seu nome completo"></div>
         <div class="fg"><label>WhatsApp *</label><input type="tel" id="compWhats" required placeholder="+55 41 99999-9999"></div>
       </div>
-      <div class="fg"><label>E-mail *</label><input type="email" id="compEmail" required></div>
+      <div class="fg"><label>E-mail *</label><input type="email" id="compEmail" required placeholder="seu@email.com"></div>
       <div class="fg"><label>Plano *</label><select id="compPlano" required><option value="">Selecione...</option><option>BRONZE</option><option>PRATA</option><option>OURO</option><option>DIAMANTE</option><option>ELITE</option></select></div>
-      <div class="fg"><label>ID Terminal *</label><input type="text" id="compTerminal" required></div>
+      <div class="fg"><label>ID Terminal *</label><input type="text" id="compTerminal" required placeholder="Seu ID Terminal MT5"></div>
       <div class="fg"><label>Comprovante (código ou link)</label><input type="text" id="compCodigo" placeholder="Código da transação ou link"></div>
-      <button type="submit" class="btn-primary" id="btnComprovante" style="width:100%;padding:.9rem">📩 ENVIAR COMPROVANTE</button>
+      <button type="submit" class="btn-primary" id="btnComprovante" style="padding:.8rem;font-size:0.9rem;">📩 ENVIAR COMPROVANTE</button>
     </form>
   </div>
 </section>
 
 <footer>
-  <div style="max-width:1200px;margin:0 auto;text-align:center">
-    <div style="font-size:.7rem;color:var(--text2)">© 2025 TRADE WINNER PRO · Todos os direitos reservados</div>
+  <div style="max-width:1200px;margin:0 auto;text-align:center;">
+    <div style="font-size:0.65rem;color:var(--text2);">© 2025 TRADE WINNER PRO · Todos os direitos reservados</div>
   </div>
-  <div style="max-width:1200px;margin:1.2rem auto 0;padding:.8rem 1rem;background:rgba(224,82,96,.05);border:1px solid rgba(224,82,96,.1);border-radius:8px;text-align:center">
-    <p style="font-size:.68rem;color:var(--text2);line-height:1.5;font-weight:300">⚠️ <strong style="color:#fff">Aviso de Risco:</strong> Trading é uma atividade de alto risco.</p>
+  <div style="max-width:1200px;margin:1rem auto 0;padding:.6rem .8rem;background:rgba(224,82,96,.05);border:1px solid rgba(224,82,96,.1);border-radius:8px;text-align:center;">
+    <p style="font-size:0.6rem;color:var(--text2);line-height:1.5;">⚠️ <strong style="color:#fff;">Aviso de Risco:</strong> Trading é uma atividade de alto risco. Não invista dinheiro que você não pode perder.</p>
   </div>
 </footer>
 
@@ -160,15 +563,12 @@
 (function(){
     emailjs.init("w0fvMYDTwWsWL5hnS");
     
-    // ⭐ CONFIGURAÇÃO DO BANCO DE DADOS
     const BIN_ID = "69f0013c36566621a8fc2b6e";
     const MASTER_KEY = "$2a$10$Tt3s6mjKmpz2gcZEtM9G7.Y.EEUV.rvuOTZSaNHRZxsGNPqKKhjEC";
-    
     const SALT = "TWPRO-SALT-2025";
     const LINK_EA = "https://tradewinnerpro.github.io/.com.br/TRADE_WINNER_PRO_V1.1.ex5";
     const LINK_PDF = "https://tradewinnerpro.github.io/.com.br/Manual_TRADE_WINNER.pdf";
 
-    // ⭐ SALVAR NO BANCO DE DADOS (JSONbin)
     async function salvarNoBanco(novoCliente) {
         try {
             let response = await fetch('https://api.jsonbin.io/v3/b/' + BIN_ID + '/latest', {
@@ -206,7 +606,6 @@
         return plano + "-" + l.charAt(p1 % l.length) + l.charAt(p2 % l.length) + l.charAt(p3 % l.length) + "-" + String(p1).padStart(4, '0') + "-" + String(p2 % 1000).padStart(3, '0') + "-" + String(p3 % 1000).padStart(3, '0');
     }
 
-    // ⭐ ENVIAR E-MAIL PARA O CLIENTE
     async function enviarEmailCliente(nome, email, chave, plano, expira, whatsapp, terminal) {
         try {
             await emailjs.send("service_kqme5zs", "template_rlrvpbm", {
@@ -228,7 +627,6 @@
         }
     }
 
-    // ⭐ TESTE GRÁTIS
     document.getElementById('btnTeste').addEventListener('click', async function(e){
         e.preventDefault();
         
@@ -269,13 +667,9 @@
             expira: expira.toISOString()
         };
         
-        // Salvar no banco de dados
         await salvarNoBanco(novoCliente);
-        
-        // Enviar e-mail
         await enviarEmailCliente(nome, email, chave, 'LATAO (7 Dias Grátis)', expiraFormatada, whatsapp, terminal);
         
-        // WhatsApp
         let nc = whatsapp.replace(/\D/g, '');
         let mc = '🎯 *TRADE WINNER PRO - Teste Ativado!*\n\n' +
                  'Olá *' + nome + '*!\n\n' +
@@ -299,7 +693,6 @@
         alert('✅ CADASTRO REALIZADO!\n\n🔰 LATÃO 7 dias GRÁTIS\n👤 ' + nome + '\n🔑 ' + chave + '\n📅 Até ' + expiraFormatada + '\n\n📱 WhatsApp aberto!\n📧 Email enviado!');
     });
 
-    // ⭐ COMPROVANTE
     document.getElementById('btnComprovante').addEventListener('click', async function(e){
         e.preventDefault();
         
