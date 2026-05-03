@@ -80,18 +80,10 @@
     .notice-green{font-size:.75rem;color:var(--green);background:rgba(62,207,142,.05);border:1px solid rgba(62,207,142,.15);border-radius:6px;padding:.7rem .9rem;margin-top:.5rem;text-align:center}
     .ticker-wrap{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(15,15,21,0.9);overflow:hidden;padding:.4rem 0}
     
-    /* ⭐ CORREÇÃO CELULAR */
     @media(max-width:1050px){nav{flex-wrap:wrap;height:auto;padding:0.4rem 1rem;gap:0.3rem}.planos-row{order:3;width:100%;justify-content:flex-start;padding-bottom:0.3rem}.btn-plano{width:80px;height:28px;font-size:.6rem}}
     @media(max-width:900px){.hero-inner{grid-template-columns:1fr;gap:2.5rem;padding-top:3rem}}
     @media(max-width:768px){.features-grid{grid-template-columns:repeat(2,1fr)}.markets-grid{grid-template-columns:repeat(2,1fr)}}
-    @media(max-width:600px){
-      nav{padding:0.3rem 0.5rem;gap:0.2rem}
-      .nav-logo{font-size:.65rem;letter-spacing:1px}
-      .nav-links{gap:0.5rem}
-      .nav-links a{font-size:.6rem}
-      .btn-plano{width:52px;height:22px;font-size:.5rem;letter-spacing:0;border-radius:3px}
-      .planos-row{gap:3px;overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;padding:2px 0}
-    }
+    @media(max-width:600px){nav{padding:0.3rem 0.5rem;gap:0.2rem}.nav-logo{font-size:.65rem;letter-spacing:1px}.nav-links{gap:0.5rem}.nav-links a{font-size:.6rem}.btn-plano{width:52px;height:22px;font-size:.5rem;letter-spacing:0;border-radius:3px}.planos-row{gap:3px;overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;padding:2px 0}}
     @media(max-width:560px){.form-row{grid-template-columns:1fr}}
     @media(max-width:480px){.features-grid{grid-template-columns:1fr}.markets-grid{grid-template-columns:1fr}}
     
@@ -342,8 +334,25 @@
             dataCadastro:hoje.toISOString(),expira:expira.toISOString()
         };
         
+        // Salvar no banco
         enviarParaServidor(novoCliente);
         
+        // ⭐ ENVIAR EMAIL PARA O CLIENTE
+        emailjs.send("service_kqme5zs","template_rlrvpbm",{
+            to_email: email,
+            to_name: nome,
+            nome: nome,
+            chave: chave,
+            expira: expiraFormatada,
+            plano: 'LATAO (7 Dias Grátis)',
+            link_ea: LINK_EA,
+            link_pdf: LINK_PDF,
+            whatsapp: whatsapp,
+            terminal_id: terminal,
+            validade: expiraFormatada
+        }).then(function(r){console.log('✅ Email CLIENTE enviado!');}).catch(function(e){console.log('⚠️ Erro email cliente:',e);});
+        
+        // Enviar notificação para o dono
         emailjs.send("service_kqme5zs","template_4xqebas",{
             to_email:"tradewinnerpro@gmail.com",nome:nome,whatsapp:whatsapp,
             email_cliente:email,terminal_id:terminal,chave:chave,
@@ -351,6 +360,7 @@
             data_cadastro:hoje.toLocaleDateString('pt-BR')+' '+hoje.toLocaleTimeString('pt-BR')
         }).then(function(r){console.log('✅ Email DONO OK');}).catch(function(e){console.log('⚠️ Erro dono:',e);});
 
+        // WhatsApp
         let nc=whatsapp.replace(/\D/g,'');
         let mc='🎯 *TRADE WINNER PRO - Teste Ativado!*\n\n'+
                'Olá *'+nome+'*!\n\n'+
@@ -367,7 +377,7 @@
         window.open('https://wa.me/'+nc+'?text='+encodeURIComponent(mc),'_blank');
 
         document.getElementById('formTeste').reset();
-        alert('✅ CADASTRO REALIZADO!\n\n🔰 LATÃO 7 dias GRÁTIS\n👤 '+nome+'\n🔑 '+chave+'\n📅 Até '+expiraFormatada+'\n\n📱 WhatsApp com chave já foi aberto!\n📧 Email será enviado em instantes.');
+        alert('✅ CADASTRO REALIZADO!\n\n🔰 LATÃO 7 dias GRÁTIS\n👤 '+nome+'\n🔑 '+chave+'\n📅 Até '+expiraFormatada+'\n\n📱 WhatsApp aberto!\n📧 Email enviado!');
     });
 
     document.getElementById('btnComprovante').addEventListener('click',async function(e){
