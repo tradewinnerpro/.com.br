@@ -471,52 +471,51 @@ async function enviarEmailAuto(cliente) {
     
     // ⭐ CADASTRAR COM EMAIL AUTOMÁTICO
     window.cadastrarCliente = async function() {
-        let nome = document.getElementById('nomeInput').value.trim();
-        let whats = document.getElementById('whatsInput').value.trim();
-        let email = document.getElementById('emailInput').value.trim();
-        let terminal = document.getElementById('terminalInput').value.trim();
-        let valor = parseFloat(document.getElementById('valorInput').value) || 0;
-        let dataCompra = document.getElementById('dataCompraInput').value;
-        
-        if(!nome || !whats || !terminal) return alert('⚠️ Preencha Nome, WhatsApp e ID Terminal!');
-        if(!dataCompra) { let h = new Date(); dataCompra = h.getFullYear() + '-' + String(h.getMonth()+1).padStart(2,'0') + '-' + String(h.getDate()).padStart(2,'0'); }
-        
-        let chave = planoSelecionado + "-" + gerarHash(terminal);
-        let agora = new Date();
-        let expira = new Date(agora);
-        expira.setDate(agora.getDate() + diasSelecionados);
-        
-        let novo = {
-            id: Date.now() + '_' + Math.random(),
-            nome, whats, email, terminal, valor, chave,
-            dataCadastro: agora.toISOString(),
-            expira: expira.toISOString(),
-            plano: planoSelecionado,
-            dias: diasSelecionados,
-            dataCompra
-        };
-        
-        clientes.push(novo);
-        salvar();
-        ultimoCliente = novo;
-        
-        document.getElementById('chaveGeradaDisplay').textContent = chave;
-        document.getElementById('planoGeradoBadge').textContent = planoSelecionado;
-        document.getElementById('planoGeradoBadge').className = 'badge-plano badge-' + planoSelecionado.toLowerCase();
-        document.getElementById('chaveGeradaBox').classList.add('show');
-        
-        ['nomeInput','whatsInput','terminalInput','emailInput'].forEach(id => document.getElementById(id).value = '');
-        
-        atualizarTudo();
-        
-        // ⭐ ENVIA EMAIL AUTOMÁTICO
-        if(email) {
-            let ok = await enviarEmailAuto(novo);
-            if(!ok) alert('⚠️ Email não enviado. Verifique o console (F12)');
-        }
-        
-        alert('✅ Cadastrado!\n🔑 ' + chave);
+    let nome = document.getElementById('nomeInput').value.trim();
+    let whats = document.getElementById('whatsInput').value.trim();
+    let email = document.getElementById('emailInput').value.trim();
+    let terminal = document.getElementById('terminalInput').value.trim();
+    let valor = parseFloat(document.getElementById('valorInput').value) || 0;
+    let dataCompra = document.getElementById('dataCompraInput').value;
+    
+    if(!nome || !whats || !terminal) return alert('⚠️ Preencha Nome, WhatsApp e ID Terminal!');
+    if(!dataCompra) { let h = new Date(); dataCompra = h.getFullYear() + '-' + String(h.getMonth()+1).padStart(2,'0') + '-' + String(h.getDate()).padStart(2,'0'); }
+    
+    let chave = planoSelecionado + "-" + gerarHash(terminal);
+    let agora = new Date();
+    let expira = new Date(agora);
+    expira.setDate(agora.getDate() + diasSelecionados);
+    
+    let novo = {
+        id: Date.now() + '_' + Math.random(),
+        nome, whats, email, terminal, valor, chave,
+        dataCadastro: agora.toISOString(),
+        expira: expira.toISOString(),
+        plano: planoSelecionado,
+        dias: diasSelecionados,
+        dataCompra
     };
+    
+    clientes.push(novo);
+    salvar();
+    ultimoCliente = novo;
+    
+    document.getElementById('chaveGeradaDisplay').textContent = chave;
+    document.getElementById('planoGeradoBadge').textContent = planoSelecionado;
+    document.getElementById('planoGeradoBadge').className = 'badge-plano badge-' + planoSelecionado.toLowerCase();
+    document.getElementById('chaveGeradaBox').classList.add('show');
+    
+    ['nomeInput','whatsInput','terminalInput','emailInput'].forEach(id => document.getElementById(id).value = '');
+    
+    atualizarTudo();
+    
+    // ⭐⭐⭐ ENVIA EMAIL AUTOMÁTICO - SEM ALERT BLOQUEANDO ⭐⭐⭐
+    if(email) {
+        enviarEmailAuto(novo);  // TIRA O AWAIT E O ALERT
+    }
+    
+    alert('✅ Cadastrado!\n🔑 ' + chave + '\n📧 Email será enviado em instantes');
+};
     
     // ⭐ EDITAR
     window.editarCliente = function(id) {
