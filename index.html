@@ -1,417 +1,1374 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>TRADE WINNER PRO · Boleta inteligente MT5</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    :root{--bg:#09090d;--bg2:#0f0f15;--surface:#13131a;--border:#1f1f2a;--border2:#2a2a38;--gold:#c9a84c;--gold2:#e8c96a;--text:#e8e8f0;--text2:#8888a8;--green:#3ecf8e;--red:#e05260;--radius:12px}
-    *{margin:0;padding:0;box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{background-color:#09090d;background-image:url('gettyimages.png');background-size:cover;background-position:center 20%;background-repeat:no-repeat;background-attachment:fixed;color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden;position:relative}
-    body::before{content:'';position:fixed;inset:0;background:rgba(9,9,13,0.82);backdrop-filter:blur(2px);z-index:0;pointer-events:none}
-    body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:0.04;pointer-events:none;z-index:0}
-    .grid-overlay{position:fixed;inset:0;background-image:linear-gradient(rgba(201,168,76,0.05)1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,0.05)1px,transparent 1px);background-size:80px 80px;pointer-events:none;z-index:0}
-    section,nav,.hero,.features,.boleta-sec,.markets,.signup,.ticker-wrap{position:relative;z-index:2}
-    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,2vw,2rem);height:60px;background:rgba(9,9,13,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);gap:0.8rem}
-    .nav-logo{font-family:'DM Mono',monospace;font-size:1.1rem;font-weight:900;color:var(--gold2);letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:7px;white-space:nowrap;flex-shrink:0}
-    .nav-logo-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold);animation:blink 2s ease infinite}
-    @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
-    .nav-links{display:flex;align-items:center;gap:1.2rem;list-style:none;flex-shrink:0}
-    .nav-links a{font-size:.75rem;font-weight:500;color:var(--text2);text-decoration:none;letter-spacing:.5px;transition:color .2s;white-space:nowrap}
-    .nav-links a:hover{color:var(--gold2)}
-    .planos-row{display:flex;align-items:center;gap:5px;flex-shrink:1;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-    .planos-row::-webkit-scrollbar{display:none}
-    .btn-plano{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:90px;height:38px;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:.6rem;font-weight:700;text-decoration:none;letter-spacing:.5px;transition:all .2s;border:none;flex-shrink:0;cursor:pointer;text-align:center;line-height:1.1}
-    .btn-latao{background:#CD7F32;color:#FFF5E0}.btn-latao:hover{background:#DE9043;box-shadow:0 0 10px rgba(205,127,50,0.4)}
-    .btn-bronze{background:#8B6914;color:#FFF5E0}.btn-bronze:hover{background:#A07818;box-shadow:0 0 10px rgba(139,105,20,0.4)}
-    .btn-prata{background:#7D8794;color:#FFF}.btn-prata:hover{background:#949FAC;box-shadow:0 0 10px rgba(125,135,148,0.4)}
-    .btn-ouro{background:#DAA520;color:#1a1a1a}.btn-ouro:hover{background:#E8B830;box-shadow:0 0 12px rgba(218,165,32,0.5)}
-    .btn-diamante{background:#6A5ACD;color:#FFF}.btn-diamante:hover{background:#7B6ED8;box-shadow:0 0 12px rgba(106,90,205,0.4)}
-    .btn-elite{background:#C0392B;color:#FFF}.btn-elite:hover{background:#D44637;box-shadow:0 0 12px rgba(192,57,43,0.4)}
-    @media(max-width:1050px){nav{flex-wrap:wrap;height:auto;padding:0.4rem 1rem;gap:0.3rem}.planos-row{order:3;width:100%;justify-content:flex-start;padding-bottom:0.3rem}.btn-plano{width:80px;height:28px;font-size:.6rem}}
-    @media(max-width:600px){nav{padding:0.3rem 0.5rem;gap:0.2rem}.nav-logo{font-size:.65rem;letter-spacing:1px}.nav-links{gap:0.5rem}.nav-links a{font-size:.6rem}.btn-plano{width:52px;height:22px;font-size:.5rem;letter-spacing:0;border-radius:3px}.planos-row{gap:3px;overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;padding:2px 0}}
-    .hero{min-height:92vh;display:flex;align-items:center;padding:0 clamp(1.5rem,6vw,5rem)}
-    .hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;width:100%;max-width:1280px;margin:0 auto}
-    @media(max-width:900px){.hero-inner{grid-template-columns:1fr;gap:2.5rem;padding-top:3rem}}
-    .hero-left{display:flex;flex-direction:column;gap:1.4rem}
-    .hero-tag{display:inline-flex;align-items:center;gap:.5rem;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.25);border-radius:4px;padding:.35rem .9rem;font-family:'DM Mono',monospace;font-size:.7rem;font-weight:500;color:var(--gold2);letter-spacing:2px;width:fit-content}
-    .hero-title{font-size:clamp(2.2rem,4.5vw,3.8rem);font-weight:700;line-height:1.08;letter-spacing:-1px}
-    .hero-title em{font-style:normal;color:var(--gold2)}
-    .hero-sub{font-size:1.05rem;color:var(--text2);max-width:480px;line-height:1.7;font-weight:300}
-    .hero-stats{display:flex;gap:2rem;padding-top:.5rem;flex-wrap:wrap}
-    .hero-stat{display:flex;flex-direction:column;gap:.15rem}
-    .hero-stat-n{font-family:'DM Mono',monospace;font-size:1.5rem;font-weight:500;color:var(--gold2)}
-    .hero-stat-l{font-size:.72rem;color:var(--text2);letter-spacing:.5px}
-    .btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--gold);color:#09090d;font-weight:700;font-size:.9rem;padding:.75rem 1.8rem;border-radius:6px;text-decoration:none;letter-spacing:.3px;transition:all .2s;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
-    .btn-primary:hover{background:var(--gold2);transform:translateY(-2px)}
-    .btn-ghost{display:inline-flex;align-items:center;gap:.5rem;background:transparent;border:1px solid var(--border2);color:var(--text2);font-size:.88rem;font-weight:500;padding:.75rem 1.5rem;border-radius:6px;text-decoration:none;transition:all .2s;cursor:pointer;font-family:'DM Sans',sans-serif}
-    .btn-ghost:hover{border-color:var(--gold);color:var(--gold2)}
-    .hero-right{display:flex;justify-content:center;align-items:center}
-    .boleta-frame{max-width:340px;width:100%;display:flex;justify-content:center;align-items:center}
-    .boleta-frame img{width:80%;display:block;margin:0 auto;border-radius:16px}
-    .sec-pad{padding:6rem clamp(1.5rem,6vw,5rem)}
-    .sec-center{text-align:center;max-width:600px;margin:0 auto 3.5rem}
-    .sec-label{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:.8rem;display:block}
-    .sec-title{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700;letter-spacing:-.5px;line-height:1.2}
-    .sec-desc{color:var(--text2);margin-top:.8rem;font-weight:300}
-    .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:1000px;margin:0 auto}
-    @media(max-width:768px){.features-grid{grid-template-columns:repeat(2,1fr)}}
-    @media(max-width:480px){.features-grid{grid-template-columns:1fr}}
-    .feat-card{background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:1.8rem 1.5rem;text-align:center;transition:all 0.3s;cursor:default}
-    .feat-card:hover{transform:translateY(-4px);border-color:var(--gold);box-shadow:0 8px 24px rgba(201,168,76,0.08)}
-    .feat-icon{font-size:2rem;margin-bottom:.8rem}
-    .feat-title{font-weight:600;font-size:.95rem;color:var(--text);margin-bottom:.4rem}
-    .feat-desc{font-size:.78rem;color:var(--text2);line-height:1.5}
-    .markets-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;max-width:1000px;margin:0 auto}
-    @media(max-width:768px){.markets-grid{grid-template-columns:repeat(2,1fr)}}
-    @media(max-width:480px){.markets-grid{grid-template-columns:1fr}}
-    .market-card{background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:1.5rem;transition:all 0.3s;cursor:default}
-    .market-card:hover{transform:translateY(-2px);border-color:var(--gold)}
-    .mc-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.8rem}
-    .mc-sym{font-family:'DM Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--text)}
-    .mc-name{font-size:.7rem;color:var(--text2);margin-top:2px}
-    .mc-badge{display:inline-block;padding:3px 8px;border-radius:20px;font-size:.55rem;font-weight:700;letter-spacing:1px;background:rgba(201,168,76,0.15);color:var(--gold)}
-    .mc-badge.blue{background:rgba(59,158,255,0.15);color:#3b9eff}
-    .mc-badge.red{background:rgba(224,82,96,0.15);color:var(--red)}
-    .mc-trend{font-size:.75rem;font-weight:500;margin-top:.5rem}
-    .signup{background:rgba(15,15,21,0.8)}
-    .signup-box{max-width:580px;margin:0 auto;background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:2.5rem 2rem}
-    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
-    @media(max-width:560px){.form-row{grid-template-columns:1fr}}
-    .fg{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.9rem}
-    .fg label{font-size:.78rem;font-weight:500;color:var(--text2)}
-    .fg input,.fg select{background:var(--bg);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:.65rem .9rem;font-family:'DM Sans',sans-serif;font-size:.9rem;width:100%}
-    .fg input:focus,.fg select:focus{outline:none;border-color:var(--gold)}
-    .notice-green{font-size:.75rem;color:var(--green);background:rgba(62,207,142,.05);border:1px solid rgba(62,207,142,.15);border-radius:6px;padding:.7rem .9rem;margin-top:.5rem;text-align:center}
-    .ticker-wrap{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(15,15,21,0.9);overflow:hidden;padding:.4rem 0}
-  </style>
-</head>
-<body>
-<div class="grid-overlay"></div>
+//+------------------------------------------------------------------+
+//|                                          SuperPro_EA_v2.1.mq5    |
+//|   Expert Advisor — Versão Otimizada e Profissional               |
+//|   ST3 + Volume Delta + Blocos de Pressão + Score + Gestão       |
+//+------------------------------------------------------------------+
+#property copyright "SuperPro EA"
+#property version   "2.10"
+#property description "EA baseado no SuperPro Indicator — Versão Otimizada"
 
-<nav>
-  <div class="nav-logo"><span class="nav-logo-dot"></span>TRADE WINNER PRO</div>
-  <ul class="nav-links">
-    <li><a href="#funcoes">Funções</a></li>
-    <li><a href="#boleta">Boleta</a></li>
-    <li><a href="#mercados">Mercados</a></li>
-    <li><a href="#cadastro-teste">Teste Grátis</a></li>
-    <li><a href="#cadastro-comprovante" style="color:var(--gold);font-weight:600">📩 Comprovante</a></li>
-  </ul>
-  <div style="display:flex;align-items:center;gap:8px">
-    <div style="display:flex;align-items:center;gap:4px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);border-radius:20px;padding:3px 12px;flex-shrink:0">
-      <span style="font-size:.75rem">🔰</span>
-      <span style="font-size:.58rem;font-weight:700;color:var(--gold2);letter-spacing:1px;white-space:nowrap">ESCOLHA SEU PLANO</span>
-    </div>
-    <div class="planos-row">
-      <a href="#cadastro-teste" class="btn-plano btn-latao">🔰 LATÃO<br><small style="font-size:.5rem;">GRÁTIS 7D</small></a>
-      <a href="https://pag.ae/81Jw7qy2N" target="_blank" class="btn-plano btn-bronze">BRONZE<br><small style="font-size:.5rem;">30D (R$47)</small></a>
-      <a href="https://pag.ae/81Jw7ZCg6" target="_blank" class="btn-plano btn-prata">PRATA<br><small style="font-size:.5rem;">90D (R$127)</small></a>
-      <a href="https://pag.ae/81Jw8oyYM" target="_blank" class="btn-plano btn-ouro">OURO<br><small style="font-size:.5rem;">180D (R$227)</small></a>
-      <a href="https://pag.ae/81Jw8RJ16" target="_blank" class="btn-plano btn-diamante">DIAMANTE<br><small style="font-size:.5rem;">270D (R$307)</small></a>
-      <a href="https://pag.ae/81Jw9ggEr" target="_blank" class="btn-plano btn-elite">ELITE<br><small style="font-size:.5rem;">365D (R$367)</small></a>
-    </div>
-  </div>
-</nav>
+#include <Trade\Trade.mqh>
+#include <Trade\PositionInfo.mqh>
+#include <Trade\OrderInfo.mqh>
+#include <Trade\SymbolInfo.mqh>
+#include <Trade\AccountInfo.mqh>
 
-<section class="hero">
-  <div class="hero-inner">
-    <div class="hero-left">
-      <div class="hero-tag"><span class="nav-logo-dot"></span>METATRADER 5 · EA PROFISSIONAL</div>
-      <h1 class="hero-title">Execute com<br><em>precisão cirúrgica</em><br>no mercado.</h1>
-      <p class="hero-sub">Boleta inteligente com múltiplos Take Profits, Break-even automático e controle de risco integrado.</p>
-      <div class="hero-stats">
-        <div class="hero-stat"><span class="hero-stat-n">3×</span><span class="hero-stat-l">Take Profits</span></div>
-        <div class="hero-stat"><span class="hero-stat-n">7</span><span class="hero-stat-l">Dias grátis</span></div>
-        <div class="hero-stat"><span class="hero-stat-n">MT5</span><span class="hero-stat-l">Plataforma</span></div>
-        <div class="hero-stat"><span class="hero-stat-n">XAUUSD</span><span class="hero-stat-l">Ativo principal</span></div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:.8rem">
-        <div style="display:flex;gap:.8rem;flex-wrap:wrap">
-          <a href="#cadastro-teste" class="btn-primary" style="flex:1;min-width:200px;justify-content:center;text-align:center">🎯 QUERO TESTAR 7 DIAS GRÁTIS</a>
-          <a href="#cadastro-comprovante" class="btn-ghost" style="flex:1;min-width:200px;justify-content:center;text-align:center;border-color:var(--gold);color:var(--gold)">📩 JÁ ASSINEI</a>
-        </div>
-        <a href="Manual_TRADE_WINNER.pdf" download class="btn-ghost" style="justify-content:center;text-align:center;width:100%;padding:.75rem 1.5rem">📘 MANUAL EM PDF</a>
-      </div>
-    </div>
-    <div class="hero-right"><div class="boleta-frame"><img src="boleta2.png" alt="Painel Trade Winner Pro"></div></div>
-  </div>
-</section>
+//──────────────────────────────────────────────────────────────────
+// CLASSES AUXILIARES
+//──────────────────────────────────────────────────────────────────
+class CSymbolHelper {
+private:
+   string            m_symbol;
+   double            m_tickSize;
+   double            m_tickValue;
+   double            m_point;
+   double            m_lotMin, m_lotMax, m_lotStep;
+   
+public:
+   CSymbolHelper(string symbol = NULL) {
+      m_symbol = (symbol == NULL) ? _Symbol : symbol;
+      Atualizar();
+   }
+   
+   void Atualizar() {
+      m_tickSize     = SymbolInfoDouble(m_symbol, SYMBOL_TRADE_TICK_SIZE);
+      m_tickValue    = SymbolInfoDouble(m_symbol, SYMBOL_TRADE_TICK_VALUE);
+      m_point        = SymbolInfoDouble(m_symbol, SYMBOL_POINT);
+      m_lotMin       = SymbolInfoDouble(m_symbol, SYMBOL_VOLUME_MIN);
+      m_lotMax       = SymbolInfoDouble(m_symbol, SYMBOL_VOLUME_MAX);
+      m_lotStep      = SymbolInfoDouble(m_symbol, SYMBOL_VOLUME_STEP);
+   }
+   
+   double PipsToPrice(double pips) { return pips * m_point; }
+   double PriceToPips(double price) { return (m_point > 0) ? price / m_point : 0; }
+   double TickSize()     const { return m_tickSize; }
+   double TickValue()    const { return m_tickValue; }
+   double Point()        const { return m_point; }
+   double LotMin()       const { return m_lotMin; }
+   double LotMax()       const { return m_lotMax; }
+   double LotStep()      const { return m_lotStep; }
+};
 
-<div class="ticker-wrap">
-  <div class="tradingview-widget-container" style="width:100%">
-    <div class="tradingview-widget-container__widget"></div>
-    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-    {"symbols":[{"proName":"OANDA:XAUUSD","title":"OURO/XAUUSD"},{"proName":"OANDA:SPX500USD","title":"S&P 500"},{"proName":"OANDA:NAS100USD","title":"NASDAQ 100"},{"proName":"OANDA:US30USD","title":"DOW JONES"}],"showSymbolLogo":false,"colorTheme":"dark","isTransparent":true,"displayMode":"adaptive","locale":"br"}
-    </script>
-  </div>
-</div>
+class CTimeFilter {
+private:
+   datetime m_lastBarTime;
+   datetime m_lastSignalTime;
+   int      m_minSeconds;
+   
+public:
+   CTimeFilter(int minSeconds = 60) {
+      m_lastBarTime    = TimeCurrent();
+      m_lastSignalTime = 0;
+      m_minSeconds     = minSeconds;
+   }
+   
+   bool NovaBarra(datetime currentBarTime) {
+      if(currentBarTime != m_lastBarTime) {
+         m_lastBarTime = currentBarTime;
+         return true;
+      }
+      return false;
+   }
+   
+   bool PodeEnviarSinal() {
+      if(m_lastSignalTime == 0) return true;
+      return (TimeCurrent() - m_lastSignalTime >= m_minSeconds);
+   }
+   
+   void RegistrarSinal() { m_lastSignalTime = TimeCurrent(); }
+};
 
-<section class="sec-pad" id="funcoes">
-  <div class="sec-center"><span class="sec-label">Funcionalidades</span><h2 class="sec-title">Tudo que você precisa numa só boleta</h2></div>
-  <div class="features-grid">
-    <div class="feat-card"><div class="feat-icon">📍</div><div class="feat-title">Múltiplos Take Profits</div><div class="feat-desc">Até 3 TPs independentes com parciais de 25%, 50% ou 75% do lote.</div></div>
-    <div class="feat-card"><div class="feat-icon">🛡</div><div class="feat-title">Break-even Automático</div><div class="feat-desc">Stop Loss movido para entrada com um clique. Risco zero.</div></div>
-    <div class="feat-card"><div class="feat-icon">⏳</div><div class="feat-title">Ordens Pendentes</div><div class="feat-desc">STOP/LIMIT arrastando linhas no gráfico.</div></div>
-    <div class="feat-card"><div class="feat-icon">📊</div><div class="feat-title">Controle de Risco Diário</div><div class="feat-desc">Limite de perda e operações por dia.</div></div>
-    <div class="feat-card"><div class="feat-icon">📁</div><div class="feat-title">Relatórios Automáticos</div><div class="feat-desc">TXT, CSV e LOG ao fim do pregão.</div></div>
-    <div class="feat-card"><div class="feat-icon">🔐</div><div class="feat-title">Licença por Terminal ID</div><div class="feat-desc">7 dias grátis. Suporte WhatsApp.</div></div>
-  </div>
-</section>
+//──────────────────────────────────────────────────────────────────
+// ESTRUTURAS DE DADOS
+//──────────────────────────────────────────────────────────────────
+struct SSinal {
+   bool     valido;
+   bool     compra;
+   int      score;
+   double   precoEntrada;
+   double   sl;
+   double   tp;
+   double   lote;
+   string   motivoRejeicao;
+   
+   void Reset() {
+      valido          = false;
+      compra          = false;
+      score           = 0;
+      precoEntrada    = 0;
+      sl              = 0;
+      tp              = 0;
+      lote            = 0;
+      motivoRejeicao  = "";
+   }
+};
 
-<section class="sec-pad" id="mercados" style="background:rgba(15,15,21,0.6)">
-  <div class="sec-center"><span class="sec-label">Mercados</span><h2 class="sec-title">Opere os maiores mercados do mundo</h2></div>
-  <div class="markets-grid">
-    <div class="market-card"><div class="mc-header"><div><div class="mc-sym">XAU/USD</div><div class="mc-name">Ouro · GOLD</div></div><div class="mc-badge">⭐ TOP</div></div><div class="mc-trend" style="color:var(--green)">▲ Alta consistente</div></div>
-    <div class="market-card"><div class="mc-header"><div><div class="mc-sym">SPX</div><div class="mc-name">S&P 500</div></div><div class="mc-badge blue">ÍNDICE</div></div><div class="mc-trend" style="color:var(--green)">▲ Recuperação</div></div>
-    <div class="market-card"><div class="mc-header"><div><div class="mc-sym">NAS100</div><div class="mc-name">NASDAQ</div></div><div class="mc-badge red">VOLÁTIL</div></div><div class="mc-trend" style="color:var(--red)">▼ Oscilando</div></div>
-    <div class="market-card"><div class="mc-header"><div><div class="mc-sym">US30</div><div class="mc-name">Dow Jones</div></div><div class="mc-badge blue">ÍNDICE</div></div><div class="mc-trend" style="color:var(--green)">▲ Positiva</div></div>
-  </div>
-</section>
+struct Bloco {
+   double   preco;
+   bool     comprador;
+   double   ratio;
+   long     volTotal;
+   bool     ativo;
+   datetime tempo;
+};
 
-<section class="sec-pad boleta-sec" id="boleta">
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;max-width:1100px;margin:0 auto">
-    <div style="border-radius:16px;overflow:hidden;border:1px solid var(--border2)"><img src="boleta.png" alt="Boleta MT5" style="width:100%;display:block"></div>
-    <div>
-      <span class="sec-label">A Boleta</span>
-      <h2 style="font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700">Interface para scalp</h2>
-      <ul style="list-style:none;display:flex;flex-direction:column;gap:.8rem;margin-top:1rem">
-        <li style="color:var(--text2)">✓ Lote ajustável</li>
-        <li style="color:var(--text2)">✓ SL e 3 TPs</li>
-        <li style="color:var(--text2)">✓ BUY/SELL imediato</li>
-        <li style="color:var(--text2)">✓ Break-even 1 clique</li>
-        <li style="color:var(--text2)">✓ Fechamento parcial</li>
-      </ul>
-    </div>
-  </div>
-</section>
+struct SEstadoDiario {
+   double   saldoInicial;
+   double   maxDD;
+   double   lucroAtual;
+   int      perdasSeguidas;
+   datetime dataReset;
+   
+   void Reset() {
+      saldoInicial   = 0;
+      maxDD          = 0;
+      lucroAtual     = 0;
+      perdasSeguidas = 0;
+      dataReset      = 0;
+   }
+};
 
-<!-- FORMULÁRIO TESTE GRÁTIS -->
-<section class="sec-pad signup" id="cadastro-teste">
-  <div class="sec-center">
-    <span class="sec-label">Teste Grátis</span>
-    <h2 class="sec-title">Comece a mudar seus resultados hoje</h2>
-    <p class="sec-desc">Sem cartão. Sem compromisso. Apenas seus dados para receber a Boleta.</p>
-  </div>
-  <div class="signup-box">
-    <form id="formTeste" onsubmit="return false;">
-      <input type="hidden" name="tipo" value="TESTE_GRATIS">
-      <div class="form-row">
-        <div class="fg"><label>Nome *</label><input type="text" name="nome" id="testeNome" required></div>
-        <div class="fg"><label>WhatsApp *</label><input type="tel" name="whatsapp" id="testeWhats" required placeholder="+55 41 99999-9999"></div>
-      </div>
-      <div class="fg"><label>E-mail *</label><input type="email" name="email" id="testeEmail" required></div>
-      <div class="fg"><label>ID Terminal MT5 *</label><input type="text" name="terminal_id" id="testeTerminal" required placeholder="Para teste, digite CELULAR se não souber"></div>
-      <button type="submit" class="btn-primary" id="btnTeste" style="width:100%;padding:.9rem;font-size:.95rem">🎯 QUERO TESTAR 7 DIAS GRÁTIS</button>
-    </form>
-    <div class="notice-green" style="margin-top:1rem">✅ Chave enviada por WhatsApp e Email</div>
-  </div>
-</section>
+//──────────────────────────────────────────────────────────────────
+// ENUMS
+//──────────────────────────────────────────────────────────────────
+enum ENUM_LOG_LEVEL {
+   LOG_DEBUG,
+   LOG_INFO,
+   LOG_WARNING,
+   LOG_ERROR,
+   LOG_CRITICAL
+};
 
-<!-- FORMULÁRIO COMPROVANTE -->
-<section class="sec-pad signup" id="cadastro-comprovante" style="background:rgba(15,15,21,0.9)">
-  <div class="sec-center">
-    <span class="sec-label">Ativação de Licença</span>
-    <h2 class="sec-title">Já fez sua assinatura?</h2>
-    <p class="sec-desc">Envie o comprovante para liberarmos sua licença em minutos.</p>
-  </div>
-  <div class="signup-box">
-    <form id="formComprovante" onsubmit="return false;">
-      <div class="form-row">
-        <div class="fg"><label>Nome *</label><input type="text" id="compNome" required></div>
-        <div class="fg"><label>WhatsApp *</label><input type="tel" id="compWhats" required placeholder="+55 41 99999-9999"></div>
-      </div>
-      <div class="fg"><label>E-mail *</label><input type="email" id="compEmail" required></div>
-      <div class="fg"><label>Plano *</label><select id="compPlano" required><option value="">Selecione...</option><option>BRONZE</option><option>PRATA</option><option>OURO</option><option>DIAMANTE</option><option>ELITE</option></select></div>
-      <div class="fg"><label>ID Terminal *</label><input type="text" id="compTerminal" required></div>
-      <div class="fg"><label>Comprovante (código ou link)</label><input type="text" id="compCodigo" placeholder="Código da transação ou link"></div>
-      <button type="submit" class="btn-primary" id="btnComprovante" style="width:100%;padding:.9rem">📩 ENVIAR COMPROVANTE</button>
-    </form>
-  </div>
-</section>
+//──────────────────────────────────────────────────────────────────
+// INPUTS — OPERAÇÃO
+//──────────────────────────────────────────────────────────────────
+input group "════ OPERAÇÃO ════"
+input bool   EA_Ativo             = true;       // Liga/desliga o EA
+input double LotSize              = 0.01;       // Lote fixo (0=usar RiskPct)
+input double RiskPct              = 1.0;        // % do saldo por operação (se LotSize=0)
+input int    MaxPosicoesAbertas   = 1;          // Máx posições simultâneas
+input bool   PermitirCompra       = true;
+input bool   PermitirVenda        = true;
+input int    MagicNumber          = 20250101;
+input int    MinSegundosSinais    = 60;         // Segundos mínimos entre sinais
 
-<footer style="border-top:1px solid var(--border);background:#0a0a10;padding:3rem clamp(1.5rem,6vw,5rem) 1.5rem;position:relative;z-index:10">
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2.5rem;max-width:1200px;margin:0 auto 2rem">
-    <div>
-      <div style="font-family:'DM Mono',monospace;font-size:.8rem;color:var(--gold);letter-spacing:3px;margin-bottom:.8rem"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--gold);margin-right:8px;box-shadow:0 0 8px var(--gold)"></span>TRADE WINNER PRO</div>
-      <p style="font-size:.82rem;color:var(--text2);line-height:1.7;font-weight:300;margin-bottom:1rem">Boleta inteligente para MetaTrader 5.</p>
-      <div style="display:flex;align-items:center;gap:.4rem;font-size:.7rem;font-family:'DM Mono',monospace"><span style="width:8px;height:8px;border-radius:50%;background:var(--green)"></span><span>ONLINE · Suporte ativo</span></div>
-    </div>
-    <div>
-      <h4 style="font-size:.78rem;font-weight:600;color:#fff;letter-spacing:1px;margin-bottom:1rem;text-transform:uppercase">Links Rápidos</h4>
-      <ul style="list-style:none;display:flex;flex-direction:column;gap:.6rem">
-        <li><a href="#funcoes" style="color:var(--text2);text-decoration:none;font-size:.82rem">⚡ Funcionalidades</a></li>
-        <li><a href="#boleta" style="color:var(--text2);text-decoration:none;font-size:.82rem">📊 A Boleta</a></li>
-        <li><a href="#mercados" style="color:var(--text2);text-decoration:none;font-size:.82rem">🌍 Mercados</a></li>
-        <li><a href="#cadastro-teste" style="color:var(--text2);text-decoration:none;font-size:.82rem">🎯 Teste Grátis</a></li>
-      </ul>
-    </div>
-    <div>
-      <h4 style="font-size:.78rem;font-weight:600;color:#fff;letter-spacing:1px;margin-bottom:1rem;text-transform:uppercase">Fale Conosco</h4>
-      <div style="display:flex;flex-direction:column;gap:.7rem">
-        <a href="mailto:tradewinnerpro@gmail.com" style="display:flex;align-items:center;gap:.6rem;color:var(--text2);text-decoration:none;font-size:.82rem">✉️ tradewinnerpro@gmail.com</a>
-        <a href="https://wa.me/5541999765210" target="_blank" style="display:flex;align-items:center;gap:.6rem;color:var(--text2);text-decoration:none;font-size:.82rem">📲 (41) 99976-5210</a>
-      </div>
-    </div>
-    <div>
-      <h4 style="font-size:.78rem;font-weight:600;color:#fff;letter-spacing:1px;margin-bottom:1rem;text-transform:uppercase">Selo de Confiança</h4>
-      <div style="display:flex;flex-direction:column;gap:.6rem;font-size:.78rem;color:var(--text2)">
-        <div>✓ 7 dias de teste grátis</div><div>✓ Suporte via WhatsApp</div><div>✓ Sem fidelidade</div>
-      </div>
-    </div>
-  </div>
-  <div style="border-top:1px solid var(--border);padding-top:1.5rem;max-width:1200px;margin:0 auto;text-align:center">
-    <div style="font-size:.7rem;color:var(--text2)">© 2025 TRADE WINNER PRO · Todos os direitos reservados</div>
-  </div>
-  <div style="max-width:1200px;margin:1.2rem auto 0;padding:.8rem 1rem;background:rgba(224,82,96,.05);border:1px solid rgba(224,82,96,.1);border-radius:8px;text-align:center">
-    <p style="font-size:.68rem;color:var(--text2);line-height:1.5;font-weight:300">⚠️ <strong style="color:#fff">Aviso de Risco:</strong> Trading é uma atividade de alto risco.</p>
-  </div>
-</footer>
+input group "════ STOP / ALVO ════"
+input int    StopLoss_Pts         = 300;        // Stop em pontos (0=usar ATR)
+input int    TakeProfit_Pts       = 600;        // TP em pontos (0=usar ratio)
+input double RatioRisco           = 2.0;        // TP = SL * ratio (se TP=0)
+input bool   UsarATR_SL           = false;      // true=SL via ATR
+input double ATR_SL_Mult          = 1.5;        // SL = ATR * mult
+input int    ATR_SL_Periodo       = 14;
+input int    MaxSpread            = 30;         // Spread máximo permitido (pontos)
 
-<!-- EmailJS + Script -->
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-<script>
-(function(){
-    emailjs.init("w0fvMYDTwWsWL5hnS");
-    
-    // ⭐ CONFIGURAÇÃO JSONbin ⭐
-    const JSONBIN_ID = "69f0013c36566621a8fc2b6e";
-    const JSONBIN_KEY = "$2a$10$Tt3s6mjKmpz2gcZEtM9G7.Y.EEUV.rvuOTZSaNHRZxsGNPqKKhjEC";
-    
-    const SALT="TWPRO-SALT-2025";
-    const LINK_EA="https://tradewinnerpro.github.io/.com.br/TRADE_WINNER_PRO_V1.1.ex5";
-    const LINK_PDF="https://tradewinnerpro.github.io/.com.br/Manual_TRADE_WINNER.pdf";
+input group "════ GESTÃO DINÂMICA ════"
+input bool   UsarBreakEven        = true;
+input int    BE_Ativacao_Pts      = 150;        // Lucro mínimo para ativar BE (pts)
+input int    BE_Folga_Pts         = 10;         // Folga acima do BE
+input bool   UsarTrailing         = true;
+input int    Trailing_Start       = 200;        // Lucro mínimo para ativar trailing
+input int    Trailing_Step        = 50;         // Passo do trailing
+input int    Trailing_Stop        = 100;        // Distância do trailing
 
-    // ⭐ ENVIAR DADOS PARA JSONbin ⭐
-    async function enviarParaServidor(dados) {
-        try {
-            let response = await fetch('https://api.jsonbin.io/v3/b/' + JSONBIN_ID + '/latest', {
-                headers: { 'X-Master-Key': JSONBIN_KEY }
-            });
-            let data = await response.json();
-            let clientes = data.record.clientes || [];
-            clientes.push(dados);
-            
-            await fetch('https://api.jsonbin.io/v3/b/' + JSONBIN_ID, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Master-Key': JSONBIN_KEY
-                },
-                body: JSON.stringify({ clientes: clientes })
-            });
-            console.log('✅ Enviado para JSONbin!');
-        } catch(err) {
-            console.log('⚠️ Erro JSONbin:', err);
-        }
-    }
+input group "════ SUPERTREND ════"
+input int    N1_ATR               = 11;
+input double N1_Fator             = 2.0;
+input int    N2_ATR               = 12;
+input double N2_Fator             = 3.0;
+input int    N3_ATR               = 10;
+input double N3_Fator             = 1.0;
 
-    function gerarChave(terminal){
-        let d=terminal+SALT,h=0;
-        for(let i=0;i<d.length;i++){let c=d.charCodeAt(i);h=((h<<5)-h)+c;h=h&0x7FFFFFFF}
-        let a=Math.abs(h),p1=a%10000,p2=Math.floor(a/10000)%10000,p3=Math.floor(a/100000000)%10000;
-        const l="ABCDEFGHJKLMNPQRSTUVWXYZ";
-        return "LATAO-"+l.charAt(p1%l.length)+l.charAt(p2%l.length)+l.charAt(p3%l.length)+"-"+String(p1).padStart(4,'0')+"-"+String(p2%1000).padStart(3,'0')+"-"+String(p3%1000).padStart(3,'0');
-    }
+input group "════ FILTROS ════"
+input bool   FiltroRSI_Ativo      = true;
+input int    RSI_Periodo          = 14;
+input bool   FiltroVol_Ativo      = true;
+input int    Vol_MediaPeriodo     = 20;
+input double Vol_Multiplicador    = 1.2;
+input bool   FiltroEMA_Ativo      = true;
+input int    EMA_Periodo          = 50;
+input bool   FiltroATR_Ativo      = true;
+input int    ATR_FiltroPer        = 14;
+input double ATR_MinMult          = 0.5;
+input int    ScoreMinimo          = 3;
 
-    // ⭐ TESTE GRÁTIS ⭐
-    document.getElementById('btnTeste').addEventListener('click',function(e){
-        e.preventDefault();
-        let nome=document.getElementById('testeNome').value.trim();
-        let whatsapp=document.getElementById('testeWhats').value.trim();
-        let email=document.getElementById('testeEmail').value.trim();
-        let terminal=document.getElementById('testeTerminal').value.trim();
-        
-        if(!nome||!whatsapp||!email||!terminal){alert('⚠️ Preencha todos os campos!');return;}
-        
-        if(terminal.toUpperCase()==='CELULAR') terminal='CELULAR-'+Date.now();
-        
-        let chave=gerarChave(terminal);
-        let hoje=new Date();
-        let expira=new Date(hoje);expira.setDate(hoje.getDate()+7);
-        let expiraFormatada=expira.toLocaleDateString('pt-BR');
-        
-        // Salvar no localStorage
-        let clientes=JSON.parse(localStorage.getItem('twpro_gerador_db')||'[]');
-        let novoCliente={
-            id:Date.now(),nome:nome,whats:whatsapp,email:email,terminal:terminal,
-            chave:chave,plano:'LATAO',dias:7,valor:0,
-            dataCompra:hoje.toISOString().split('T')[0],
-            dataCadastro:hoje.toISOString(),expira:expira.toISOString()
-        };
-        clientes.push(novoCliente);
-        localStorage.setItem('twpro_gerador_db',JSON.stringify(clientes));
-        
-        // ⭐ ENVIAR PARA JSONbin ⭐
-        enviarParaServidor(novoCliente);
-        
-        // ⭐ Email DONO (APENAS) ⭐
-        emailjs.send("service_kqme5zs","template_4xqebas",{
-            to_email:"tradewinnerpro@gmail.com",nome:nome,whatsapp:whatsapp,
-            email_cliente:email,terminal_id:terminal,chave:chave,
-            plano:"LATAO 7 dias GRÁTIS",validade:expiraFormatada,
-            data_cadastro:hoje.toLocaleDateString('pt-BR')+' '+hoje.toLocaleTimeString('pt-BR')
-        }).then(function(r){console.log('✅ Email DONO OK');}).catch(function(e){console.log('⚠️ Erro dono:',e);});
+input group "════ BLOCOS DE PRESSÃO ════"
+input bool   UsarFiltroBloco      = true;       // Não opera contra bloco próximo
+input int    BlocoMinTicks        = 150;
+input double BlocoRatioMin        = 1.6;
+input int    MaxBlocos            = 10;
+input int    BlocoBarsExtend      = 80;
+input double BlocoZona_Pts        = 100;        // Margem da zona do bloco (pts)
 
-        // ⭐ WhatsApp Cliente ⭐
-        let nc=whatsapp.replace(/\D/g,'');
-        let mc='🎯 *TRADE WINNER PRO - Teste Ativado!*\n\n'+
-               'Olá *'+nome+'*!\n\n'+
-               '✅ Seu teste gratuito LATÃO foi ativado!\n\n'+
-               '🔑 *Chave:* '+chave+'\n'+
-               '📅 *Válido até:* '+expiraFormatada+'\n\n'+
-               '📥 *Baixe o EA:*\n'+LINK_EA+'\n\n'+
-               '📘 *Manual PDF:*\n'+LINK_PDF+'\n\n'+
-               '⚙️ *Como ativar:*\n'+
-               '1. Instale o EA no MT5\n'+
-               '2. No campo "Chave de Ativação" cole: '+chave+'\n\n'+
-               '📞 *Dúvidas?* (41) 99976-5210\n\n'+
-               'Bons trades! 📈';
-        window.open('https://wa.me/'+nc+'?text='+encodeURIComponent(mc),'_blank');
+input group "════ SESSÃO E HORÁRIO ════"
+input bool   FiltroHorario        = true;
+input int    HoraInicio           = 9;          // Hora início (servidor)
+input int    HoraFim              = 17;         // Hora fim
+input bool   FecharNaFim          = true;       // Fecha posições fora do horário
+input bool   NaoOperarSexta       = false;      // Evita sexta-feira
+input bool   NaoOperarLuna        = false;      // Evita segunda-feira
 
-        document.getElementById('formTeste').reset();
-        alert('✅ CADASTRO REALIZADO!\n\n🔰 LATÃO 7 dias GRÁTIS\n👤 '+nome+'\n🔑 '+chave+'\n📅 Até '+expiraFormatada+'\n\n📱 WhatsApp com chave já foi aberto!\n📧 Email será enviado em instantes.');
-    });
+input group "════ PROTEÇÃO ════"
+input double MaxDD_Pct            = 5.0;        // DD máximo diário (%) — pausa
+input int    MaxPerdas_Dia        = 3;          // Máx perdas seguidas — pausa
+input double LucroAlvo_Dia        = 3.0;        // Lucro diário alvo (%) — para
 
-    // ⭐ COMPROVANTE ⭐
-    document.getElementById('btnComprovante').addEventListener('click',function(e){
-        e.preventDefault();
-        let nome=document.getElementById('compNome').value.trim();
-        let whatsapp=document.getElementById('compWhats').value.trim();
-        let email=document.getElementById('compEmail').value.trim();
-        let plano=document.getElementById('compPlano').value.trim();
-        let terminal=document.getElementById('compTerminal').value.trim();
-        let codigo=document.getElementById('compCodigo').value.trim();
-        
-        if(!nome||!whatsapp||!email||!plano||!terminal){alert('⚠️ Preencha todos os campos obrigatórios!');return;}
-        
-        let btn=document.getElementById('btnComprovante');
-        btn.disabled=true;
-        btn.textContent='⏳ Enviando...';
-        let dataAgora=new Date().toLocaleDateString('pt-BR')+' '+new Date().toLocaleTimeString('pt-BR');
-        
-        // ⭐ Email DONO (APENAS) ⭐
-        emailjs.send("service_kqme5zs","template_4xqebas",{
-            to_email:"tradewinnerpro@gmail.com",nome:nome,whatsapp:whatsapp,
-            email_cliente:email,terminal_id:terminal,
-            chave:codigo||'Não informado',plano:plano+' — COMPROVANTE',
-            validade:'Aguardando ativação',data_cadastro:dataAgora
-        }).then(function(r){console.log('✅ Comprovante DONO OK');}).catch(function(e){console.log('⚠️ Erro:',e);});
-        
-        // Salvar notificação
-        let nots=JSON.parse(localStorage.getItem('twpro_notificacoes')||'[]');
-        nots.unshift({id:Date.now(),tipo:'comprovante',nome:nome,whatsapp:whatsapp,email:email,terminal:terminal,chave:codigo||'pendente',plano:plano,data:new Date().toISOString(),lida:false});
-        localStorage.setItem('twpro_notificacoes',JSON.stringify(nots));
-        
-        document.getElementById('formComprovante').reset();
-        btn.disabled=false;
-        btn.textContent='📩 ENVIAR COMPROVANTE';
-        alert('✅ COMPROVANTE ENVIADO!\n\n👤 '+nome+'\n🏷️ Plano: '+plano+'\n\n📧 Entraremos em contato em breve!');
-    });
-})();
-</script>
-</body>
-</html>
+input group "════ PAINEL EA ════"
+input bool   MostrarPainelEA      = true;
+input int    EPX                  = 10;
+input int    EPY                  = 15;
+input string EPFonte              = "Courier New";
+input int    EPFonteSz            = 8;
+
+//──────────────────────────────────────────────────────────────────
+// GLOBALS — Objetos Principais
+//──────────────────────────────────────────────────────────────────
+CTrade         gTrade;
+CPositionInfo  gPos;
+COrderInfo     gOrder;
+CAccountInfo   gAccount;
+CSymbolHelper* gSymbol = NULL;
+CTimeFilter*   gTimeFilter = NULL;
+
+//──────────────────────────────────────────────────────────────────
+// GLOBALS — Estado e Controle
+//──────────────────────────────────────────────────────────────────
+#define PE "EA_"
+bool        gPausado         = false;
+string      gMotivoPausa     = "";
+SEstadoDiario gEstadoDia;
+
+// Paleta painel
+#define BG1E    C'4,8,38'
+#define BG2E    C'8,15,60'
+#define SEPE    C'20,36,95'
+#define BORDE   C'28,52,148'
+#define CLBLE   C'130,158,195'
+#define CBRCE   clrWhite
+#define CVRDE   C'0,220,80'
+#define CVRME   C'240,50,50'
+#define CAMARE  C'255,210,0'
+#define CLARE   C'255,140,0'
+#define CCINZE  C'70,88,118'
+#define CAZULE  C'55,130,245'
+
+#define PWE     260
+#define CL1E    8
+#define CL2E    145
+#define LHE     17
+#define PHE     (22+1+4*LHE+1+3*LHE+1+3*LHE+1+3*LHE+10)
+
+//──────────────────────────────────────────────────────────────────
+// GLOBALS — Buffers de Cálculo
+//──────────────────────────────────────────────────────────────────
+double gD1[], gD2[], gD3[];      // Direções ST
+double gV1[], gV2[], gV3[];      // Valores ST
+double gRSI[];
+double gEMA[];
+double gATR[], gATRMed[];
+double gVolMedia[];
+double gScoreLast = 0;
+
+// Blocos
+Bloco  gBlocos[];
+int    gNBlocos = 0;
+
+//──────────────────────────────────────────────────────────────────
+// PROTOTYPES
+//──────────────────────────────────────────────────────────────────
+void LogEA(ENUM_LOG_LEVEL level, string message);
+bool ValidarDadosMercado(int copied, int expected, string funcName);
+double Ask() { return SymbolInfoDouble(_Symbol, SYMBOL_ASK); }
+double Bid() { return SymbolInfoDouble(_Symbol, SYMBOL_BID); }
+double Spread() { return (Ask() - Bid()) / gSymbol.Point(); }
+
+//──────────────────────────────────────────────────────────────────
+// OnInit
+//──────────────────────────────────────────────────────────────────
+int OnInit()
+{
+   // Inicializa helpers
+   gSymbol = new CSymbolHelper(_Symbol);
+   gTimeFilter = new CTimeFilter(MinSegundosSinais);
+   
+   if(gSymbol == NULL || gTimeFilter == NULL) {
+      Print("Erro crítico: Falha ao alocar memória");
+      return INIT_FAILED;
+   }
+   
+   // Configura Trade
+   gTrade.SetExpertMagicNumber(MagicNumber);
+   gTrade.SetDeviationInPoints(20);
+   gTrade.SetTypeFilling(ORDER_FILLING_IOC);
+   
+   // Inicializa estado diário
+   gEstadoDia.Reset();
+   gEstadoDia.saldoInicial = gAccount.Balance();
+   gEstadoDia.dataReset    = TimeCurrent();
+   
+   // Inicializa blocos
+   ArrayResize(gBlocos, MaxBlocos + 5);
+   for(int i = 0; i < MaxBlocos + 5; i++)
+      gBlocos[i].ativo = false;
+   
+   // Painel
+   if(MostrarPainelEA)
+      CriarPainelEA();
+   
+   LogEA(LOG_INFO, StringFormat("EA iniciado — %s %s %s", 
+                                _Symbol, 
+                                EnumToString(_Period),
+                                EA_Ativo ? "ATIVO" : "INATIVO"));
+   
+   return INIT_SUCCEEDED;
+}
+
+//──────────────────────────────────────────────────────────────────
+// OnDeinit
+//──────────────────────────────────────────────────────────────────
+void OnDeinit(const int reason)
+{
+   if(gSymbol != NULL) {
+      delete gSymbol;
+      gSymbol = NULL;
+   }
+   
+   if(gTimeFilter != NULL) {
+      delete gTimeFilter;
+      gTimeFilter = NULL;
+   }
+   
+   ObjectsDeleteAll(0, PE);
+   Comment("");
+   
+   Print(StringFormat("[INFO] %s: EA removido. Motivo: %d", 
+                      TimeToString(TimeCurrent()), reason));
+}
+
+//──────────────────────────────────────────────────────────────────
+// LOGGING PROFISSIONAL
+//──────────────────────────────────────────────────────────────────
+void LogEA(ENUM_LOG_LEVEL level, string message)
+{
+   string prefix;
+   
+   switch(level) {
+      case LOG_DEBUG:
+         if(!MQLInfoInteger(MQL_DEBUG)) return;
+         prefix = "[DEBUG]";
+         break;
+      case LOG_INFO:
+         prefix = "[INFO]";
+         break;
+      case LOG_WARNING:
+         prefix = "[WARNING]";
+         break;
+      case LOG_ERROR:
+         prefix = "[ERROR]";
+         break;
+      case LOG_CRITICAL:
+         prefix = "[CRITICAL]";
+         break;
+   }
+   
+   string logMsg = StringFormat("%s %s: %s", 
+                                TimeToString(TimeCurrent()), 
+                                prefix, 
+                                message);
+   Print(logMsg);
+   
+   if(level >= LOG_ERROR) {
+      Alert(logMsg);
+   }
+}
+
+//──────────────────────────────────────────────────────────────────
+// VALIDAÇÃO DE DADOS
+//──────────────────────────────────────────────────────────────────
+bool ValidarDadosMercado(int copied, int expected, string funcName)
+{
+   if(copied < expected) {
+      LogEA(LOG_ERROR, StringFormat("%s: Copiadas %d barras de %d. Erro: %d", 
+                                     funcName, copied, expected, GetLastError()));
+      return false;
+   }
+   return true;
+}
+
+//──────────────────────────────────────────────────────────────────
+// CÁLCULO DO SUPERTREND OTIMIZADO
+//──────────────────────────────────────────────────────────────────
+void CalcST_EA(const double &hi[], const double &lo[], const double &cl[],
+               int per, double fat, int total,
+               double &val[], double &dir[])
+{
+   if(ArraySize(val) < total) {
+      ArrayResize(val, total);
+      ArrayResize(dir, total);
+   }
+   
+   double atr = 0.0;
+   double mid, bDn, bUp, tr;
+   
+   for(int i = 0; i < total; i++) {
+      // True Range
+      tr = hi[i] - lo[i];
+      
+      if(i > 0) {
+         double a = MathAbs(hi[i] - cl[i-1]);
+         double b = MathAbs(lo[i] - cl[i-1]);
+         if(a > tr) tr = a;
+         if(b > tr) tr = b;
+      }
+      
+      // ATR
+      atr = (i == 0) ? tr : (atr * (per - 1) + tr) / per;
+      
+      mid = (hi[i] + lo[i]) * 0.5;
+      bDn = mid - fat * atr;
+      bUp = mid + fat * atr;
+      
+      if(i > 0) {
+         if(dir[i-1] == 1.0) {
+            bDn = MathMax(bDn, val[i-1]);
+         } else {
+            bUp = MathMin(bUp, val[i-1]);
+         }
+      }
+      
+      if(i == 0) {
+         dir[i] = 1.0;
+         val[i] = bDn;
+      } else if(dir[i-1] == 1.0) {
+         dir[i] = (cl[i] > bDn) ? 1.0 : -1.0;
+         val[i] = (dir[i] == 1.0) ? bDn : bUp;
+      } else {
+         dir[i] = (cl[i] < bUp) ? -1.0 : 1.0;
+         val[i] = (dir[i] == -1.0) ? bUp : bDn;
+      }
+   }
+}
+
+//──────────────────────────────────────────────────────────────────
+// CÁLCULO DO RSI
+//──────────────────────────────────────────────────────────────────
+void CalcRSI_EA(const double &cl[], int per, int total, double &rsi[])
+{
+   if(ArraySize(rsi) < total)
+      ArrayResize(rsi, total);
+   
+   double ag = 0.0, al = 0.0;
+   
+   for(int i = 0; i < total; i++) {
+      double d = (i > 0) ? cl[i] - cl[i-1] : 0.0;
+      double g = (d > 0) ? d : 0.0;
+      double l = (d < 0) ? -d : 0.0;
+      
+      if(i < per) {
+         ag = (ag * i + g) / MathMax(i + 1, 1);
+         al = (al * i + l) / MathMax(i + 1, 1);
+      } else {
+         ag = (ag * (per - 1) + g) / per;
+         al = (al * (per - 1) + l) / per;
+      }
+      
+      double rs = (al == 0.0) ? 100.0 : ag / al;
+      rsi[i] = 100.0 - (100.0 / (1.0 + rs));
+   }
+}
+
+//──────────────────────────────────────────────────────────────────
+// CÁLCULO DA EMA
+//──────────────────────────────────────────────────────────────────
+void CalcEMA_EA(const double &cl[], int per, int total, double &ea[])
+{
+   if(ArraySize(ea) < total)
+      ArrayResize(ea, total);
+   
+   double k = 2.0 / (per + 1);
+   double ema = cl[0];
+   ea[0] = ema;
+   
+   for(int i = 1; i < total; i++) {
+      ema = cl[i] * k + ema * (1.0 - k);
+      ea[i] = ema;
+   }
+}
+
+//──────────────────────────────────────────────────────────────────
+// CÁLCULO DO ATR
+//──────────────────────────────────────────────────────────────────
+double CalcATR_EA(const double &hi[], const double &lo[], 
+                  const double &cl[], int per, int total)
+{
+   double atr = 0.0;
+   
+   for(int i = 0; i < total; i++) {
+      double tr = hi[i] - lo[i];
+      
+      if(i > 0) {
+         double a = MathAbs(hi[i] - cl[i-1]);
+         double b = MathAbs(lo[i] - cl[i-1]);
+         if(a > tr) tr = a;
+         if(b > tr) tr = b;
+      }
+      
+      atr = (i == 0) ? tr : (atr * (per - 1) + tr) / per;
+   }
+   
+   return atr;
+}
+
+//──────────────────────────────────────────────────────────────────
+// DELTA ESTIMADO
+//──────────────────────────────────────────────────────────────────
+double DeltaPct(double hi, double lo, double cl, long tv)
+{
+   double rng = hi - lo;
+   if(rng < _Point * 0.5) return 0.0;
+   
+   double b = (cl - lo) / rng;
+   double co = (double)tv * b;
+   double vo = (double)tv * (1.0 - b);
+   
+   return (tv > 0) ? (co - vo) / (double)tv * 100.0 : 0.0;
+}
+
+//──────────────────────────────────────────────────────────────────
+// DETECTAR BLOCOS OTIMIZADO
+//──────────────────────────────────────────────────────────────────
+void DetectarBlocos_EA(const double &op[], const double &hi[],
+                        const double &lo[], const double &cl[],
+                        const long &tv[], int total)
+{
+   // Reseta blocos antigos (mais de 500 barras)
+   for(int i = 0; i < gNBlocos; i++)
+      gBlocos[i].ativo = false;
+   gNBlocos = 0;
+   
+   int start = MathMax(1, total - 500);
+   int ws = MathMax(3, BlocoMinTicks / 20);
+   
+   for(int i = start; i < total - 1 && gNBlocos < MaxBlocos; i++) {
+      double sc = 0, sv = 0;
+      long st = 0;
+      double pMx = hi[i], pMn = lo[i];
+      
+      for(int k = i; k < MathMin(i + ws, total); k++) {
+         double rng = hi[k] - lo[k];
+         double b = (rng > _Point * 0.5) ? (cl[k] - lo[k]) / rng : 0.5;
+         double tvD = (double)tv[k];
+         
+         sc += tvD * b;
+         sv += tvD * (1.0 - b);
+         st += tv[k];
+         
+         pMx = MathMax(pMx, hi[k]);
+         pMn = MathMin(pMn, lo[k]);
+      }
+      
+      if(st < BlocoMinTicks || sv < 1.0 || sc < 1.0) continue;
+      
+      double ratio = (sc >= sv) ? sc / sv : sv / sc;
+      if(ratio < BlocoRatioMin) continue;
+      
+      bool comp = (sc >= sv);
+      double pb = comp ? pMn : pMx;
+      
+      // Verifica duplicata
+      bool dup = false;
+      for(int b = 0; b < gNBlocos; b++) {
+         if(MathAbs(gBlocos[b].preco - pb) / _Point < 80) {
+            dup = true;
+            break;
+         }
+      }
+      
+      if(dup) continue;
+      
+      gBlocos[gNBlocos].preco     = pb;
+      gBlocos[gNBlocos].comprador = comp;
+      gBlocos[gNBlocos].ratio     = ratio;
+      gBlocos[gNBlocos].volTotal  = st;
+      gBlocos[gNBlocos].ativo     = true;
+      gBlocos[gNBlocos].tempo     = TimeCurrent();
+      gNBlocos++;
+      
+      i += ws - 1;
+   }
+}
+
+//──────────────────────────────────────────────────────────────────
+// BLOCO BLOQUEIA OPERAÇÃO
+//──────────────────────────────────────────────────────────────────
+bool BlocoBlocka(double preco, bool compra)
+{
+   if(!UsarFiltroBloco) return false;
+   
+   for(int b = 0; b < gNBlocos; b++) {
+      if(!gBlocos[b].ativo) continue;
+      
+      double d = MathAbs(preco - gBlocos[b].preco) / _Point;
+      if(d > BlocoZona_Pts * 3) continue;
+      
+      // Bloco vendedor acima bloqueia compra
+      if(compra && !gBlocos[b].comprador && 
+         gBlocos[b].preco > preco && d < BlocoZona_Pts)
+         return true;
+      
+      // Bloco comprador abaixo bloqueia venda
+      if(!compra && gBlocos[b].comprador && 
+         gBlocos[b].preco < preco && d < BlocoZona_Pts)
+         return true;
+   }
+   
+   return false;
+}
+
+//──────────────────────────────────────────────────────────────────
+// CÁLCULO DO LOTE MELHORADO
+//──────────────────────────────────────────────────────────────────
+double CalcularLoteMelhorado(double slPips)
+{
+   // Lote fixo
+   if(LotSize > 0) {
+      double lote = NormalizeDouble(LotSize, 2);
+      return MathMax(gSymbol.LotMin(), MathMin(gSymbol.LotMax(), lote));
+   }
+   
+   // Lote por risco
+   if(RiskPct <= 0 || slPips <= 0) {
+      LogEA(LOG_WARNING, "RiskPct ou slPips inválido para cálculo de lote");
+      return 0;
+   }
+   
+   double saldo  = gAccount.Balance();
+   double risco  = saldo * RiskPct / 100.0;
+   double tickVal = gSymbol.TickValue();
+   
+   if(tickVal == 0) {
+      LogEA(LOG_ERROR, "TickValue é zero");
+      return 0;
+   }
+   
+   double lote = risco / (slPips * tickVal);
+   double lotStep = gSymbol.LotStep();
+   
+   // Normalização
+   lote = MathFloor(lote / lotStep) * lotStep;
+   
+   // Verificação de limites
+   if(lote < gSymbol.LotMin()) {
+      LogEA(LOG_WARNING, StringFormat("Lote calculado (%.4f) < mínimo (%.4f)", 
+                                      lote, gSymbol.LotMin()));
+      return 0;
+   }
+   
+   return MathMin(lote, gSymbol.LotMax());
+}
+
+//──────────────────────────────────────────────────────────────────
+// CONTAR POSIÇÕES
+//──────────────────────────────────────────────────────────────────
+int ContarPosicoes(int dir = 0)
+{
+   int cnt = 0;
+   
+   for(int i = PositionsTotal() - 1; i >= 0; i--) {
+      if(!gPos.SelectByIndex(i)) continue;
+      if(gPos.Symbol() != _Symbol || gPos.Magic() != MagicNumber) continue;
+      
+      if(dir == 0) cnt++;
+      else if(dir == 1 && gPos.PositionType() == POSITION_TYPE_BUY) cnt++;
+      else if(dir == -1 && gPos.PositionType() == POSITION_TYPE_SELL) cnt++;
+   }
+   
+   return cnt;
+}
+
+//──────────────────────────────────────────────────────────────────
+// VOLUME TOTAL DAS POSIÇÕES
+//──────────────────────────────────────────────────────────────────
+double VolumeAtualPosicoes()
+{
+   double vol = 0;
+   
+   for(int i = PositionsTotal() - 1; i >= 0; i--) {
+      if(!gPos.SelectByIndex(i)) continue;
+      if(gPos.Symbol() != _Symbol || gPos.Magic() != MagicNumber) continue;
+      vol += gPos.Volume();
+   }
+   
+   return vol;
+}
+
+//──────────────────────────────────────────────────────────────────
+// BREAK EVEN
+//──────────────────────────────────────────────────────────────────
+void AplicarBreakEven()
+{
+   if(!UsarBreakEven) return;
+   
+   double folga = BE_Folga_Pts * gSymbol.Point();
+   double ativacaoPips = BE_Ativacao_Pts * gSymbol.Point();
+   
+   for(int i = PositionsTotal() - 1; i >= 0; i--) {
+      if(!gPos.SelectByIndex(i)) continue;
+      if(gPos.Symbol() != _Symbol || gPos.Magic() != MagicNumber) continue;
+      
+      double open = gPos.PriceOpen();
+      double sl   = gPos.StopLoss();
+      double cur  = gPos.PriceCurrent();
+      
+      if(gPos.PositionType() == POSITION_TYPE_BUY) {
+         double be = open + folga;
+         if(cur >= open + ativacaoPips && sl < be) {
+            if(gTrade.PositionModify(gPos.Ticket(), be, gPos.TakeProfit())) {
+               LogEA(LOG_DEBUG, StringFormat("BE aplicado COMPRA ticket=%d BE=%.5f", 
+                                             gPos.Ticket(), be));
+            }
+         }
+      }
+      else if(gPos.PositionType() == POSITION_TYPE_SELL) {
+         double be = open - folga;
+         if(cur <= open - ativacaoPips && (sl > be || sl == 0)) {
+            if(gTrade.PositionModify(gPos.Ticket(), be, gPos.TakeProfit())) {
+               LogEA(LOG_DEBUG, StringFormat("BE aplicado VENDA ticket=%d BE=%.5f", 
+                                             gPos.Ticket(), be));
+            }
+         }
+      }
+   }
+}
+
+//──────────────────────────────────────────────────────────────────
+// TRAILING STOP
+//──────────────────────────────────────────────────────────────────
+void AplicarTrailing()
+{
+   if(!UsarTrailing) return;
+   
+   double ts = Trailing_Stop * gSymbol.Point();
+   double st = Trailing_Start * gSymbol.Point();
+   double sp = Trailing_Step * gSymbol.Point();
+   
+   for(int i = PositionsTotal() - 1; i >= 0; i--) {
+      if(!gPos.SelectByIndex(i)) continue;
+      if(gPos.Symbol() != _Symbol || gPos.Magic() != MagicNumber) continue;
+      
+      double open  = gPos.PriceOpen();
+      double cur   = gPos.PriceCurrent();
+      double sl    = gPos.StopLoss();
+      double ask   = Ask();
+      double bid   = Bid();
+      
+      if(gPos.PositionType() == POSITION_TYPE_BUY) {
+         if(cur - open < st) continue;
+         
+         double novo_sl = bid - ts;
+         if(sl == 0 || novo_sl > sl + sp) {
+            if(gTrade.PositionModify(gPos.Ticket(), novo_sl, gPos.TakeProfit())) {
+               LogEA(LOG_DEBUG, StringFormat("Trailing BUY ticket=%d SL=%.5f", 
+                                             gPos.Ticket(), novo_sl));
+            }
+         }
+      }
+      else if(gPos.PositionType() == POSITION_TYPE_SELL) {
+         if(open - cur < st) continue;
+         
+         double novo_sl = ask + ts;
+         if(sl == 0 || novo_sl < sl - sp) {
+            if(gTrade.PositionModify(gPos.Ticket(), novo_sl, gPos.TakeProfit())) {
+               LogEA(LOG_DEBUG, StringFormat("Trailing SELL ticket=%d SL=%.5f", 
+                                             gPos.Ticket(), novo_sl));
+            }
+         }
+      }
+   }
+}
+
+//──────────────────────────────────────────────────────────────────
+// VERIFICAR PROTEÇÃO DIÁRIA
+//──────────────────────────────────────────────────────────────────
+void VerificarProtecao()
+{
+   double saldo    = gAccount.Balance();
+   double equidade = gAccount.Equity();
+   
+   // Reset diário
+   MqlDateTime agora;
+   TimeToStruct(TimeCurrent(), agora);
+   
+   static int ultimoDia = -1;
+   if(agora.day != ultimoDia) {
+      ultimoDia = agora.day;
+      gEstadoDia.Reset();
+      gEstadoDia.saldoInicial = saldo;
+      gEstadoDia.dataReset = TimeCurrent();
+      gPausado = false;
+      gMotivoPausa = "";
+      LogEA(LOG_INFO, "Novo dia — proteções resetadas");
+   }
+   
+   // Cálculos
+   gEstadoDia.lucroAtual = (saldo - gEstadoDia.saldoInicial) / 
+                            gEstadoDia.saldoInicial * 100.0;
+   
+   double ddAtual = (gEstadoDia.saldoInicial - equidade) / 
+                    gEstadoDia.saldoInicial * 100.0;
+   
+   if(ddAtual > gEstadoDia.maxDD)
+      gEstadoDia.maxDD = ddAtual;
+   
+   // Verificações de pausa
+   if(!gPausado) {
+      if(ddAtual >= MaxDD_Pct) {
+         gPausado = true;
+         gMotivoPausa = StringFormat("DD %.1f%% atingido", ddAtual);
+         LogEA(LOG_WARNING, gMotivoPausa);
+      }
+      else if(gEstadoDia.perdasSeguidas >= MaxPerdas_Dia) {
+         gPausado = true;
+         gMotivoPausa = StringFormat("%d perdas seguidas", gEstadoDia.perdasSeguidas);
+         LogEA(LOG_WARNING, gMotivoPausa);
+      }
+      else if(gEstadoDia.lucroAtual >= LucroAlvo_Dia) {
+         gPausado = true;
+         gMotivoPausa = StringFormat("Meta diária %.1f%% atingida", gEstadoDia.lucroAtual);
+         LogEA(LOG_INFO, gMotivoPausa);
+      }
+   }
+}
+
+//──────────────────────────────────────────────────────────────────
+// FECHAR TODAS POSIÇÕES
+//──────────────────────────────────────────────────────────────────
+void FecharTodas()
+{
+   int total = PositionsTotal();
+   int fechadas = 0;
+   
+   for(int i = total - 1; i >= 0; i--) {
+      if(!gPos.SelectByIndex(i)) continue;
+      if(gPos.Symbol() != _Symbol || gPos.Magic() != MagicNumber) continue;
+      
+      if(gTrade.PositionClose(gPos.Ticket())) {
+         fechadas++;
+      } else {
+         LogEA(LOG_ERROR, StringFormat("Erro ao fechar posição %d: %d", 
+                                       gPos.Ticket(), GetLastError()));
+      }
+   }
+   
+   if(fechadas > 0) {
+      LogEA(LOG_INFO, StringFormat("Fechadas %d posições", fechadas));
+   }
+}
+
+//──────────────────────────────────────────────────────────────────
+// VERIFICAR HORÁRIO
+//──────────────────────────────────────────────────────────────────
+bool DentroHorario()
+{
+   if(!FiltroHorario) return true;
+   
+   MqlDateTime dt;
+   TimeToStruct(TimeCurrent(), dt);
+   
+   if(NaoOperarSexta && dt.day_of_week == 5) return false;
+   if(NaoOperarLuna  && dt.day_of_week == 1) return false;
+   
+   return (dt.hour >= HoraInicio && dt.hour < HoraFim);
+}
+
+//──────────────────────────────────────────────────────────────────
+// VALIDAR SINAL
+//──────────────────────────────────────────────────────────────────
+bool ValidarSinal(const SSinal &sinal)
+{
+   if(!sinal.valido) return false;
+   
+   // Verifica spread
+   double spread = Spread();
+   if(spread > MaxSpread) {
+      LogEA(LOG_WARNING, StringFormat("Spread alto: %.1f pontos", spread));
+      return false;
+   }
+   
+   // Verifica stops mínimos
+   double minDistance = SymbolInfoInteger(_Symbol, SYMBOL_TRADE_STOPS_LEVEL) * 
+                        gSymbol.Point();
+   double distanciaSL = MathAbs(sinal.precoEntrada - sinal.sl);
+   
+   if(distanciaSL < minDistance && minDistance > 0) {
+      LogEA(LOG_WARNING, StringFormat("SL muito próximo: %.1f pontos (mín: %.1f)", 
+                                      distanciaSL / gSymbol.Point(), 
+                                      minDistance / gSymbol.Point()));
+      return false;
+   }
+   
+   // Verifica volume
+   double volAtual = VolumeAtualPosicoes();
+   if(volAtual + sinal.lote > gSymbol.LotMax()) {
+      LogEA(LOG_WARNING, "Volume máximo excedido");
+      return false;
+   }
+   
+   // Verifica limite de posições
+   if(ContarPosicoes() >= MaxPosicoesAbertas) {
+      return false;
+   }
+   
+   return true;
+}
+
+//──────────────────────────────────────────────────────────────────
+// EXECUTAR SINAL
+//──────────────────────────────────────────────────────────────────
+bool ExecutarSinal(const SSinal &sinal)
+{
+   if(!sinal.valido || sinal.lote <= 0) return false;
+   
+   bool sucesso = false;
+   string comentario = StringFormat("SPro %s Sc%d/5", 
+                                    sinal.compra ? "BUY" : "SELL", 
+                                    sinal.score);
+   
+   if(sinal.compra) {
+      sucesso = gTrade.Buy(sinal.lote, _Symbol, sinal.precoEntrada, 
+                          sinal.sl, sinal.tp, comentario);
+   } else {
+      sucesso = gTrade.Sell(sinal.lote, _Symbol, sinal.precoEntrada, 
+                           sinal.sl, sinal.tp, comentario);
+   }
+   
+   if(sucesso) {
+      gTimeFilter.RegistrarSinal();
+      LogEA(LOG_INFO, StringFormat("%s executado: Lot=%.2f SL=%.5f TP=%.5f Score=%d/5", 
+                                   sinal.compra ? "BUY" : "SELL",
+                                   sinal.lote, sinal.sl, sinal.tp, sinal.score));
+      return true;
+   } else {
+      LogEA(LOG_ERROR, StringFormat("Falha ao executar %s. Erro: %d", 
+                                    sinal.compra ? "BUY" : "SELL", 
+                                    GetLastError()));
+      return false;
+   }
+}
+
+//──────────────────────────────────────────────────────────────────
+// PROCESSAR NOVA BARRA — Lógica Principal
+//──────────────────────────────────────────────────────────────────
+void ProcessarNovaBarra()
+{
+   int total = Bars(_Symbol, _Period);
+   if(total < 100) {
+      LogEA(LOG_WARNING, "Barras insuficientes");
+      return;
+   }
+   
+   int nb = MathMin(total, 600);
+   
+   // Arrays para dados
+   double hi[], lo[], cl[], op[];
+   long   tv[];
+   
+   // Configura para series
+   ArraySetAsSeries(hi, true);
+   ArraySetAsSeries(lo, true);
+   ArraySetAsSeries(cl, true);
+   ArraySetAsSeries(op, true);
+   ArraySetAsSeries(tv, true);
+   
+   // Copia dados com validação
+   if(!ValidarDadosMercado(CopyHigh(_Symbol, _Period, 0, nb, hi), nb, "CopyHigh")) return;
+   if(!ValidarDadosMercado(CopyLow(_Symbol, _Period, 0, nb, lo), nb, "CopyLow")) return;
+   if(!ValidarDadosMercado(CopyClose(_Symbol, _Period, 0, nb, cl), nb, "CopyClose")) return;
+   if(!ValidarDadosMercado(CopyOpen(_Symbol, _Period, 0, nb, op), nb, "CopyOpen")) return;
+   if(!ValidarDadosMercado(CopyTickVolume(_Symbol, _Period, 0, nb, tv), nb, "CopyTickVolume")) return;
+   
+   // ── ST3 ───────────────────────────────────────────────────────
+   CalcST_EA(hi, lo, cl, N1_ATR, N1_Fator, nb, gV1, gD1);
+   CalcST_EA(hi, lo, cl, N2_ATR, N2_Fator, nb, gV2, gD2);
+   CalcST_EA(hi, lo, cl, N3_ATR, N3_Fator, nb, gV3, gD3);
+   
+   // ── RSI / EMA ─────────────────────────────────────────────────
+   CalcRSI_EA(cl, RSI_Periodo, nb, gRSI);
+   CalcEMA_EA(cl, EMA_Periodo, nb, gEMA);
+   
+   // ── ATR filtro ────────────────────────────────────────────────
+   if(ArraySize(gATR) < nb)    { ArrayResize(gATR, nb);    ArrayInitialize(gATR, 0);    }
+   if(ArraySize(gATRMed) < nb) { ArrayResize(gATRMed, nb); ArrayInitialize(gATRMed, 0); }
+   
+   double atrAcc = 0.0;
+   for(int i = 0; i < nb; i++) {
+      double tr = hi[i] - lo[i];
+      if(i > 0) {
+         double a = MathAbs(hi[i] - cl[i-1]);
+         double b = MathAbs(lo[i] - cl[i-1]);
+         if(a > tr) tr = a;
+         if(b > tr) tr = b;
+      }
+      atrAcc = (i == 0) ? tr : (atrAcc * (ATR_FiltroPer - 1) + tr) / ATR_FiltroPer;
+      gATR[i] = atrAcc;
+      
+      if(i >= ATR_FiltroPer) {
+         double s = 0.0;
+         for(int k = i - ATR_FiltroPer; k < i; k++) s += gATR[k];
+         gATRMed[i] = s / ATR_FiltroPer;
+      } else {
+         gATRMed[i] = atrAcc;
+      }
+   }
+   
+   // ── Vol média ─────────────────────────────────────────────────
+   if(ArraySize(gVolMedia) < nb) { 
+      ArrayResize(gVolMedia, nb); 
+      ArrayInitialize(gVolMedia, 0); 
+   }
+   
+   for(int i = 0; i < nb; i++) {
+      double s = 0.0;
+      int c2 = 0;
+      for(int k = MathMax(0, i - Vol_MediaPeriodo); k < i; k++) {
+         s += (double)tv[k];
+         c2++;
+      }
+      gVolMedia[i] = (c2 > 0) ? s / c2 : (double)tv[i];
+   }
+   
+   // ── Blocos ────────────────────────────────────────────────────
+   DetectarBlocos_EA(op, hi, lo, cl, tv, nb);
+   
+   // ── Barra de sinal (penúltima = fechada) ──────────────────────
+   int bi = 1; // Índice 1 com ArraySetAsSeries = penúltima barra
+   if(bi >= nb) return;
+   
+   // Detecta sinais
+   bool u3 = (gD1[bi] == 1  && gD2[bi] == 1  && gD3[bi] == 1);
+   bool d3 = (gD1[bi] == -1 && gD2[bi] == -1 && gD3[bi] == -1);
+   bool pu = (bi < nb-1 && gD1[bi+1] == 1  && gD2[bi+1] == 1  && gD3[bi+1] == 1);
+   bool pd = (bi < nb-1 && gD1[bi+1] == -1 && gD2[bi+1] == -1 && gD3[bi+1] == -1);
+   
+   bool sinalC = (u3 && !pu && PermitirCompra);
+   bool sinalV = (d3 && !pd && PermitirVenda);
+   
+   if(!sinalC && !sinalV) return;
+   
+   // ── SCORE ─────────────────────────────────────────────────────
+   bool compra = sinalC;
+   int score = 0;
+   
+   // RSI
+   bool rsiOK = !FiltroRSI_Ativo || (compra && gRSI[bi] > 50.0) || 
+               (!compra && gRSI[bi] < 50.0);
+   if(rsiOK) score++;
+   
+   // Volume
+   double vr = (gVolMedia[bi] > 0) ? (double)tv[bi] / gVolMedia[bi] : 1.0;
+   bool volOK = !FiltroVol_Ativo || (vr >= Vol_Multiplicador);
+   if(volOK) score++;
+   
+   // EMA
+   bool emaOK = !FiltroEMA_Ativo || (compra && cl[bi] > gEMA[bi]) || 
+                (!compra && cl[bi] < gEMA[bi]);
+   if(emaOK) score++;
+   
+   // ATR
+   bool atrOK = !FiltroATR_Ativo || (gATRMed[bi] == 0) || 
+                (gATR[bi] >= gATRMed[bi] * ATR_MinMult);
+   if(atrOK) score++;
+   
+   // Delta
+   double dp = DeltaPct(hi[bi], lo[bi], cl[bi], tv[bi]);
+   bool deltaOK = (compra && dp > 0) || (!compra && dp < 0);
+   if(deltaOK) score++;
+   
+   gScoreLast = (double)score;
+   int soma = (int)gD1[bi] + (int)gD2[bi] + (int)gD3[bi];
+   
+   // Verifica score mínimo
+   if(score < ScoreMinimo) return;
+   
+   // Verifica bloco
+   if(BlocoBlocka(cl[bi], compra)) {
+      LogEA(LOG_DEBUG, StringFormat("Sinal %s bloqueado por bloco", 
+                                    compra ? "COMPRA" : "VENDA"));
+      return;
+   }
+   
+   // ── SL / TP ───────────────────────────────────────────────────
+   double atrVal = CalcATR_EA(hi, lo, cl, ATR_SL_Periodo, nb);
+   double slPips = (UsarATR_SL) ? atrVal / gSymbol.Point() * ATR_SL_Mult : 
+                   (double)StopLoss_Pts;
+   double tpPips = (TakeProfit_Pts > 0) ? (double)TakeProfit_Pts : 
+                   slPips * RatioRisco;
+   
+   // ── Prepara sinal ─────────────────────────────────────────────
+   SSinal sinal;
+   sinal.Reset();
+   sinal.valido       = true;
+   sinal.compra       = compra;
+   sinal.score        = score;
+   sinal.precoEntrada = compra ? Ask() : Bid();
+   
+   if(sinal.compra) {
+      sinal.sl = sinal.precoEntrada - slPips * gSymbol.Point();
+      sinal.tp = sinal.precoEntrada + tpPips * gSymbol.Point();
+   } else {
+      sinal.sl = sinal.precoEntrada + slPips * gSymbol.Point();
+      sinal.tp = sinal.precoEntrada - tpPips * gSymbol.Point();
+   }
+   
+   sinal.lote = CalcularLoteMelhorado(slPips);
+   
+   // ── Valida e executa ──────────────────────────────────────────
+   if(sinal.lote > 0 && ValidarSinal(sinal)) {
+      ExecutarSinal(sinal);
+   }
+   
+   // Atualiza painel após processamento
+   if(MostrarPainelEA) {
+      AtualizarPainelEA(gRSI[bi], dp, soma, score);
+   }
+}
+
+//──────────────────────────────────────────────────────────────────
+// OnTick — Loop Principal
+//──────────────────────────────────────────────────────────────────
+void OnTick()
+{
+   // Verificação inicial
+   if(!EA_Ativo) return;
+   
+   static int tickCount = 0;
+   tickCount++;
+   
+   // Proteção a cada tick
+   VerificarProtecao();
+   
+   // Gestão de posições existentes
+   if(PositionsTotal() > 0) {
+      AplicarBreakEven();
+      AplicarTrailing();
+      
+      // Fecha posições fora do horário
+      if(FecharNaFim && !DentroHorario() && ContarPosicoes() > 0) {
+         FecharTodas();
+         if(MostrarPainelEA)
+            AtualizarPainelEA(0.0, 0.0, 0, 0);
+         return;
+      }
+   }
+   
+   // Atualiza painel a cada 5 ticks (performance)
+   if(MostrarPainelEA && tickCount % 5 == 0) {
+      AtualizarStatusPainel();
+   }
+   
+   // Processa nova barra
+   datetime barraAtual = iTime(_Symbol, _Period, 0);
+   if(!gTimeFilter.NovaBarra(barraAtual)) return;
+   
+   if(!gTimeFilter.PodeEnviarSinal()) {
+      return;
+   }
+   
+   // Verifica horário
+   if(!DentroHorario()) return;
+   
+   // Verifica pausa
+   if(gPausado) return;
+   
+   // Processa sinais
+   ProcessarNovaBarra();
+}
+
+//──────────────────────────────────────────────────────────────────
+// OnTradeTransaction — Rastreia perdas
+//──────────────────────────────────────────────────────────────────
+void OnTradeTransaction(const MqlTradeTransaction &trans,
+                        const MqlTradeRequest &req,
+                        const MqlTradeResult &res)
+{
+   if(trans.type == TRADE_TRANSACTION_DEAL_ADD) {
+      if(trans.deal_type == DEAL_TYPE_BUY || trans.deal_type == DEAL_TYPE_SELL) {
+         double lucro = HistoryDealGetDouble(trans.deal, DEAL_PROFIT);
+         
+         if(lucro < 0) {
+            gEstadoDia.perdasSeguidas++;
+            LogEA(LOG_WARNING, StringFormat("Perda registrada: %.2f. Total perdas: %d", 
+                                            lucro, gEstadoDia.perdasSeguidas));
+         } else {
+            if(gEstadoDia.perdasSeguidas > 0) {
+               LogEA(LOG_INFO, StringFormat("Sequência de perdas interrompida. Lucro: %.2f", 
+                                            lucro));
+            }
+            gEstadoDia.perdasSeguidas = 0;
+         }
+      }
+   }
+}
+
+//──────────────────────────────────────────────────────────────────
+// PAINEL EA — FUNÇÕES AUXILIARES
+//──────────────────────────────────────────────────────────────────
+void LbE(string n, int x, int y, string t, color c, int z = 11)
+{
+   if(ObjectFind(0, n) < 0) {
+      ObjectCreate(0, n, OBJ_LABEL, 0, 0, 0);
+      ObjectSetInteger(0, n, OBJPROP_CORNER, CORNER_LEFT_UPPER);
+      ObjectSetInteger(0, n, OBJPROP_SELECTABLE, false);
+      ObjectSetInteger(0, n, OBJPROP_BACK, false);
+      ObjectSetString(0, n, OBJPROP_FONT, EPFonte);
+   }
+   ObjectSetInteger(0, n, OBJPROP_XDISTANCE, x);
+   ObjectSetInteger(0, n, OBJPROP_YDISTANCE, y);
+   ObjectSetString(0, n, OBJPROP_TEXT, t);
+   ObjectSetInteger(0, n, OBJPROP_COLOR, c);
+   ObjectSetInteger(0, n, OBJPROP_FONTSIZE, EPFonteSz);
+   ObjectSetInteger(0, n, OBJPROP_ZORDER, z);
+}
+
+void RtE(string n, int x, int y, int w, int h, color bg, color bd, int z = 9)
+{
+   if(ObjectFind(0, n) < 0) {
+      ObjectCreate(0, n, OBJ_RECTANGLE_LABEL, 0, 0, 0);
+      ObjectSetInteger(0, n, OBJPROP_CORNER, CORNER_LEFT_UPPER);
+      ObjectSetInteger(0, n, OBJPROP_SELECTABLE, false);
+      ObjectSetInteger(0, n, OBJPROP_BACK, false);
+      ObjectSetInteger(0, n, OBJPROP_BORDER_TYPE, BORDER_FLAT);
+   }
+   ObjectSetInteger(0, n, OBJPROP_XDISTANCE, x);
+   ObjectSetInteger(0, n, OBJPROP_YDISTANCE, y);
+   ObjectSetInteger(0, n, OBJPROP_XSIZE, w);
+   ObjectSetInteger(0, n, OBJPROP_YSIZE, h);
+   ObjectSetInteger(0, n, OBJPROP_BGCOLOR, bg);
+   ObjectSetInteger(0, n, OBJPROP_BORDER_COLOR, bd);
+   ObjectSetInteger(0, n, OBJPROP_ZORDER, z);
+}
+
+void SepE(string n, int y) { RtE(n, EPX+3, EPY+y, PWE-6, 1, SEPE, clrNONE, 10); }
+
+void CriarPainelEA()
+{
+   int x = EPX, y = EPY;
+   RtE(PE"BG", x, y, PWE, PHE, BG1E, BORDE, 8);
+   RtE(PE"HD", x+1, y+1, PWE-2, 20, BG2E, clrNONE, 9);
+   LbE(PE"HT", x+6, y+4, "▶ SUPER PRO EA v2.10", CAMARE, 11);
+   
+   int cy = 24;
+   SepE(PE"S0", cy); cy++;
+   LbE(PE"E0L", x+CL1E, y+cy, "EA STATUS",   CLBLE); cy += LHE;
+   LbE(PE"E1L", x+CL1E, y+cy, "POSICOES",    CLBLE); cy += LHE;
+   LbE(PE"E2L", x+CL1E, y+cy, "LUCRO ABERTO", CLBLE); cy += LHE;
+   LbE(PE"E3L", x+CL1E, y+cy, "SCORE/5",     CLBLE); cy += LHE;
+   SepE(PE"S1", cy); cy++;
+   LbE(PE"P0L", x+CL1E, y+cy, "LUCRO DIA",   CLBLE); cy += LHE;
+   LbE(PE"P1L", x+CL1E, y+cy, "DD MAX",      CLBLE); cy += LHE;
+   LbE(PE"P2L", x+CL1E, y+cy, "PERDAS SEG.", CLBLE); cy += LHE;
+   SepE(PE"S2", cy); cy++;
+   LbE(PE"R0L", x+CL1E, y+cy, "RSI ATUAL",   CLBLE); cy += LHE;
+   LbE(PE"R1L", x+CL1E, y+cy, "DELTA",       CLBLE); cy += LHE;
+   LbE(PE"R2L", x+CL1E, y+cy, "ALIGN ST3",   CLBLE); cy += LHE;
+   SepE(PE"S3", cy); cy++;
+   LbE(PE"H0L", x+CL1E, y+cy, "HORARIO",     CLBLE); cy += LHE;
+   LbE(PE"H1L", x+CL1E, y+cy, "BLOCOS",      CLBLE); cy += LHE;
+   LbE(PE"H2L", x+CL1E, y+cy, "PAUSA MOTIVO", CLBLE); cy += LHE;
+   
+   ChartRedraw();
+}
+
+void AtualizarPainelEA(double rsi, double delta, int soma, int score)
+{
+   int x = EPX, y = EPY;
+   
+   // EA Status
+   int cy = 25;
+   string estStr = EA_Ativo ? (gPausado ? "PAUSADO" : "ATIVO") : "INATIVO";
+   color estClr = EA_Ativo ? (gPausado ? CLARE : CVRDE) : CCINZE;
+   LbE(PE"E0V", x+CL2E, y+cy, estStr, estClr); cy += LHE;
+   
+   int nPos = ContarPosicoes();
+   LbE(PE"E1V", x+CL2E, y+cy, StringFormat("%d/%d", nPos, MaxPosicoesAbertas),
+       nPos > 0 ? CAZULE : CLBLE); cy += LHE;
+   
+   // Lucro aberto
+   double luAberto = 0.0;
+   for(int i = PositionsTotal()-1; i >= 0; i--) {
+      if(!gPos.SelectByIndex(i)) continue;
+      if(gPos.Symbol() != _Symbol || gPos.Magic() != MagicNumber) continue;
+      luAberto += gPos.Profit() + gPos.Swap();
+   }
+   LbE(PE"E2V", x+CL2E, y+cy, StringFormat("%.2f", luAberto),
+       luAberto > 0 ? CVRDE : luAberto < 0 ? CVRME : CLBLE); cy += LHE;
+   
+   LbE(PE"E3V", x+CL2E, y+cy, StringFormat("%d/5 pts", score),
+       score >= ScoreMinimo ? CVRDE : CAMARE); cy += LHE; cy++;
+   
+   // Proteção
+   LbE(PE"P0V", x+CL2E, y+cy, StringFormat("%.2f%%", gEstadoDia.lucroAtual),
+       gEstadoDia.lucroAtual >= LucroAlvo_Dia ? CVRDE : 
+       gEstadoDia.lucroAtual > 0 ? CAZULE : CVRME); cy += LHE;
+   
+   LbE(PE"P1V", x+CL2E, y+cy, StringFormat("%.2f%%", gEstadoDia.maxDD),
+       gEstadoDia.maxDD >= MaxDD_Pct ? CVRME : 
+       gEstadoDia.maxDD > MaxDD_Pct * 0.7 ? CAMARE : CVRDE); cy += LHE;
+   
+   LbE(PE"P2V", x+CL2E, y+cy, StringFormat("%d/%d", gEstadoDia.perdasSeguidas, MaxPerdas_Dia),
+       gEstadoDia.perdasSeguidas >= MaxPerdas_Dia ? CVRME : 
+       gEstadoDia.perdasSeguidas > 0 ? CAMARE : CVRDE); cy += LHE; cy++;
+   
+   // RSI / Delta / ST3
+   LbE(PE"R0V", x+CL2E, y+cy, StringFormat("%.1f", rsi),
+       rsi > 50 ? CVRDE : rsi < 50 ? CVRME : CAMARE); cy += LHE;
+   LbE(PE"R1V", x+CL2E, y+cy, StringFormat("%.1f%%", delta),
+       delta > 5 ? CVRDE : delta < -5 ? CVRME : CAMARE); cy += LHE;
+   
+   string somStr = (soma == 3) ? "3/3 ALTA" : (soma == -3) ? "3/3 BAIXA" :
+                   (soma > 0) ? "LEVE ALTA" : "LEVE BAIXA";
+   LbE(PE"R2V", x+CL2E, y+cy, somStr,
+       soma == 3 ? CVRDE : soma == -3 ? CVRME : CAMARE); cy += LHE; cy++;
+   
+   // Horário / Blocos / Pausa
+   bool den = DentroHorario();
+   LbE(PE"H0V", x+CL2E, y+cy, den ? "ABERTO" : "FECHADO", den ? CVRDE : CCINZE); cy += LHE;
+   LbE(PE"H1V", x+CL2E, y+cy, StringFormat("%d ativos", gNBlocos), CAZULE); cy += LHE;
+   LbE(PE"H2V", x+CL2E, y+cy, gPausado ? gMotivoPausa : "Operando...",
+       gPausado ? CVRME : CVRDE);
+   
+   ChartRedraw();
+}
+
+void AtualizarStatusPainel()
+{
+   // Lucro aberto
+   double luAberto = 0.0;
+   for(int i = PositionsTotal()-1; i >= 0; i--) {
+      if(!gPos.SelectByIndex(i)) continue;
+      if(gPos.Symbol() != _Symbol || gPos.Magic() != MagicNumber) continue;
+      luAberto += gPos.Profit() + gPos.Swap();
+   }
+   
+   int x = EPX, y = EPY;
+   LbE(PE"E2V", x+CL2E, y+25+2*LHE, StringFormat("%.2f", luAberto),
+       luAberto > 0 ? CVRDE : luAberto < 0 ? CVRME : CLBLE);
+   
+   // Status EA
+   string estStr = EA_Ativo ? (gPausado ? "PAUSADO" : "ATIVO") : "INATIVO";
+   color estClr = EA_Ativo ? (gPausado ? CLARE : CVRDE) : CCINZE;
+   LbE(PE"E0V", x+CL2E, y+25, estStr, estClr);
+   
+   // Status diário
+   LbE(PE"P0V", x+CL2E, y+25+3*LHE+1+6, StringFormat("%.2f%%", gEstadoDia.lucroAtual),
+       gEstadoDia.lucroAtual >= LucroAlvo_Dia ? CVRDE : 
+       gEstadoDia.lucroAtual > 0 ? CAZULE : CVRME);
+   
+   LbE(PE"P2V", x+CL2E, y+25+3*LHE+1+6+LHE+7, 
+       StringFormat("%d/%d", gEstadoDia.perdasSeguidas, MaxPerdas_Dia),
+       gEstadoDia.perdasSeguidas >= MaxPerdas_Dia ? CVRME : 
+       gEstadoDia.perdasSeguidas > 0 ? CAMARE : CVRDE);
+   
+   ChartRedraw();
+}
+
+//+------------------------------------------------------------------+
