@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>TRADE WINNER PRO · Painel Admin</title>
+  <title>TRADE WINNER PRO · Gerador de Chaves</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
@@ -39,6 +39,7 @@
     .page-tag{display:inline-flex;align-items:center;gap:.5rem;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.25);border-radius:4px;padding:.35rem .9rem;font-family:'DM Mono',monospace;font-size:.7rem;font-weight:500;color:var(--gold2);letter-spacing:2px;margin:0 auto 1rem}
     .page-title{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700;letter-spacing:-.5px;line-height:1.2;margin-bottom:.5rem}
     .page-title em{font-style:normal;color:var(--gold2)}
+    .page-desc{color:var(--text2);font-weight:300;font-size:.95rem}
     .card{background:rgba(19,19,26,0.95);border:1px solid var(--border2);border-radius:16px;padding:2rem 1.8rem;margin-bottom:1.5rem}
     .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
     .card-title{font-size:1.1rem;font-weight:600;color:var(--text);display:flex;align-items:center;gap:.5rem}
@@ -52,12 +53,12 @@
     .plano-nome{font-weight:700;font-size:0.65rem;text-transform:uppercase;letter-spacing:1px}
     .plano-dias{font-size:0.7rem;font-weight:500;margin:1px 0}
     .plano-valor{font-size:0.65rem;font-weight:600;font-family:'DM Mono',monospace}
-    .plano-latao{background:#CD7F32;color:#FFF5E0}.plano-latao.active{border-color:#FFF5E0;box-shadow:0 0 10px rgba(205,127,50,0.4)}
-    .plano-bronze{background:#8B6914;color:#FFF5E0}.plano-bronze.active{border-color:#FFF5E0;box-shadow:0 0 10px rgba(139,105,20,0.4)}
-    .plano-prata{background:#7D8794;color:#FFF}.plano-prata.active{border-color:#FFF;box-shadow:0 0 10px rgba(125,135,148,0.4)}
-    .plano-ouro{background:#DAA520;color:#1a1a1a}.plano-ouro.active{border-color:#1a1a1a;box-shadow:0 0 12px rgba(218,165,32,0.5)}
-    .plano-diamante{background:#6A5ACD;color:#FFF}.plano-diamante.active{border-color:#FFF;box-shadow:0 0 12px rgba(106,90,205,0.4)}
-    .plano-elite{background:#C0392B;color:#FFF}.plano-elite.active{border-color:#FFF;box-shadow:0 0 12px rgba(192,57,43,0.4)}
+    .plano-latao{background:#CD7F32;color:#FFF5E0}.plano-latao.active{border-color:#FFF5E0}
+    .plano-bronze{background:#8B6914;color:#FFF5E0}.plano-bronze.active{border-color:#FFF5E0}
+    .plano-prata{background:#7D8794;color:#FFF}.plano-prata.active{border-color:#FFF}
+    .plano-ouro{background:#DAA520;color:#1a1a1a}.plano-ouro.active{border-color:#1a1a1a}
+    .plano-diamante{background:#6A5ACD;color:#FFF}.plano-diamante.active{border-color:#FFF}
+    .plano-elite{background:#C0392B;color:#FFF}.plano-elite.active{border-color:#FFF}
     .form-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:.8rem}
     @media(max-width:560px){.form-row{grid-template-columns:1fr}}
     .fg{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.9rem}
@@ -69,10 +70,9 @@
     .data-box{background:rgba(201,168,76,0.04);border:1px solid rgba(201,168,76,0.1);border-radius:8px;padding:.8rem 1rem;margin-bottom:.9rem}
     .data-box-label{font-size:.7rem;color:var(--gold);font-family:'DM Mono',monospace;letter-spacing:1px;margin-bottom:.4rem}
     .btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--gold);color:#09090d;font-weight:700;font-size:.9rem;padding:.75rem 1.8rem;border-radius:6px;text-decoration:none;letter-spacing:.3px;transition:all .2s;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;justify-content:center}
-    .btn-primary:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 4px 15px rgba(201,168,76,0.3)}
+    .btn-primary:hover{background:var(--gold2);transform:translateY(-2px)}
     .btn-ghost{display:inline-flex;align-items:center;gap:.5rem;background:transparent;border:1px solid var(--border2);color:var(--text2);font-size:.85rem;font-weight:500;padding:.7rem 1.5rem;border-radius:6px;text-decoration:none;transition:all .2s;cursor:pointer;font-family:'DM Sans',sans-serif}
-    .btn-ghost:hover{border-color:var(--gold);color:var(--gold2);background:rgba(201,168,76,.05)}
-    .btn-ghost.active{border-color:var(--gold);color:var(--gold2);background:rgba(201,168,76,0.1)}
+    .btn-ghost:hover{border-color:var(--gold);color:var(--gold2)}
     .chave-box{background:rgba(201,168,76,0.06);border:2px solid var(--gold);border-radius:12px;padding:1.5rem;text-align:center;margin-top:1.5rem;display:none}
     .chave-box.show{display:block;animation:fadeInUp 0.4s ease}
     @keyframes fadeInUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
@@ -99,20 +99,29 @@
     .btn-icon-delete{border-color:var(--red);color:var(--red)}.btn-icon-delete:hover{background:rgba(224,82,96,0.15)}
     .btn-icon-edit{border-color:#c9a84c;color:#c9a84c}.btn-icon-edit:hover{background:rgba(201,168,76,0.15)}
     .btn-icon-email{border-color:#e67e22;color:#e67e22}.btn-icon-email:hover{background:rgba(230,126,34,0.15)}
+    .btn-icon-warning{border-color:#ff9800;color:#ff9800}.btn-icon-warning:hover{background:rgba(255,152,0,0.15)}
+    .btn-icon-planos{border-color:#e67e22;color:#e67e22}.btn-icon-planos:hover{background:rgba(230,126,34,0.15)}
     .status-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem}
     @media(max-width:600px){.status-grid{grid-template-columns:repeat(2,1fr)}}
     .status-card{background:rgba(19,19,26,0.9);border:1px solid var(--border);border-radius:12px;padding:1rem .8rem;text-align:center;cursor:pointer;transition:all .2s}
-    .status-card:hover{transform:translateY(-2px)}
-    .status-card.active{border-color:var(--gold)}
+    .status-card:hover{transform:translateY(-2px)}.status-card.active{border-color:var(--gold)}
     .status-number{display:block;font-family:'DM Mono',monospace;font-size:1.8rem;font-weight:500;color:var(--gold2)}
     .status-label{font-size:.7rem;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
     .status-number.green{color:var(--green)}.status-number.red{color:var(--red)}
     .finance-box{background:rgba(19,19,26,0.9);border:1px solid var(--border2);border-left:4px solid var(--gold);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem}
     .finance-total{font-family:'DM Mono',monospace;font-size:2rem;font-weight:500;color:#fff;margin:.3rem 0}
-    .conteudo-bloqueado{display:none}
-    .conteudo-bloqueado.desbloqueado{display:block}
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(4px);z-index:200}
+    .modal-overlay.show{display:block}
+    .modal{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:201;width:90%;max-width:600px;max-height:80vh;overflow-y:auto;background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:2rem}
+    .modal.show{display:block}
+    .modal-title{font-size:1.1rem;font-weight:600;margin-bottom:1.5rem;color:var(--gold2)}
+    .preco-config-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .preco-config-row label{min-width:180px;font-size:.85rem}
+    .preco-config-row input{width:120px}
     footer{border-top:1px solid var(--border);background:rgba(10,10,16,0.95);padding:2rem clamp(1.5rem,6vw,5rem) 1rem;text-align:center;margin-top:3rem}
     footer p{font-size:.7rem;color:var(--text2)}
+    .conteudo-bloqueado{display:none}
+    .conteudo-bloqueado.desbloqueado{display:block}
     @media(max-width:600px){nav{flex-wrap:wrap;height:auto;padding:.5rem 1rem}.nav-logo{font-size:.75rem}.card{padding:1.2rem 1rem}.chave-valor{font-size:.85rem}}
   </style>
 </head>
@@ -148,9 +157,9 @@
 <div class="main-container">
 
   <div class="page-header" id="gerador">
-    <div class="page-tag"><span class="nav-logo-dot"></span>LICENSE MANAGER</div>
-    <h1 class="page-title">Painel <em>Administrativo</em></h1>
-    <p class="page-desc" style="color:var(--text2)">Gerencie clientes e licenças</p>
+    <div class="page-tag"><span class="nav-logo-dot"></span>LICENSE MANAGER V9.0</div>
+    <h1 class="page-title">Gerador de <em>Chaves</em></h1>
+    <p class="page-desc">Cadastre clientes e gerencie licenças</p>
   </div>
 
   <div class="card">
@@ -199,9 +208,15 @@
   <div class="finance-box">
     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem">
       <span style="font-family:'DM Mono',monospace;font-size:.7rem;color:var(--gold);letter-spacing:2px">💵 LIVRO CAIXA</span>
-      <span style="font-size:.75rem;color:var(--text2)">Total de clientes</span>
+      <span style="font-size:.75rem;color:var(--text2)" id="periodoAtivoLabel">Tudo</span>
     </div>
     <div class="finance-total" id="totalFaturamento">R$ 0,00</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:.8rem">
+      <button class="btn-ghost active" style="width:auto;padding:.4rem 1rem;font-size:.7rem" id="periodoTudo" onclick="setPeriodo('tudo')">📊 Tudo</button>
+      <button class="btn-ghost" style="width:auto;padding:.4rem 1rem;font-size:.7rem" id="periodoHoje" onclick="setPeriodo('hoje')">📅 Hoje</button>
+      <button class="btn-ghost" style="width:auto;padding:.4rem 1rem;font-size:.7rem" id="periodoMes" onclick="setPeriodo('mes')">📆 Mês</button>
+      <button class="btn-ghost" style="width:auto;padding:.4rem 1rem;font-size:.7rem" id="periodoAno" onclick="setPeriodo('ano')">📈 Ano</button>
+    </div>
   </div>
 
   <div class="status-grid">
@@ -209,6 +224,15 @@
     <div class="status-card" id="statusAtivos" onclick="setFiltroStatus('ativos')"><span class="status-number green" id="countAtivos">0</span><span class="status-label">Ativos</span></div>
     <div class="status-card" id="statusVencendo" onclick="setFiltroStatus('vencendo')"><span class="status-number" id="countVencendo" style="color:var(--gold)">0</span><span class="status-label">Vence Hoje</span></div>
     <div class="status-card" id="statusVencidos" onclick="setFiltroStatus('vencidos')"><span class="status-number red" id="countVencidos">0</span><span class="status-label">Vencidos</span></div>
+  </div>
+
+  <div class="card" style="padding:1.5rem 1.8rem">
+    <div class="card-header"><span class="card-title">⚙️ Utilitários</span></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem">
+      <button class="btn-ghost" onclick="abrirModalMensagens()" style="font-size:.8rem;padding:.6rem">📝 MENSAGENS</button>
+      <button class="btn-ghost" onclick="abrirModalPrecos()" style="font-size:.8rem;padding:.6rem">💰 PREÇOS</button>
+      <button class="btn-primary" onclick="abrirEnviarMensagem()" style="font-size:.8rem;padding:.6rem;background:#e67e22;">📨 ENVIAR MENSAGEM</button>
+    </div>
   </div>
 
   <div class="card" id="clientes">
@@ -224,8 +248,34 @@
 
 </div>
 
-<footer><p>© 2025 TRADE WINNER PRO · Painel Administrativo</p></footer>
+<footer><p>© 2025 TRADE WINNER PRO · Gerador de Chaves</p></footer>
 
+</div>
+
+<div class="modal-overlay" id="modalOverlay" onclick="fecharModais()"></div>
+
+<div class="modal" id="modalMensagens">
+  <div class="modal-title">📝 CONFIGURAR MENSAGENS</div>
+  <p style="color:var(--text2);margin-bottom:15px;font-size:.8rem">Variáveis: {nome}, {plano}, {chave}, {dias}, {validade}, {data_cadastro}, {terminal_id}</p>
+  <div class="fg"><label style="color:var(--gold);">⚠️ QUASE VENCENDO</label><textarea id="msgQuaseVencendo" rows="6"></textarea></div>
+  <div class="fg"><label style="color:var(--gold);">❌ VENCIDO</label><textarea id="msgVencido" rows="6"></textarea></div>
+  <div class="fg"><label style="color:var(--gold);">🎯 BOAS VINDAS</label><textarea id="msgBoasVindas" rows="4"></textarea></div>
+  <div class="fg"><label style="color:var(--gold);">💰 PLANOS</label><textarea id="msgPlanos" rows="8"></textarea></div>
+  <div class="fg"><label style="color:var(--gold);">🔑 ENTREGA DE CHAVE</label><textarea id="msgEntrega" rows="6"></textarea></div>
+  <button class="btn-primary" onclick="salvarMensagens()">💾 SALVAR MENSAGENS</button>
+  <button class="btn-ghost" onclick="fecharModais()" style="margin-top:.5rem">❌ CANCELAR</button>
+</div>
+
+<div class="modal" id="modalPrecos">
+  <div class="modal-title">💰 CONFIGURAR VALORES</div>
+  <div class="preco-config-row"><label>🔰 LATÃO (7 dias):</label><span>R$</span><input type="number" id="precoLatao" step="0.01" value="0"></div>
+  <div class="preco-config-row"><label>🥉 BRONZE (30 dias):</label><span>R$</span><input type="number" id="precoBronze" step="0.01" value="47"></div>
+  <div class="preco-config-row"><label>🥈 PRATA (90 dias):</label><span>R$</span><input type="number" id="precoPrata" step="0.01" value="127"></div>
+  <div class="preco-config-row"><label>🥇 OURO (180 dias):</label><span>R$</span><input type="number" id="precoOuro" step="0.01" value="227"></div>
+  <div class="preco-config-row"><label>💎 DIAMANTE (270 dias):</label><span>R$</span><input type="number" id="precoDiamante" step="0.01" value="307"></div>
+  <div class="preco-config-row"><label>👑 ELITE (365 dias):</label><span>R$</span><input type="number" id="precoElite" step="0.01" value="367"></div>
+  <button class="btn-primary" onclick="salvarPrecos()">💾 SALVAR VALORES</button>
+  <button class="btn-ghost" onclick="fecharModais()" style="margin-top:.5rem">❌ CANCELAR</button>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -237,8 +287,6 @@
     const SALT = "TWPRO-SALT-2025";
     const LINK_EA = "https://tradewinnerpro.github.io/.com.br/TRADE_WINNER_PRO_V1.1.ex5";
     const LINK_PDF = "https://tradewinnerpro.github.io/.com.br/Manual_TRADE_WINNER.pdf";
-    
-    // ⭐ CONFIGURAÇÃO DO BANCO DE DADOS
     const BIN_ID = "69f0013c36566621a8fc2b6e";
     const MASTER_KEY = "$2a$10$Tt3s6mjKmpz2gcZEtM9G7.Y.EEUV.rvuOTZSaNHRZxsGNPqKKhjEC";
     
@@ -247,6 +295,60 @@
     let filtroStatus = 'todos';
     let planoSelecionado = 'LATAO';
     let diasSelecionados = 7;
+    
+    const MENSAGENS_PADRAO = {
+        quase_vencendo: `🎯 ATENÇÃO! Seu teste está quase vencendo!\n\nOlá {nome}!\n\n⚠️ Seu plano {plano} vence em {validade}.\n\n🔑 Sua chave: {chave}\n📱 Terminal: {terminal_id}\n\n⚡ RENOVE AGORA:\n👉 BRONZE (30d) R$47: https://pag.ae/81Jw7qy2N\n👉 PRATA (90d) R$127: https://pag.ae/81Jw7ZCg6\n👉 OURO (180d) R$227: https://pag.ae/81Jw8oyYM\n👉 DIAMANTE (270d) R$307: https://pag.ae/81Jw8RJ16\n👉 ELITE (365d) R$367: https://pag.ae/81Jw9ggEr\n\n📞 Suporte: (41) 99976-5210`,
+        vencido: `⛔ SEU TESTE EXPIRU!\n\nOlá {nome}!\n\n❌ Seu plano {plano} expirou em {validade}.\n\n⚡ RENOVE AGORA:\n👉 BRONZE (30d) R$47: https://pag.ae/81Jw7qy2N\n👉 PRATA (90d) R$127: https://pag.ae/81Jw7ZCg6\n👉 OURO (180d) R$227: https://pag.ae/81Jw8oyYM\n👉 DIAMANTE (270d) R$307: https://pag.ae/81Jw8RJ16\n👉 ELITE (365d) R$367: https://pag.ae/81Jw9ggEr\n\n📞 Suporte: (41) 99976-5210`,
+        boas_vindas: `🎯 TESTE ATIVADO!\n\nOlá {nome}!\n\n✅ Seu plano {plano} foi ativado com sucesso!\n🔑 Chave: {chave}\n📅 Válido até: {validade}\n📱 Terminal: {terminal_id}\n\n📥 Instruções: Cole a chave no campo "Chave de Ativação" do EA.\n\n📞 Dúvidas: (41) 99976-5210`,
+        planos: `📢 PLANOS TRADE WINNER PRO\n\nOlá {nome}!\n\n💰 ESCOLHA SEU PLANO:\n\n🔰 BRONZE (30 dias) - R$ 47\n👉 https://pag.ae/81Jw7qy2N\n\n🥈 PRATA (90 dias) - R$ 127\n👉 https://pag.ae/81Jw7ZCg6\n\n🥇 OURO (180 dias) - R$ 227\n👉 https://pag.ae/81Jw8oyYM\n\n💎 DIAMANTE (270 dias) - R$ 307\n👉 https://pag.ae/81Jw8RJ16\n\n👑 ELITE (365 dias) - R$ 367\n👉 https://pag.ae/81Jw9ggEr\n\n⚡ Pague e envie o comprovante!\n\n📞 Dúvidas: (41) 99976-5210`,
+        entrega: `🎯 TRADE WINNER PRO - Licença Ativada!\n\nOlá {nome}!\n\n✅ Seu plano {plano} foi ativado!\n🔑 Chave: {chave}\n📅 Válida por: {dias} dias\n\n📥 Baixe o EA: {link_ea}\n📘 Manual PDF: {link_pdf}\n\nSuporte: (41) 99976-5210`
+    };
+    
+    let configMensagens = JSON.parse(localStorage.getItem('twpro_mensagens')) || MENSAGENS_PADRAO;
+    let configPrecos = JSON.parse(localStorage.getItem('twpro_precos')) || {latao:0, bronze:47, prata:127, ouro:227, diamante:307, elite:367};
+    
+    function processarMensagem(tipo, cliente) {
+        let msg = configMensagens[tipo] || MENSAGENS_PADRAO[tipo];
+        let dataCadastro = new Date(cliente.dataCadastro).toLocaleDateString('pt-BR');
+        let validade = new Date(cliente.expira).toLocaleDateString('pt-BR');
+        let dias = Math.max(0, Math.ceil((new Date(cliente.expira) - new Date()) / 86400000));
+        return msg.replace(/{nome}/g, cliente.nome).replace(/{plano}/g, cliente.plano).replace(/{chave}/g, cliente.chave).replace(/{dias}/g, dias).replace(/{data_cadastro}/g, dataCadastro).replace(/{validade}/g, validade).replace(/{terminal_id}/g, cliente.terminal).replace(/{whatsapp}/g, cliente.whats).replace(/{link_ea}/g, LINK_EA).replace(/{link_pdf}/g, LINK_PDF);
+    }
+    
+    window.enviarMensagem = function(clienteId, tipo) {
+        let cliente = clientes.find(c => c.id == clienteId);
+        if(!cliente) return alert('Cliente não encontrado!');
+        let mensagem = processarMensagem(tipo, cliente);
+        if(confirm(`Enviar WhatsApp para ${cliente.nome}?`)) {
+            let numero = cliente.whats.replace(/\D/g, '');
+            if(numero) window.open('https://wa.me/' + numero + '?text=' + encodeURIComponent(mensagem), '_blank');
+            else alert('WhatsApp não cadastrado!');
+        }
+        if(cliente.email && confirm(`Enviar também por EMAIL para ${cliente.email}?`)) {
+            emailjs.send("service_kqme5zs", "template_rlrvpbm", {
+                to_email: cliente.email, to_name: cliente.nome, nome: cliente.nome,
+                chave: cliente.chave, expira: new Date(cliente.expira).toLocaleDateString('pt-BR'),
+                plano: cliente.plano, link_ea: LINK_EA, link_pdf: LINK_PDF,
+                whatsapp: cliente.whats, terminal_id: cliente.terminal,
+                validade: new Date(cliente.expira).toLocaleDateString('pt-BR')
+            }).then(() => alert('✅ Email enviado!')).catch(e => alert('❌ Erro: ' + e));
+        }
+    };
+    
+    window.abrirEnviarMensagem = function() {
+        if(clientes.length === 0) return alert('⚠️ Nenhum cliente!');
+        let html = `<div style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:10000;display:flex;align-items:center;justify-content:center;" id="modalEnviarMsg"><div style="background:#13131a;border:2px solid #c9a84c;border-radius:20px;padding:2rem;max-width:500px;width:95%;"><h3 style="color:#e8c96a;margin-bottom:1.5rem;text-align:center;">📨 ENVIAR MENSAGEM</h3><div class="fg"><label>👤 CLIENTE:</label><select id="selectCliente" style="background:#09090d;border:1px solid #2a2a38;border-radius:8px;color:#e8e8f0;padding:.65rem;width:100%;"><option value="">-- Selecione --</option>${clientes.map(c => `<option value="${c.id}">${c.nome} - ${c.whats} (${c.plano})</option>`).join('')}</select></div><div class="fg"><label>📝 TIPO:</label><select id="selectTipo" style="background:#09090d;border:1px solid #2a2a38;border-radius:8px;color:#e8e8f0;padding:.65rem;width:100%;"><option value="quase_vencendo">⚠️ QUASE VENCENDO</option><option value="vencido">❌ VENCIDO</option><option value="boas_vindas">🎯 BOAS VINDAS</option><option value="planos">💰 PLANOS</option><option value="entrega">🔑 ENTREGA DE CHAVE</option></select></div><div style="display:flex;gap:10px;margin-top:1.5rem;"><button class="btn-primary" onclick="enviarMensagemSelecionada()" style="flex:1;">📤 ENVIAR</button><button class="btn-ghost" onclick="fecharModalEnviarMsg()" style="flex:1;">❌ CANCELAR</button></div></div></div>`;
+        document.body.insertAdjacentHTML('beforeend', html);
+    };
+    
+    window.fecharModalEnviarMsg = function() { let m = document.getElementById('modalEnviarMsg'); if(m) m.remove(); };
+    window.enviarMensagemSelecionada = function() {
+        let cid = document.getElementById('selectCliente').value;
+        let tipo = document.getElementById('selectTipo').value;
+        if(!cid) return alert('⚠️ Selecione um cliente!');
+        fecharModalEnviarMsg();
+        enviarMensagem(cid, tipo);
+    };
     
     function gerarHashBase(terminal) {
         let data = terminal + SALT, hash = 0;
@@ -258,52 +360,6 @@
     
     function gerarChaveCompleta(t, p) { return p + "-" + gerarHashBase(t); }
     
-    // ⭐ CARREGAR DO BANCO DE DADOS
-    async function carregarDoBanco() {
-        try {
-            let response = await fetch('https://api.jsonbin.io/v3/b/' + BIN_ID + '/latest', {
-                headers: { 'X-Master-Key': MASTER_KEY }
-            });
-            let data = await response.json();
-            clientes = data.record.clientes || [];
-            salvarLocal();
-            console.log('✅ ' + clientes.length + ' clientes carregados do banco');
-        } catch(e) {
-            console.log('⚠️ Carregando backup local...');
-            let data = localStorage.getItem('twpro_clientes');
-            if(data) { try { clientes = JSON.parse(data); } catch(e) { clientes = []; } }
-        }
-        renderizarTabela();
-        atualizarContadores();
-        calcularFaturamento();
-    }
-    
-    // ⭐ SALVAR NO BANCO DE DADOS
-    async function salvarNoBanco() {
-        try {
-            await fetch('https://api.jsonbin.io/v3/b/' + BIN_ID, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Master-Key': MASTER_KEY
-                },
-                body: JSON.stringify({ clientes: clientes })
-            });
-            console.log('✅ Banco sincronizado');
-        } catch(e) {
-            console.log('⚠️ Erro ao sincronizar');
-        }
-    }
-    
-    function salvarLocal() {
-        localStorage.setItem('twpro_clientes', JSON.stringify(clientes));
-    }
-    
-    async function salvarClientes() {
-        salvarLocal();
-        await salvarNoBanco();
-    }
-    
     window.selecionarPlano = function(p, d, v, e) {
         planoSelecionado = p; diasSelecionados = d;
         document.querySelectorAll('.plano-card').forEach(c => c.classList.remove('active'));
@@ -311,7 +367,23 @@
         document.getElementById('valorInput').value = v;
     };
     
-    window.cadastrarCliente = async function() {
+    // ⭐ SALVAR NO BANCO
+    async function salvarNoBanco() {
+        try {
+            await fetch('https://api.jsonbin.io/v3/b/' + BIN_ID, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'X-Master-Key': MASTER_KEY },
+                body: JSON.stringify({ clientes: clientes })
+            });
+        } catch(e) { console.log('⚠️ Erro sincronização'); }
+    }
+    
+    function salvarClientes() {
+        localStorage.setItem('twpro_clientes', JSON.stringify(clientes));
+        salvarNoBanco();
+    }
+    
+    window.cadastrarCliente = function() {
         let nome = document.getElementById('nomeInput').value.trim();
         let whats = document.getElementById('whatsInput').value.trim();
         let email = document.getElementById('emailInput').value.trim();
@@ -336,7 +408,7 @@
         };
         
         clientes.push(novoCliente);
-        await salvarClientes();
+        salvarClientes();
         
         document.getElementById('chaveGeradaDisplay').textContent = chave;
         document.getElementById('planoGeradoBadge').textContent = planoSelecionado;
@@ -362,14 +434,13 @@
         alert('✅ Cliente cadastrado!\n🔑 Chave: ' + chave);
     };
     
-    window.removerCliente = async function(id) {
+    window.removerCliente = function(id) {
         if(confirm('🗑️ Remover este cliente?')) {
             clientes = clientes.filter(c => c.id != id);
-            await salvarClientes();
+            salvarClientes();
             renderizarTabela();
             atualizarContadores();
             calcularFaturamento();
-            alert('✅ Cliente removido!');
         }
     };
     
@@ -383,6 +454,65 @@
             terminal_id:c.terminal,validade:new Date(c.expira).toLocaleDateString('pt-BR')
         }).then(()=>alert('✅ Email enviado!')).catch(e=>alert('❌ Erro: '+e));
     };
+    
+    window.editarCliente = function(id) {
+        let c = clientes.find(x => x.id == id);
+        if(!c) return;
+        let diasRest = Math.max(0, Math.ceil((new Date(c.expira) - new Date()) / 86400000));
+        let html = `<div style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:9999;display:flex;align-items:center;justify-content:center;" id="modalEditar"><div style="background:#13131a;border:2px solid #c9a84c;border-radius:20px;padding:2rem;max-width:500px;width:90%;"><h3 style="color:#e8c96a;margin-bottom:1rem;">✏️ Editar ${c.nome}</h3><p style="color:#3ecf8e;">📅 Dias restantes: ${diasRest}</p><p style="color:#8888a8;">🔑 Chave: ${c.chave}</p><hr style="margin:1rem 0;border-color:#2a2a38;"><div class="fg"><label>Novo Plano:</label><select id="novoPlanoSelect"><option value="LATAO,7,0">🔰 LATÃO 7d - GRÁTIS</option><option value="BRONZE,30,47">🥉 BRONZE 30d - R$47</option><option value="PRATA,90,127">🥈 PRATA 90d - R$127</option><option value="OURO,180,227">🥇 OURO 180d - R$227</option><option value="DIAMANTE,270,307">💎 DIAMANTE 270d - R$307</option><option value="ELITE,365,367">👑 ELITE 365d - R$367</option></select></div><div class="fg"><label>Valor Adicional (R$):</label><input type="number" id="adicionalValor" value="0" step="0.01"></div><button class="btn-primary" onclick="confirmarEdicao('${c.id}',${diasRest})">✅ CONFIRMAR</button><button class="btn-ghost" onclick="document.getElementById('modalEditar').remove()" style="margin-top:.5rem">❌ CANCELAR</button></div></div>`;
+        document.body.insertAdjacentHTML('beforeend', html);
+    };
+    
+    window.confirmarEdicao = function(id, diasRestantes) {
+        let c = clientes.find(x => x.id == id);
+        if(!c) return;
+        let select = document.getElementById('novoPlanoSelect');
+        let [plano, diasNovo, valorNovo] = select.value.split(',');
+        let adicional = parseFloat(document.getElementById('adicionalValor').value) || 0;
+        let diasTotal = diasRestantes + parseInt(diasNovo);
+        c.plano = plano; c.dias = diasTotal;
+        c.chave = plano + "-" + gerarHashBase(c.terminal);
+        c.valor += parseFloat(valorNovo) + adicional;
+        c.expira = new Date(Date.now() + diasTotal * 86400000).toISOString();
+        salvarClientes();
+        document.getElementById('modalEditar').remove();
+        renderizarTabela();
+        alert(`✅ Atualizado!\n👤 ${c.nome}\n🏷️ ${plano}\n📅 ${diasTotal} dias\n🔑 ${c.chave}`);
+        let msg = `🎯 Plano Atualizado!\n\nOlá ${c.nome}!\n\n✅ Novo plano: ${plano}\n📅 Total: ${diasTotal} dias\n🔑 Nova chave: ${c.chave}`;
+        let numero = c.whats.replace(/\D/g,'');
+        if(numero) window.open('https://wa.me/'+numero+'?text='+encodeURIComponent(msg),'_blank');
+    };
+    
+    // ⭐ CARREGAR DO BANCO
+    async function carregarDoBanco() {
+        try {
+            let response = await fetch('https://api.jsonbin.io/v3/b/' + BIN_ID + '/latest', {
+                headers: { 'X-Master-Key': MASTER_KEY }
+            });
+            let data = await response.json();
+            let clientesNuvem = data.record.clientes || [];
+            
+            // Mesclar com localStorage
+            let dataLocal = localStorage.getItem('twpro_clientes');
+            let clientesLocais = [];
+            if(dataLocal) { try { clientesLocais = JSON.parse(dataLocal); } catch(e) {} }
+            
+            let idsLocais = new Set(clientesLocais.map(c => c.id));
+            let novos = clientesNuvem.filter(c => !idsLocais.has(c.id));
+            
+            clientes = [...clientesLocais, ...novos];
+            if(novos.length > 0) salvarClientes();
+            
+            console.log('✅ ' + clientes.length + ' clientes carregados');
+        } catch(e) {
+            console.log('⚠️ Usando dados locais');
+            let data = localStorage.getItem('twpro_clientes');
+            if(data) { try { clientes = JSON.parse(data); } catch(e) { clientes = []; } }
+        }
+        renderizarTabela();
+        atualizarContadores();
+        calcularFaturamento();
+    }
     
     window.renderizarTabela = function() {
         let busca = document.getElementById('buscaInput').value.toLowerCase();
@@ -423,7 +553,11 @@
                 <td>${exp.toLocaleDateString('pt-BR')}<br><span class="status-badge ${statusClass}">${statusText}</span></td>
                 <td>R$ ${(c.valor||0).toFixed(2)}</td>
                 <td><div class="action-btns">
+                    <button class="btn-icon btn-icon-chave" onclick="enviarMensagem('${c.id}','entrega')" title="Enviar Chave">🔑</button>
+                    <button class="btn-icon btn-icon-edit" onclick="editarCliente('${c.id}')" title="Editar">✏️</button>
                     <button class="btn-icon btn-icon-email" onclick="enviarEmailCliente('${c.id}')" title="Email">📧</button>
+                    <button class="btn-icon btn-icon-warning" onclick="enviarMensagem('${c.id}','quase_vencendo')" title="Aviso">⚠️</button>
+                    <button class="btn-icon btn-icon-planos" onclick="enviarMensagem('${c.id}','planos')" title="Planos">💰</button>
                     <button class="btn-icon btn-icon-delete" onclick="removerCliente('${c.id}')" title="Excluir">🗑️</button>
                 </div></td>
             </tr>`;
@@ -458,6 +592,77 @@
         renderizarTabela();
     };
     
+    window.setPeriodo = function(p) {
+        ['periodoTudo','periodoHoje','periodoMes','periodoAno'].forEach(id => document.getElementById(id).classList.remove('active'));
+        document.getElementById('periodo'+p.charAt(0).toUpperCase()+p.slice(1)).classList.add('active');
+        calcularFaturamento();
+    };
+    
+    window.abrirModalMensagens = function() {
+        document.getElementById('msgQuaseVencendo').value = configMensagens.quase_vencendo || '';
+        document.getElementById('msgVencido').value = configMensagens.vencido || '';
+        document.getElementById('msgBoasVindas').value = configMensagens.boas_vindas || '';
+        document.getElementById('msgPlanos').value = configMensagens.planos || '';
+        document.getElementById('msgEntrega').value = configMensagens.entrega || '';
+        document.getElementById('modalMensagens').classList.add('show');
+        document.getElementById('modalOverlay').classList.add('show');
+    };
+    
+    window.abrirModalPrecos = function() {
+        document.getElementById('precoLatao').value = configPrecos.latao;
+        document.getElementById('precoBronze').value = configPrecos.bronze;
+        document.getElementById('precoPrata').value = configPrecos.prata;
+        document.getElementById('precoOuro').value = configPrecos.ouro;
+        document.getElementById('precoDiamante').value = configPrecos.diamante;
+        document.getElementById('precoElite').value = configPrecos.elite;
+        document.getElementById('modalPrecos').classList.add('show');
+        document.getElementById('modalOverlay').classList.add('show');
+    };
+    
+    window.salvarMensagens = function() {
+        configMensagens = {
+            quase_vencendo: document.getElementById('msgQuaseVencendo').value,
+            vencido: document.getElementById('msgVencido').value,
+            boas_vindas: document.getElementById('msgBoasVindas').value,
+            planos: document.getElementById('msgPlanos').value,
+            entrega: document.getElementById('msgEntrega').value
+        };
+        localStorage.setItem('twpro_mensagens', JSON.stringify(configMensagens));
+        fecharModais();
+        alert('✅ Mensagens salvas!');
+    };
+    
+    window.salvarPrecos = function() {
+        configPrecos = {
+            latao: parseFloat(document.getElementById('precoLatao').value)||0,
+            bronze: parseFloat(document.getElementById('precoBronze').value)||47,
+            prata: parseFloat(document.getElementById('precoPrata').value)||127,
+            ouro: parseFloat(document.getElementById('precoOuro').value)||227,
+            diamante: parseFloat(document.getElementById('precoDiamante').value)||307,
+            elite: parseFloat(document.getElementById('precoElite').value)||367
+        };
+        localStorage.setItem('twpro_precos', JSON.stringify(configPrecos));
+        fecharModais();
+        alert('✅ Preços salvos!');
+    };
+    
+    window.fecharModais = function() {
+        document.querySelectorAll('.modal').forEach(m => m.classList.remove('show'));
+        document.getElementById('modalOverlay').classList.remove('show');
+    };
+    
+    window.copiarChaveGerada = function() { 
+        let chave = document.getElementById('chaveGeradaDisplay').textContent;
+        if(chave) navigator.clipboard.writeText(chave).then(() => alert('✅ Copiada!'));
+    };
+    
+    window.enviarWhatsAppChaveGerada = function() {
+        let chave = document.getElementById('chaveGeradaDisplay').textContent;
+        if(chave) navigator.clipboard.writeText(chave).then(() => alert('✅ Copiada! Cole no WhatsApp'));
+    };
+    
+    window.enviarEmailChaveGerada = function() { alert('📧 Email enviado!'); };
+    
     window.verificarSenha = function() {
         if(document.getElementById('senhaLoginInput').value === SENHA_MESTRA) {
             logado = true;
@@ -472,18 +677,6 @@
     
     window.fazerLogout = function() { location.reload(); };
     
-    window.copiarChaveGerada = function() { 
-        let chave = document.getElementById('chaveGeradaDisplay').textContent;
-        if(chave) navigator.clipboard.writeText(chave).then(() => alert('✅ Copiada!'));
-    };
-    
-    window.enviarWhatsAppChaveGerada = function() {
-        let chave = document.getElementById('chaveGeradaDisplay').textContent;
-        if(chave) navigator.clipboard.writeText(chave).then(() => alert('✅ Copiada! Cole no WhatsApp'));
-    };
-    
-    window.enviarEmailChaveGerada = function() { alert('📧 Email enviado!'); };
-    
     if(localStorage.getItem('twpro_logado') === 'true') {
         document.getElementById('loginOverlay').style.display = 'none';
         document.getElementById('conteudoPrincipal').classList.add('desbloqueado');
@@ -492,8 +685,7 @@
     }
     
     window.addEventListener('beforeunload', () => { localStorage.setItem('twpro_logado', logado ? 'true' : 'false'); });
-
-    // Recarregar a cada 30 segundos
+    
     setInterval(carregarDoBanco, 30000);
     
 })();
