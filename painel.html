@@ -82,7 +82,7 @@
     .badge-plano{display:inline-block;padding:.25rem .8rem;border-radius:20px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem}
     .badge-latao{background:#CD7F32;color:#FFF5E0}.badge-bronze{background:#8B6914;color:#FFF5E0}.badge-prata{background:#7D8794;color:#FFF}.badge-ouro{background:#DAA520;color:#1a1a1a}.badge-diamante{background:#6A5ACD;color:#FFF}.badge-elite{background:#C0392B;color:#FFF}
     .table-wrapper{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:10px;border:1px solid var(--border)}
-    table{width:100%;border-collapse:collapse;min-width:850px}
+    table{width:100%;border-collapse:collapse;min-width:750px}
     th{text-align:left;padding:12px 10px;color:var(--gold);font-size:0.65rem;text-transform:uppercase;letter-spacing:1px;background:rgba(19,19,26,0.95);border-bottom:2px solid var(--gold);font-family:'DM Mono',monospace;position:sticky;top:0}
     td{padding:10px;border-bottom:1px solid var(--border);font-size:0.8rem;vertical-align:middle}
     tr:hover td{background:rgba(201,168,76,0.03)}
@@ -124,10 +124,6 @@
     @media(max-width:600px){.planos-analise{grid-template-columns:repeat(3,1fr)}}
     .plano-analise-card{background:rgba(19,19,26,0.9);border:1px solid var(--border2);border-radius:10px;padding:.8rem;text-align:center;cursor:pointer;transition:all .2s}
     .plano-analise-card:hover{transform:translateY(-2px);border-color:var(--gold)}
-    .email-status{display:inline-block;width:12px;height:12px;border-radius:50%}
-    .email-ok{background:#3ecf8e;box-shadow:0 0 6px #3ecf8e}
-    .email-pendente{background:#e05260;box-shadow:0 0 6px #e05260;cursor:pointer}
-    .email-nao{background:#555}
     footer{border-top:1px solid var(--border);background:rgba(10,10,16,0.95);padding:2rem clamp(1.5rem,6vw,5rem) 1rem;text-align:center;margin-top:3rem}
     footer p{font-size:.7rem;color:var(--text2)}
     .conteudo-bloqueado{display:none}
@@ -143,7 +139,6 @@
       .client-name{color:black!important}
       .chave-display{background:#f0f0f0!important;color:black!important;border:1px solid #ccc!important}
       .status-badge{background:#eee!important;color:black!important}
-      .email-status{display:none!important}
       @page{margin:1cm}
     }
   </style>
@@ -253,7 +248,6 @@
       <button class="btn-ghost" onclick="imprimirRelatorio('vencendo')" style="font-size:.75rem;padding:.5rem 1rem">🟡 IMPRIMIR VENCE HOJE</button>
       <button class="btn-ghost" onclick="imprimirRelatorio('vencidos')" style="font-size:.75rem;padding:.5rem 1rem">🔴 IMPRIMIR VENCIDOS</button>
       <button class="btn-ghost" onclick="imprimirResumoPlanos()" style="font-size:.75rem;padding:.5rem 1rem">📊 RESUMO POR PLANO</button>
-      <button class="btn-ghost" onclick="reenviarEmailsPendentes()" style="font-size:.75rem;padding:.5rem 1rem;background:rgba(224,82,96,0.1);border-color:var(--red);color:var(--red)">🔄 REENVIAR EMAILS (<span id="countPendentes">0</span>)</button>
     </div>
   </div>
 
@@ -271,7 +265,7 @@
     <input type="text" id="buscaInput" placeholder="🔍 PESQUISAR CLIENTE" onkeyup="renderizarTabela()" style="background:rgba(9,9,13,0.8);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:.65rem .9rem;font-family:'DM Sans',sans-serif;font-size:.9rem;width:100%;margin-bottom:1rem">
     <div class="table-wrapper">
       <table>
-        <thead><tr><th>Cliente</th><th>Terminal</th><th>🔑 Chave</th><th>Plano</th><th>Expira</th><th>Valor</th><th>Email</th><th>Ações</th></tr></thead>
+        <thead><tr><th>Cliente</th><th>Terminal</th><th>🔑 Chave</th><th>Plano</th><th>Expira</th><th>Valor</th><th>Ações</th></tr></thead>
         <tbody id="tabelaBody"></tbody>
       </table>
     </div>
@@ -327,7 +321,6 @@
     let planoSelecionado = 'LATAO';
     let diasSelecionados = 7;
     let ultimoCliente = null;
-    let emailsPendentes = JSON.parse(localStorage.getItem('twpro_emails_pendentes') || '[]');
     
     const MENSAGENS_PADRAO = {
         quase_vencendo: `🎯 ATENÇÃO! Seu teste está quase vencendo!\n\nOlá {nome}!\n\n⚠️ Seu plano {plano} vence em {validade}.\n\n🔑 Sua chave: {chave}\n📱 Terminal: {terminal_id}\n\n⚡ RENOVE AGORA:\n👉 BRONZE (30d) R$47: https://pag.ae/81Jw7qy2N\n👉 PRATA (90d) R$127: https://pag.ae/81Jw7ZCg6\n👉 OURO (180d) R$227: https://pag.ae/81Jw8oyYM\n👉 DIAMANTE (270d) R$307: https://pag.ae/81Jw8RJ16\n👉 ELITE (365d) R$367: https://pag.ae/81Jw9ggEr\n\n📞 Suporte: (41) 99976-5210`,
@@ -348,72 +341,6 @@
         return msg.replace(/{nome}/g, cliente.nome).replace(/{plano}/g, cliente.plano).replace(/{chave}/g, cliente.chave).replace(/{dias}/g, dias).replace(/{data_cadastro}/g, dc).replace(/{validade}/g, val).replace(/{terminal_id}/g, cliente.terminal).replace(/{whatsapp}/g, cliente.whats).replace(/{link_ea}/g, LINK_EA).replace(/{link_pdf}/g, LINK_PDF);
     }
     
-    // ⭐ ENVIAR EMAIL COM STATUS
-    function tentarEnviarEmail(cliente) {
-        if(!cliente.email) return;
-        
-        // Atualiza status para pendente
-        let c = clientes.find(x => x.id === cliente.id);
-        if(c) c.emailEnviado = false;
-        
-        emailjs.send("service_kqme5zs", "template_rlrvpbm", {
-            to_email: cliente.email,
-            to_name: cliente.nome,
-            nome: cliente.nome,
-            chave: cliente.chave,
-            expira: new Date(cliente.expira).toLocaleDateString('pt-BR'),
-            plano: cliente.plano + ' ' + cliente.dias + ' dias',
-            link_ea: LINK_EA,
-            link_pdf: LINK_PDF,
-            whatsapp: cliente.whats,
-            terminal_id: cliente.terminal,
-            validade: new Date(cliente.expira).toLocaleDateString('pt-BR')
-        })
-        .then(function(response) {
-            console.log('✅ Email enviado para ' + cliente.email, response.status);
-            // Marcar como enviado
-            if(c) c.emailEnviado = true;
-            salvar();
-            // Remover dos pendentes
-            emailsPendentes = emailsPendentes.filter(id => id !== cliente.id);
-            localStorage.setItem('twpro_emails_pendentes', JSON.stringify(emailsPendentes));
-            renderizarTabela();
-            atualizarContadorPendentes();
-        })
-        .catch(function(error) {
-            console.log('❌ Email falhou para ' + cliente.email, error);
-            // Adicionar aos pendentes
-            if(c) c.emailEnviado = false;
-            if(!emailsPendentes.includes(cliente.id)) {
-                emailsPendentes.push(cliente.id);
-                localStorage.setItem('twpro_emails_pendentes', JSON.stringify(emailsPendentes));
-            }
-            renderizarTabela();
-            atualizarContadorPendentes();
-        });
-    }
-    
-    // ⭐ REENVIAR EMAILS PENDENTES
-    window.reenviarEmailsPendentes = function() {
-        if(emailsPendentes.length === 0) return alert('✅ Nenhum email pendente!');
-        
-        let count = 0;
-        emailsPendentes.forEach(id => {
-            let c = clientes.find(x => x.id === id);
-            if(c && c.email) {
-                tentarEnviarEmail(c);
-                count++;
-            }
-        });
-        
-        alert('📧 Reenviando ' + count + ' emails pendentes...');
-    };
-    
-    function atualizarContadorPendentes() {
-        document.getElementById('countPendentes').textContent = emailsPendentes.length;
-    }
-    
-    // ⭐ ENVIAR MENSAGEM
     window.enviarMensagem = function(clienteId, tipo) {
         let cliente = clientes.find(c => c.id == clienteId);
         if(!cliente) return alert('Cliente não encontrado!');
@@ -423,8 +350,13 @@
             if(numero) window.open('https://wa.me/' + numero + '?text=' + encodeURIComponent(mensagem), '_blank');
         }
         if(cliente.email && confirm(`Enviar EMAIL para ${cliente.email}?`)) {
-            tentarEnviarEmail(cliente);
-            alert('📧 Enviando email...');
+            emailjs.send("service_kqme5zs", "template_rlrvpbm", {
+                to_email: cliente.email, to_name: cliente.nome, nome: cliente.nome,
+                chave: cliente.chave, expira: new Date(cliente.expira).toLocaleDateString('pt-BR'),
+                plano: cliente.plano, link_ea: LINK_EA, link_pdf: LINK_PDF,
+                whatsapp: cliente.whats, terminal_id: cliente.terminal,
+                validade: new Date(cliente.expira).toLocaleDateString('pt-BR')
+            }).then(() => alert('✅ Email enviado!')).catch(e => alert('❌ Erro: ' + e));
         }
     };
     
@@ -469,7 +401,6 @@
     
     function salvar() { localStorage.setItem('twpro_clientes', JSON.stringify(clientes)); salvarBanco(); }
     
-    // ⭐ CADASTRAR COM EMAIL AUTOMÁTICO
     window.cadastrarCliente = function() {
         let nome = document.getElementById('nomeInput').value.trim();
         let whats = document.getElementById('whatsInput').value.trim();
@@ -493,8 +424,7 @@
             expira: expira.toISOString(),
             plano: planoSelecionado,
             dias: diasSelecionados,
-            dataCompra,
-            emailEnviado: false
+            dataCompra
         };
         
         clientes.push(novo);
@@ -510,15 +440,20 @@
         
         atualizarTudo();
         
-        // ⭐ ENVIA EMAIL AUTOMÁTICO
         if(email) {
-            tentarEnviarEmail(novo);
+            emailjs.send("service_kqme5zs", "template_rlrvpbm", {
+                to_email: email, to_name: nome, nome: nome,
+                chave: chave, expira: expira.toLocaleDateString('pt-BR'),
+                plano: planoSelecionado + ' ' + diasSelecionados + ' dias',
+                link_ea: LINK_EA, link_pdf: LINK_PDF,
+                whatsapp: whats, terminal_id: terminal,
+                validade: expira.toLocaleDateString('pt-BR')
+            }).catch(e => console.log('Erro email:', e));
         }
         
-        alert('✅ Cadastrado!\n🔑 ' + chave + '\n📧 Email será enviado automaticamente');
+        alert('✅ Cadastrado!\n🔑 ' + chave);
     };
     
-    // ⭐ EDITAR
     window.editarCliente = function(id) {
         let c = clientes.find(x => x.id == id);
         if(!c) return;
@@ -550,8 +485,6 @@
     window.removerCliente = function(id) {
         if(confirm('🗑️ Remover?')) {
             clientes = clientes.filter(c => c.id != id);
-            emailsPendentes = emailsPendentes.filter(eid => eid !== id);
-            localStorage.setItem('twpro_emails_pendentes', JSON.stringify(emailsPendentes));
             salvar();
             atualizarTudo();
         }
@@ -560,8 +493,12 @@
     window.enviarEmailCliente = function(id) {
         let c = clientes.find(x => x.id == id);
         if(!c || !c.email) return alert('Cliente sem email!');
-        tentarEnviarEmail(c);
-        alert('📧 Enviando email...');
+        emailjs.send("service_kqme5zs","template_rlrvpbm",{
+            to_email:c.email,to_name:c.nome,nome:c.nome,chave:c.chave,
+            expira:new Date(c.expira).toLocaleDateString('pt-BR'),plano:c.plano,
+            link_ea:LINK_EA,link_pdf:LINK_PDF,whatsapp:c.whats,
+            terminal_id:c.terminal,validade:new Date(c.expira).toLocaleDateString('pt-BR')
+        }).then(()=>alert('✅ Email enviado!')).catch(e=>alert('❌ Erro: '+e));
     };
     
     async function carregar() {
@@ -575,10 +512,6 @@
             let ids = new Set(local.map(c => c.id));
             let novos = nuvem.filter(c => !ids.has(c.id));
             clientes = [...local, ...novos];
-            // Garantir campo emailEnviado
-            clientes.forEach(c => {
-                if(c.emailEnviado === undefined) c.emailEnviado = false;
-            });
             if(novos.length > 0) salvar();
         } catch(e) {
             clientes = JSON.parse(localStorage.getItem('twpro_clientes') || '[]');
@@ -591,7 +524,6 @@
         atualizarContadores();
         calcularFaturamento();
         atualizarAnalisePlanos();
-        atualizarContadorPendentes();
     }
     
     window.renderizarTabela = function() {
@@ -613,7 +545,7 @@
         
         let tbody = document.getElementById('tabelaBody');
         if(!lista.length) {
-            tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:2rem">Nenhum cliente</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem">Nenhum cliente</td></tr>';
             return;
         }
         
@@ -625,18 +557,6 @@
             else if(diff === 0) { cls = 'status-vencendo'; txt = 'VENCE HOJE'; }
             else { cls = 'status-ativo'; txt = 'ATIVO'; }
             
-            // Status do email
-            let emailStatus = '';
-            if(c.email) {
-                if(c.emailEnviado) {
-                    emailStatus = '<span class="email-status email-ok" title="Email enviado ✅"></span>';
-                } else {
-                    emailStatus = `<span class="email-status email-pendente" title="Email pendente 🔴 - Clique para reenviar" onclick="tentarEnviarEmail(clientes.find(x=>x.id==='${c.id}'))"></span>`;
-                }
-            } else {
-                emailStatus = '<span class="email-status email-nao" title="Sem email"></span>';
-            }
-            
             return `<tr>
                 <td><div class="client-name">${c.nome}</div><div class="client-detail">${c.whats}${c.email ? ' | '+c.email : ''}</div></td>
                 <td>${c.terminal}</td>
@@ -644,7 +564,6 @@
                 <td><span class="badge-plano badge-${(c.plano||'LATAO').toLowerCase()}">${c.plano}</span></td>
                 <td>${exp.toLocaleDateString('pt-BR')}<br><span class="status-badge ${cls}">${txt}</span></td>
                 <td>R$ ${(c.valor||0).toFixed(2)}</td>
-                <td style="text-align:center">${emailStatus}</td>
                 <td><div class="action-btns">
                     <button class="btn-icon btn-icon-chave" onclick="enviarMensagem('${c.id}','entrega')" title="Enviar Chave">🔑</button>
                     <button class="btn-icon btn-icon-edit" onclick="editarCliente('${c.id}')" title="Editar">✏️</button>
@@ -857,8 +776,14 @@
     
     window.enviarEmailChaveGerada = function() {
         if(ultimoCliente && ultimoCliente.email) {
-            tentarEnviarEmail(ultimoCliente);
-            alert('📧 Reenviando email...');
+            emailjs.send("service_kqme5zs", "template_rlrvpbm", {
+                to_email: ultimoCliente.email, to_name: ultimoCliente.nome,
+                nome: ultimoCliente.nome, chave: ultimoCliente.chave,
+                expira: new Date(ultimoCliente.expira).toLocaleDateString('pt-BR'),
+                plano: ultimoCliente.plano, link_ea: LINK_EA, link_pdf: LINK_PDF,
+                whatsapp: ultimoCliente.whats, terminal_id: ultimoCliente.terminal,
+                validade: new Date(ultimoCliente.expira).toLocaleDateString('pt-BR')
+            }).then(() => alert('✅ Email enviado!')).catch(e => alert('❌ Erro: ' + e));
         } else {
             alert('⚠️ Email não cadastrado');
         }
